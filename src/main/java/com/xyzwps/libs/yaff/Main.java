@@ -4,6 +4,7 @@ import com.xyzwps.libs.yaff.commons.NodeIds;
 import com.xyzwps.libs.yaff.flow.*;
 import com.xyzwps.libs.yaff.node.Node;
 import com.xyzwps.libs.yaff.node.Parameter;
+import com.xyzwps.libs.yaff.node.ParameterType;
 
 import java.util.List;
 import java.util.Map;
@@ -47,12 +48,12 @@ public class Main {
 
         @Override
         public List<Parameter> getInputs() {
-            return List.of(new Parameter("value", Parameter.Type.STRING));
+            return List.of(new Parameter("value", ParameterType.STRING));
         }
 
         @Override
         public List<Parameter> getOutputs() {
-            return List.of(new Parameter("text", Parameter.Type.STRING));
+            return List.of(new Parameter("text", ParameterType.STRING));
         }
 
         @Override
@@ -77,7 +78,7 @@ public class Main {
 
         @Override
         public List<Parameter> getInputs() {
-            return List.of(new Parameter("text", Parameter.Type.STRING));
+            return List.of(new Parameter("text", ParameterType.STRING));
         }
 
         @Override

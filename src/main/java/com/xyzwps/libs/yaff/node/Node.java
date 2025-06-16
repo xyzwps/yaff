@@ -8,6 +8,7 @@ import java.util.Map;
 public interface Node {
     String getName();
 
+    // TODO: 应该返回一个 map
     List<Parameter> getInputs();
 
     List<Parameter> getOutputs();

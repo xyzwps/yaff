@@ -1,6 +1,6 @@
 package com.xyzwps.libs.yaff.flow;
 
-import com.xyzwps.libs.yaff.node.Parameter;
+import com.xyzwps.libs.yaff.node.ParameterType;
 import lombok.SneakyThrows;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Value;
@@ -23,10 +23,9 @@ public class JavaScriptExpression implements AssignExpression {
     }
 
     @Override
-    public Object calculate(FlowContext flowContext, Parameter.Type resultType) {
+    public Object calculate(FlowContext flowContext, ParameterType resultType) {
         try (var context = Context.create()) {
             var script = makeScript(flowContext) + expression;
-            System.out.println(script);
             var value = context.eval("js", script);
             return convert(value, resultType);
         }
@@ -39,12 +38,18 @@ public class JavaScriptExpression implements AssignExpression {
         return OM.writeValueAsString(value);
     }
 
+    /**
+     * 把 flowContext 转换成 JavaScript 脚本。
+     *
+     * @param flowContext 上下文
+     * @return 脚本
+     * @see SimpleFlowContext#set
+     */
     private static String makeScript(FlowContext flowContext) {
         var names = flowContext.getNames();
         var allVars = new HashMap<String, HashMap<String, Object>>();
         for (var name : names) {
             var segments = name.split("\\.");
-            // TODO: 我们想办法把 name 搞成两级的结构
             if (segments.length != 2) {
                 throw new RuntimeException("Invalid name: " + name);
             }
@@ -68,7 +73,7 @@ public class JavaScriptExpression implements AssignExpression {
     }
 
 
-    private static Object convert(Value value, Parameter.Type resultType) {
+    private static Object convert(Value value, ParameterType resultType) {
         switch (resultType) {
             case INT -> {
                 if (value.isNumber()) {

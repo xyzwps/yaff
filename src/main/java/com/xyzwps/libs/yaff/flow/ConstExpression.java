@@ -1,6 +1,6 @@
 package com.xyzwps.libs.yaff.flow;
 
-import com.xyzwps.libs.yaff.node.Parameter;
+import com.xyzwps.libs.yaff.node.ParameterType;
 
 public class ConstExpression implements AssignExpression {
 
@@ -18,7 +18,7 @@ public class ConstExpression implements AssignExpression {
     }
 
     @Override
-    public Object calculate(FlowContext flowContext, Parameter.Type resultType) {
+    public Object calculate(FlowContext flowContext, ParameterType resultType) {
         return value;
     }
 }
