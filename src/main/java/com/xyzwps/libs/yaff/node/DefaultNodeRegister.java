@@ -8,6 +8,8 @@ public class DefaultNodeRegister implements NodeRegister {
     private final Map<String, Node> nodes = new HashMap<>();
 
     public DefaultNodeRegister() {
+        register(new NoopNode());
+        register(new ControlNode.IfNode());
 //        register(new SwitchControl());
 //        register(new DefaultControl());
 //        register(new CaseControl());
@@ -15,6 +17,7 @@ public class DefaultNodeRegister implements NodeRegister {
 
     @Override
     public void register(Node node) {
+        // TODO: 不能有冲突
         nodes.put(node.getName(), node);
     }
 

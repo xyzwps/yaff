@@ -15,7 +15,7 @@ public class SimpleFlowContext implements FlowContext {
     /**
      * 我们只保留两级名称。第一级是 node id，第二级是 node 输出的变量名。
      * <p/>
-     * 如果名称只有一级，我们把它放在 {@link NodeIds#START} 节点下，即，变量名是 {@link NodeIds#START}.name。
+     * 如果名称只有一级，我们把它放在 {@link NodeIds#CTX} 虚拟节点下，即，变量名是 {@link NodeIds#CTX}.name。
      * 如果名称有两级，直接接受。
      * 否则，抛出异常。
      *
@@ -31,7 +31,7 @@ public class SimpleFlowContext implements FlowContext {
         if (PATH_PATTERN.matcher(name).matches()) {
             map.put(name, value);
         } else if (NAME_PATTERN.matcher(name).matches()) {
-            map.put(NodeIds.START + "." + name, value);
+            map.put(NodeIds.CTX + "." + name, value);
         } else {
             throw new IllegalArgumentException("Invalid context variable name: " + name);
         }

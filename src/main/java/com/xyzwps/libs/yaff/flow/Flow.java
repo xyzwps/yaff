@@ -16,9 +16,12 @@ public class Flow {
 
         // TODO: 检查
         // 1. 必须有一个 id 为 start 的节点
+        //    不能有节点 id 叫 ctx
         // 2. 不必有 end 节点
         // 3. 每个节点的 next 必须真实存在
         // 4. 检查 node instance 和 node 本身是否匹配
+        //
+        //  if 节点后必须有两个 next
 
         for (NodeInstance nodeInstance : nodeInstances) {
             idToNode.put(nodeInstance.getId(), nodeInstance);

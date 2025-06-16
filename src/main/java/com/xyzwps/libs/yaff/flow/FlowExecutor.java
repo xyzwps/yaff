@@ -1,6 +1,7 @@
 package com.xyzwps.libs.yaff.flow;
 
 import com.xyzwps.libs.yaff.commons.NodeIds;
+import com.xyzwps.libs.yaff.node.ControlNode;
 import com.xyzwps.libs.yaff.node.NodeRegister;
 import com.xyzwps.libs.yaff.node.ParameterType;
 
@@ -33,20 +34,23 @@ public class FlowExecutor {
                 throw new RuntimeException("Node not registered: name=" + flowNode.getName());
             }
 
-            System.out.println("=> Step(" + step + ") " + node.getName());
+            System.out.println("=> Step(" + step + ") " + node.getName() + " | " + flowNode.getId());
             Map<String, ParameterType> inputTypes = new HashMap<>();
             for (var input : node.getInputs()) {
                 inputTypes.put(input.name(), input.type());
             }
 
             Map<String, Object> inputs = new HashMap<>();
-            for (var assignExpression : flowNode.getAssignExpressions()) {
-                var inputName = assignExpression.getInputName();
-                var inputType = inputTypes.get(inputName);
-                if (inputType == null) {
-                    throw new RuntimeException("Invalid input name: " + inputName);
+            var assignExpressions = flowNode.getAssignExpressions();
+            if (assignExpressions != null && !assignExpressions.isEmpty()) {
+                for (var assignExpression : assignExpressions) {
+                    var inputName = assignExpression.getInputName();
+                    var inputType = inputTypes.get(inputName);
+                    if (inputType == null) {
+                        throw new RuntimeException("Invalid input name: " + inputName);
+                    }
+                    inputs.put(inputName, assignExpression.calculate(context, inputType));
                 }
-                inputs.put(inputName, assignExpression.calculate(context, inputType));
             }
             node.execute(inputs, new PrefixedContext(flowNode.getId(), context));
 
@@ -54,7 +58,17 @@ public class FlowExecutor {
             if (next == null || next.isEmpty()) {
                 break;
             } else if (next.size() > 1) {
-                // TODO: decide next node
+                switch (node) {
+                    case ControlNode.IfNode ifNode -> {
+                        var result = context.get(flowNode.getId() + ".result");
+                        if (result instanceof Boolean bool && bool) {
+                            currentId = flowNode.getNext().getFirst();
+                        } else {
+                            currentId = flowNode.getNext().get(1);
+                        }
+                    }
+                    default -> throw new RuntimeException("Invalid node: " + node.getName());
+                }
             } else {
                 currentId = next.getFirst();
             }
@@ -65,6 +79,7 @@ public class FlowExecutor {
 
         @Override
         public void set(String name, Object value) {
+            // TODO: 检查 name 是否是合法的输出名称
             if (name == null) {
                 throw new IllegalArgumentException("Context variable name cannot be null");
             }
