@@ -24,6 +24,10 @@ public class FlowFactory {
         return this;
     }
 
+    public NodeRegister getNodeRegister() {
+        return nodeRegister;
+    }
+
     public Flow createFlow(List<FlowNode> nodes) {
         check(nodes);
         return new Flow(nodes);

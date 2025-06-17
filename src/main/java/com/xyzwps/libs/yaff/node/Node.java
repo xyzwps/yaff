@@ -13,8 +13,10 @@ public interface Node {
 
     List<Parameter> getOutputs();
 
+    String getDescription();
+
     default NodeMetaData getMetaData() {
-        return new NodeMetaData(getName(), getInputs(), getOutputs());
+        return new NodeMetaData(getName(), getInputs(), getOutputs(), getDescription());
     }
 
     void execute(Map<String, Object> inputs, FlowContext context);

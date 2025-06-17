@@ -1,6 +1,7 @@
 package com.xyzwps.libs.yaff.example;
 
 
+import com.xyzwps.libs.yaff.commons.JSON;
 import com.xyzwps.libs.yaff.commons.NodeIds;
 import com.xyzwps.libs.yaff.flow.*;
 import com.xyzwps.libs.yaff.node.Node;
@@ -29,7 +30,7 @@ class Example01Tests {
                 new FlowNode()
                         .id(NodeIds.START)
                         .name(ToTextNode.NAME)
-                        .assignExpressions(new ConstExpression("value", "Hello World"))
+                        .assignExpressions(new ConstantExpression("value", "Hello World"))
                         .next("print"),
                 new FlowNode()
                         .id("print")
@@ -46,6 +47,9 @@ class Example01Tests {
 
         executor.execute(flow, context);
         assertEquals("Hello World", context.get("start.text"));
+
+        System.out.println("flow: " + JSON.stringify(flow));
+        System.out.println("meta: " + JSON.stringify(factory.getNodeRegister()));
     }
 
     private static class ToTextNode implements Node {
@@ -54,6 +58,11 @@ class Example01Tests {
 
         @Override
         public String getName() {
+            return NAME;
+        }
+
+        @Override
+        public String getDescription() {
             return NAME;
         }
 
@@ -84,6 +93,11 @@ class Example01Tests {
 
         @Override
         public String getName() {
+            return NAME;
+        }
+
+        @Override
+        public String getDescription() {
             return NAME;
         }
 

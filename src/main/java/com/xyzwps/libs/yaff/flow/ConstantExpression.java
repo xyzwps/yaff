@@ -2,12 +2,20 @@ package com.xyzwps.libs.yaff.flow;
 
 import com.xyzwps.libs.yaff.node.ParameterType;
 
-public class ConstExpression implements AssignExpression {
+public class ConstantExpression implements AssignExpression {
 
     private final Object value;
     private final String inputName;
 
-    public ConstExpression(String name, Object value) {
+    public static final String TYPE = "constant";
+
+    @Override
+    public String getType() {
+        return TYPE;
+    }
+
+    public ConstantExpression(String name, Object value) {
+        // TODO: 检查类型
         this.inputName = name;
         this.value = value;
     }

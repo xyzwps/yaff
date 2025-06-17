@@ -34,12 +34,12 @@ class Example02Tests {
                 new FlowNode()
                         .id("printA1")
                         .name(PrintNode.NAME)
-                        .assignExpressions(new ConstExpression("text", "a1 is great"))
+                        .assignExpressions(new ConstantExpression("text", "a1 is great"))
                         .next(NodeIds.END),
                 new FlowNode()
                         .id("printA2")
                         .name(PrintNode.NAME)
-                        .assignExpressions(new ConstExpression("text", "a2 is great"))
+                        .assignExpressions(new ConstantExpression("text", "a2 is great"))
                         .next(NodeIds.END)
         );
 
@@ -66,6 +66,11 @@ class Example02Tests {
 
         @Override
         public String getName() {
+            return NAME;
+        }
+
+        @Override
+        public String getDescription() {
             return NAME;
         }
 

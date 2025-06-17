@@ -1,10 +1,9 @@
 package com.xyzwps.libs.yaff.flow;
 
+import com.xyzwps.libs.yaff.commons.JSON;
 import com.xyzwps.libs.yaff.node.ParameterType;
-import lombok.SneakyThrows;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Value;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.HashMap;
 
@@ -12,9 +11,16 @@ public class JavaScriptExpression implements AssignExpression {
     private final String expression;
     private final String inputName;
 
+    public static final String TYPE = "javascript";
+
     public JavaScriptExpression(String name, String expression) {
         this.inputName = name;
         this.expression = expression;
+    }
+
+    @Override
+    public String getType() {
+        return TYPE;
     }
 
     @Override
@@ -31,12 +37,6 @@ public class JavaScriptExpression implements AssignExpression {
         }
     }
 
-    private static final ObjectMapper OM = new ObjectMapper();
-
-    @SneakyThrows
-    private static String stringify(Object value) {
-        return OM.writeValueAsString(value);
-    }
 
     /**
      * 把 flowContext 转换成 JavaScript 脚本。
@@ -67,7 +67,7 @@ public class JavaScriptExpression implements AssignExpression {
         for (var entry : allVars.entrySet()) {
             var varName = entry.getKey();
             var varValue = entry.getValue();
-            scripts.append("var ").append(varName).append(" = ").append(stringify(varValue)).append(";\n");
+            scripts.append("var ").append(varName).append(" = ").append(JSON.stringify(varValue)).append(";\n");
         }
         return scripts.toString();
     }

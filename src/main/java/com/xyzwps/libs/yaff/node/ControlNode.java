@@ -19,6 +19,11 @@ public sealed interface ControlNode extends Node {
         }
 
         @Override
+        public String getDescription() {
+            return "Fallback in control flow";
+        }
+
+        @Override
         public List<Parameter> getInputs() {
             return List.of();
         }
@@ -37,6 +42,11 @@ public sealed interface ControlNode extends Node {
         @Override
         public String getName() {
             return WHEN_NODE_NAME;
+        }
+
+        @Override
+        public String getDescription() {
+            return "Check conditions after case node";
         }
 
         public static final String CONDITION = "condition";
@@ -63,6 +73,11 @@ public sealed interface ControlNode extends Node {
         }
 
         @Override
+        public String getDescription() {
+            return "For case-when pattern";
+        }
+
+        @Override
         public List<Parameter> getInputs() {
             return List.of();
         }
@@ -81,6 +96,11 @@ public sealed interface ControlNode extends Node {
         @Override
         public String getName() {
             return IF_NODE_NAME;
+        }
+
+        @Override
+        public String getDescription() {
+            return "For if else pattern";
         }
 
         @Override

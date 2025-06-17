@@ -36,7 +36,7 @@ class Example03Tests {
                 new FlowNode()
                         .id("print1")
                         .name(Example02Tests.PrintNode.NAME)
-                        .assignExpressions(new ConstExpression("text", "a1 is great"))
+                        .assignExpressions(new ConstantExpression("text", "a1 is great"))
                         .next(NodeIds.END),
 
                 new FlowNode()
@@ -47,7 +47,7 @@ class Example03Tests {
                 new FlowNode()
                         .id("print2")
                         .name(Example02Tests.PrintNode.NAME)
-                        .assignExpressions(new ConstExpression("text", "a2 is great"))
+                        .assignExpressions(new ConstantExpression("text", "a2 is great"))
                         .next(NodeIds.END),
 
                 new FlowNode()
@@ -57,7 +57,7 @@ class Example03Tests {
                 new FlowNode()
                         .id("print3")
                         .name(Example02Tests.PrintNode.NAME)
-                        .assignExpressions(new ConstExpression("text", "a1 is equal to a2"))
+                        .assignExpressions(new ConstantExpression("text", "a1 is equal to a2"))
                         .next(NodeIds.END)
         );
 

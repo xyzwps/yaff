@@ -15,6 +15,11 @@ public class NoopNode implements Node {
     }
 
     @Override
+    public String getDescription() {
+        return NAME;
+    }
+
+    @Override
     public List<Parameter> getInputs() {
         return List.of();
     }

@@ -1,12 +1,15 @@
 package com.xyzwps.libs.yaff.flow;
 
 
+import lombok.Getter;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Flow {
 
+    @Getter
     private final List<FlowNode> flowNodes;
 
     private final Map<String, FlowNode> idToNode = new HashMap<>();

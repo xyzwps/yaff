@@ -1,6 +1,7 @@
 package com.xyzwps.libs.yaff.node;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DefaultNodeRegister implements NodeRegister {
@@ -13,9 +14,6 @@ public class DefaultNodeRegister implements NodeRegister {
         register(new ControlNode.CaseNode());
         register(new ControlNode.WhenNode());
         register(new ControlNode.DefaultNode());
-//        register(new SwitchControl());
-//        register(new DefaultControl());
-//        register(new CaseControl());
     }
 
     @Override
@@ -26,5 +24,10 @@ public class DefaultNodeRegister implements NodeRegister {
 
     public Node getNode(String name) {
         return nodes.get(name);
+    }
+
+    @Override
+    public List<NodeMetaData> getMetaData() {
+        return nodes.values().stream().map(Node::getMetaData).toList();
     }
 }
