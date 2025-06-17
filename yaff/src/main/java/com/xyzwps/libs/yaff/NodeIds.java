@@ -1,4 +1,4 @@
-package com.xyzwps.libs.yaff.commons;
+package com.xyzwps.libs.yaff;
 
 public final class NodeIds {
 

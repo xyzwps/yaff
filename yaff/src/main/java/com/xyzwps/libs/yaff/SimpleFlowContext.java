@@ -1,6 +1,4 @@
-package com.xyzwps.libs.yaff.flow;
-
-import com.xyzwps.libs.yaff.commons.NodeIds;
+package com.xyzwps.libs.yaff;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -20,7 +18,7 @@ public class SimpleFlowContext implements FlowContext {
      * 否则，抛出异常。
      *
      * @param name  Variable Name
-     * @param value Variable Value TODO: 限制值域
+     * @param value Variable Value
      */
     @Override
     public void set(String name, Object value) {
@@ -28,10 +26,12 @@ public class SimpleFlowContext implements FlowContext {
             throw new IllegalArgumentException("Context variable name cannot be null");
         }
 
+        var validValue = ParameterType.valid(value);
+
         if (PATH_PATTERN.matcher(name).matches()) {
-            map.put(name, value);
+            map.put(name, validValue);
         } else if (NAME_PATTERN.matcher(name).matches()) {
-            map.put(NodeIds.CTX + "." + name, value);
+            map.put(NodeIds.CTX + "." + name, validValue);
         } else {
             throw new IllegalArgumentException("Invalid context variable name: " + name);
         }

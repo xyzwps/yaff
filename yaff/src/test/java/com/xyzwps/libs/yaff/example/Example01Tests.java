@@ -1,12 +1,9 @@
 package com.xyzwps.libs.yaff.example;
 
 
+import com.xyzwps.libs.yaff.*;
 import com.xyzwps.libs.yaff.commons.JSON;
-import com.xyzwps.libs.yaff.commons.NodeIds;
-import com.xyzwps.libs.yaff.flow.*;
-import com.xyzwps.libs.yaff.node.Node;
-import com.xyzwps.libs.yaff.node.Parameter;
-import com.xyzwps.libs.yaff.node.ParameterType;
+import com.xyzwps.libs.yaff.NodeIds;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

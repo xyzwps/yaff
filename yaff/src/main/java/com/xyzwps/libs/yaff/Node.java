@@ -1,6 +1,4 @@
-package com.xyzwps.libs.yaff.node;
-
-import com.xyzwps.libs.yaff.flow.FlowContext;
+package com.xyzwps.libs.yaff;
 
 import java.util.List;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.xyzwps.libs.yaff.node;
+package com.xyzwps.libs.yaff;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,8 +18,16 @@ public class DefaultNodeRegister implements NodeRegister {
 
     @Override
     public void register(Node node) {
-        // TODO: 不能有冲突
-        nodes.put(node.getName(), node);
+        var name = node.getName();
+        if (name == null) {
+            throw new RuntimeException("Node name cannot be null");
+        }
+
+        if (nodes.containsKey(name)) {
+            throw new RuntimeException("Node already registered: name=" + name);
+        }
+
+        nodes.put(name, node);
     }
 
     public Node getNode(String name) {

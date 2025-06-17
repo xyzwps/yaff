@@ -1,6 +1,4 @@
-package com.xyzwps.libs.yaff.flow;
-
-import com.xyzwps.libs.yaff.node.ParameterType;
+package com.xyzwps.libs.yaff;
 
 public interface AssignExpression {
 

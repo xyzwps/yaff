@@ -1,4 +1,4 @@
-package com.xyzwps.libs.yaff.flow;
+package com.xyzwps.libs.yaff;
 
 
 import java.util.Set;
@@ -9,7 +9,7 @@ public interface FlowContext {
      * Set Context Variable
      *
      * @param name  Variable Name
-     * @param value Variable Value TODO: 限制值域
+     * @param value Variable Value
      */
     void set(String name, Object value);
 

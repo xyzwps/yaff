@@ -1,10 +1,4 @@
-package com.xyzwps.libs.yaff.flow;
-
-import com.xyzwps.libs.yaff.commons.NodeIds;
-import com.xyzwps.libs.yaff.node.ControlNode;
-import com.xyzwps.libs.yaff.node.Node;
-import com.xyzwps.libs.yaff.node.NodeRegister;
-import com.xyzwps.libs.yaff.node.ParameterType;
+package com.xyzwps.libs.yaff;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -139,13 +133,14 @@ public class FlowExecutor {
 
         @Override
         public void set(String name, Object value) {
-            // TODO: 检查 name 是否是合法的输出名称
             if (name == null) {
                 throw new IllegalArgumentException("Context variable name cannot be null");
             }
 
+            var validValue = ParameterType.valid(value);
+
             if (SimpleFlowContext.NAME_PATTERN.matcher(name).matches()) {
-                context.set(prefix + "." + name, value);
+                context.set(prefix + "." + name, validValue);
             } else {
                 throw new IllegalArgumentException("Invalid context variable name: " + name);
             }

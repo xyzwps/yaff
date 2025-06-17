@@ -1,4 +1,4 @@
-package com.xyzwps.libs.yaff.node;
+package com.xyzwps.libs.yaff;
 
 import java.util.List;
 

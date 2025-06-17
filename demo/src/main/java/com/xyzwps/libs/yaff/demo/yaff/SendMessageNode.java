@@ -1,9 +1,9 @@
 package com.xyzwps.libs.yaff.demo.yaff;
 
-import com.xyzwps.libs.yaff.flow.FlowContext;
-import com.xyzwps.libs.yaff.node.Node;
-import com.xyzwps.libs.yaff.node.Parameter;
-import com.xyzwps.libs.yaff.node.ParameterType;
+import com.xyzwps.libs.yaff.FlowContext;
+import com.xyzwps.libs.yaff.Node;
+import com.xyzwps.libs.yaff.Parameter;
+import com.xyzwps.libs.yaff.ParameterType;
 
 import java.util.List;
 import java.util.Map;

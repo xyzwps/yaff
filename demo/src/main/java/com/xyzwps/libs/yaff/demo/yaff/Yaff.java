@@ -1,7 +1,7 @@
 package com.xyzwps.libs.yaff.demo.yaff;
 
-import com.xyzwps.libs.yaff.flow.FlowFactory;
-import com.xyzwps.libs.yaff.node.NodeMetaData;
+import com.xyzwps.libs.yaff.FlowFactory;
+import com.xyzwps.libs.yaff.NodeMetaData;
 
 import java.util.List;
 

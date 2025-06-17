@@ -1,6 +1,4 @@
-package com.xyzwps.libs.yaff.flow;
-
-import com.xyzwps.libs.yaff.node.ParameterType;
+package com.xyzwps.libs.yaff;
 
 public class ConstantExpression implements AssignExpression {
 
@@ -15,9 +13,8 @@ public class ConstantExpression implements AssignExpression {
     }
 
     public ConstantExpression(String name, Object value) {
-        // TODO: 检查类型
         this.inputName = name;
-        this.value = value;
+        this.value = ParameterType.valid(value);
     }
 
     @Override

@@ -13,7 +13,7 @@
 
     <groupId>com.xyzwps.libs</groupId>
     <artifactId>demo</artifactId>
-    <version>${yaff.version}</version>
+    <version>0.0.1</version>
 
     <properties>
         <mainClass>com.example.myproject.Main</mainClass>
