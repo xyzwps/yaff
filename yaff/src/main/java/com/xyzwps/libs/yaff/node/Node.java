@@ -19,5 +19,8 @@ public interface Node {
         return new NodeMetaData(getName(), getInputs(), getOutputs(), getDescription());
     }
 
+    /**
+     * TODO: 返回一个新上下文，避免修改原上下文是不是好一点？
+     */
     void execute(Map<String, Object> inputs, FlowContext context);
 }
