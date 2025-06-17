@@ -6,11 +6,12 @@
     <parent>
         <groupId>com.xyzwps.libs</groupId>
         <artifactId>yaff-parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <!--suppress MavenPropertyInParent -->
+        <version>${yaff.version}</version>
     </parent>
 
     <artifactId>yaff</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${yaff.version}</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -22,7 +23,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.30</version>
+            <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

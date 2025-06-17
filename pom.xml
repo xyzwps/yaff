@@ -7,9 +7,11 @@
 
     <groupId>com.xyzwps.libs</groupId>
     <artifactId>yaff-parent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${yaff.version}</version>
 
     <properties>
+        <yaff.version>0.0.1-SNAPSHOT</yaff.version>
+        <lombok.version>1.18.30</lombok.version>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -17,5 +19,6 @@
 
     <modules>
         <module>yaff</module>
+        <module>demo</module>
     </modules>
 </project>
