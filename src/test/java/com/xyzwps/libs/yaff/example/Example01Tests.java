@@ -14,29 +14,31 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 
+class Example01Tests {
 
- class Example01Tests {
-
+    /**
+     * simple example
+     */
     @Test
     public void test() {
         var factory = new FlowFactory()
                 .register(new ToTextNode())
                 .register(new PrintNode());
 
-        var nodes = List.<NodeInstance>of(
-                new NodeInstance()
+        var nodes = List.<FlowNode>of(
+                new FlowNode()
                         .id(NodeIds.START)
                         .name(ToTextNode.NAME)
                         .assignExpressions(new ConstExpression("value", "Hello World"))
                         .next("print"),
-                new NodeInstance()
+                new FlowNode()
                         .id("print")
                         .name(PrintNode.NAME)
                         .assignExpressions(new JavaScriptExpression("text", "start.text"))
                         .next(NodeIds.END)
         );
 
-        var flow = factory.createFlowCanvas(nodes);
+        var flow = factory.createFlow(nodes);
         var executor = factory.createExecutor();
 
         var context = FlowContext.create();

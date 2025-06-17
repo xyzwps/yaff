@@ -7,12 +7,12 @@ import java.util.Map;
 
 public class Flow {
 
-    private final List<NodeInstance> nodeInstances;
+    private final List<FlowNode> flowNodes;
 
-    private final Map<String, NodeInstance> idToNode = new HashMap<>();
+    private final Map<String, FlowNode> idToNode = new HashMap<>();
 
-    Flow(List<NodeInstance> nodeInstances) {
-        this.nodeInstances = nodeInstances;
+    Flow(List<FlowNode> flowNodes) {
+        this.flowNodes = flowNodes;
 
         // TODO: 检查
         // 1. 必须有一个 id 为 start 的节点
@@ -23,12 +23,12 @@ public class Flow {
         //
         //  if 节点后必须有两个 next
 
-        for (NodeInstance nodeInstance : nodeInstances) {
-            idToNode.put(nodeInstance.getId(), nodeInstance);
+        for (FlowNode flowNode : flowNodes) {
+            idToNode.put(flowNode.getId(), flowNode);
         }
     }
 
-    NodeInstance getNodeInstance(String id) {
+    FlowNode getFlowNode(String id) {
         return idToNode.get(id);
     }
 }

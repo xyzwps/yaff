@@ -24,12 +24,12 @@ public class FlowFactory {
         return this;
     }
 
-    public Flow createFlowCanvas(List<NodeInstance> nodes) {
+    public Flow createFlow(List<FlowNode> nodes) {
         check(nodes);
         return new Flow(nodes);
     }
 
-    private void check(List<NodeInstance> nodes) {
+    private void check(List<FlowNode> nodes) {
         // TODO:
     }
 

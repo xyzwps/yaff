@@ -10,6 +10,9 @@ public class DefaultNodeRegister implements NodeRegister {
     public DefaultNodeRegister() {
         register(new NoopNode());
         register(new ControlNode.IfNode());
+        register(new ControlNode.CaseNode());
+        register(new ControlNode.WhenNode());
+        register(new ControlNode.DefaultNode());
 //        register(new SwitchControl());
 //        register(new DefaultControl());
 //        register(new CaseControl());

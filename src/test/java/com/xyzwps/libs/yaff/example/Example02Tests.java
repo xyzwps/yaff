@@ -13,34 +13,37 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 class Example02Tests {
 
+    /**
+     * if node example
+     */
     @Test
     public void test() {
         var factory = new FlowFactory()
                 .register(new PrintNode());
 
-        var nodes = List.<NodeInstance>of(
-                new NodeInstance()
+        var nodes = List.<FlowNode>of(
+                new FlowNode()
                         .id(NodeIds.START)
                         .name(NoopNode.NAME)
                         .next("check"),
-                new NodeInstance()
+                new FlowNode()
                         .id("check")
                         .name(ControlNode.IfNode.IF_NODE_NAME)
                         .assignExpressions(new JavaScriptExpression("condition", "ctx.a1 > ctx.a2"))
                         .next("printA1", "printA2"),
-                new NodeInstance()
+                new FlowNode()
                         .id("printA1")
                         .name(PrintNode.NAME)
                         .assignExpressions(new ConstExpression("text", "a1 is great"))
                         .next(NodeIds.END),
-                new NodeInstance()
+                new FlowNode()
                         .id("printA2")
                         .name(PrintNode.NAME)
                         .assignExpressions(new ConstExpression("text", "a2 is great"))
                         .next(NodeIds.END)
         );
 
-        var flow = factory.createFlowCanvas(nodes);
+        var flow = factory.createFlow(nodes);
         var executor = factory.createExecutor();
 
         var context = FlowContext.create();
