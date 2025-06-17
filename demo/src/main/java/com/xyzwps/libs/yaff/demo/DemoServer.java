@@ -7,7 +7,7 @@ import io.helidon.logging.common.LogConfig;
 import io.helidon.webserver.WebServer;
 import io.helidon.webserver.http.HttpRouting;
 
-public class Main {
+public class DemoServer {
 
     public static void main(String[] args) {
 
@@ -16,7 +16,7 @@ public class Main {
 
         WebServer server = WebServer.builder()
                 .config(Conf.get("server"))
-                .routing(Main::routing)
+                .routing(DemoServer::routing)
                 .build()
                 .start();
 
@@ -25,8 +25,8 @@ public class Main {
 
     static void routing(HttpRouting.Builder routing) {
         routing
-                .register("/greet", new GreetService())
-                .register("/yaff", new YaffService())
+                .register("/apis/greet", new GreetService())
+                .register("/apis/yaff", new YaffService())
                 .get("/simple-greet", (req, res) -> res.send("Hello World!"));
     }
 }
