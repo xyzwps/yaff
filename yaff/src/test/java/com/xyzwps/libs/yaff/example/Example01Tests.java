@@ -1,15 +1,14 @@
 package com.xyzwps.libs.yaff.example;
 
-
 import com.xyzwps.libs.yaff.*;
 import com.xyzwps.libs.yaff.commons.JSON;
 import com.xyzwps.libs.yaff.NodeIds;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static com.xyzwps.libs.yaff.example.Commons.factory;
 
 
 class Example01Tests {
@@ -18,20 +17,16 @@ class Example01Tests {
      * simple example
      */
     @Test
-    public void test() {
-        var factory = new FlowFactory()
-                .register(new ToTextNode())
-                .register(new PrintNode());
-
+    void test1() {
         var nodes = List.<FlowNode>of(
                 new FlowNode()
                         .id(NodeIds.START)
-                        .name(ToTextNode.NAME)
-                        .assignExpressions(new ConstantExpression("value", "Hello World"))
+                        .name(TextToUpperNode.NAME)
+                        .assignExpressions(new ConstantExpression("text", "Hello World"))
                         .next("print"),
                 new FlowNode()
                         .id("print")
-                        .name(PrintNode.NAME)
+                        .name(PrintTextNode.NAME)
                         .assignExpressions(new JavaScriptExpression("text", "start.text"))
                         .next(NodeIds.END)
         );
@@ -41,81 +36,51 @@ class Example01Tests {
 
         var context = FlowContext.create();
         assertNull(context.get("start.text"));
+        assertNull(context.get("print.cmd"));
 
         executor.execute(flow, context);
-        assertEquals("Hello World", context.get("start.text"));
+        assertEquals("HELLO WORLD", context.get("start.text"));
+        assertEquals("print(\"HELLO WORLD\")", context.get("print.cmd"));
 
         System.out.println("flow: " + JSON.stringify(flow));
         System.out.println("meta: " + JSON.stringify(factory.getNodeRegister()));
     }
 
-    private static class ToTextNode implements Node {
+    @Test
+    void test2() {
+        var flowJSON = """
+                {"flowNodes":[
+                    {
+                        "id":"start","name":"example.textToUpper","next":["print"],
+                        "assignExpressions":[{
+                            "type":"constant",
+                            "value":"Hello World",
+                            "inputName":"text"
+                        }]
+                    },
+                    {
+                        "id":"print","name":"example.printText","next":["end"],
+                        "assignExpressions":[{
+                            "type":"javascript",
+                            "expression":"start.text",
+                            "inputName":"text"
+                        }]
+                    }
+                ]}
+                """;
+        var flow = factory.fromJSON(flowJSON);
+        var executor = factory.createExecutor();
 
-        public static final String NAME = "example.toText";
+        var context = FlowContext.create();
+        assertNull(context.get("start.text"));
+        assertNull(context.get("print.cmd"));
 
-        @Override
-        public String getName() {
-            return NAME;
-        }
+        executor.execute(flow, context);
+        assertEquals("HELLO WORLD", context.get("start.text"));
+        assertEquals("print(\"HELLO WORLD\")", context.get("print.cmd"));
 
-        @Override
-        public String getDescription() {
-            return NAME;
-        }
-
-        @Override
-        public List<Parameter> getInputs() {
-            return List.of(new Parameter("value", ParameterType.STRING));
-        }
-
-        @Override
-        public List<Parameter> getOutputs() {
-            return List.of(new Parameter("text", ParameterType.STRING));
-        }
-
-        @Override
-        public void execute(Map<String, Object> inputs, FlowContext context) {
-            var textValue = inputs.get("value");
-            if (textValue instanceof String text) {
-                context.set("text", text);
-            } else {
-                throw new RuntimeException("Invalid input value");
-            }
-        }
+        System.out.println("flow: " + JSON.stringify(flow));
+        System.out.println("meta: " + JSON.stringify(factory.getNodeRegister()));
     }
 
-    private static class PrintNode implements Node {
-
-        public static final String NAME = "example.print";
-
-        @Override
-        public String getName() {
-            return NAME;
-        }
-
-        @Override
-        public String getDescription() {
-            return NAME;
-        }
-
-        @Override
-        public List<Parameter> getInputs() {
-            return List.of(new Parameter("text", ParameterType.STRING));
-        }
-
-        @Override
-        public List<Parameter> getOutputs() {
-            return List.of();
-        }
-
-        @Override
-        public void execute(Map<String, Object> inputs, FlowContext context) {
-            var textValue = inputs.get("text");
-            if (textValue instanceof String text) {
-                System.out.println(text);
-            } else {
-                throw new RuntimeException("Invalid input value");
-            }
-        }
-    }
 }

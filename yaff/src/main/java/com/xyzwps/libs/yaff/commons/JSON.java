@@ -12,4 +12,9 @@ public final class JSON {
         return OM.writeValueAsString(value);
     }
 
+    @SneakyThrows
+    public static <T> T parse(String json, Class<T> clazz) {
+        return OM.readValue(json, clazz);
+    }
+
 }

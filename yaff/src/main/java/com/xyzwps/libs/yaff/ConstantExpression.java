@@ -1,9 +1,14 @@
 package com.xyzwps.libs.yaff;
 
-public class ConstantExpression implements AssignExpression {
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-    private final Object value;
-    private final String inputName;
+@Data
+@NoArgsConstructor
+public final class ConstantExpression implements AssignExpression {
+
+    private Object value;
+    private String inputName;
 
     public static final String TYPE = "constant";
 
@@ -15,11 +20,6 @@ public class ConstantExpression implements AssignExpression {
     public ConstantExpression(String name, Object value) {
         this.inputName = name;
         this.value = ParameterType.valid(value);
-    }
-
-    @Override
-    public String getInputName() {
-        return inputName;
     }
 
     @Override

@@ -1,21 +1,31 @@
 package com.xyzwps.libs.yaff;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Getter
+@NoArgsConstructor
 public class Flow {
 
     @Getter
-    private final List<FlowNode> flowNodes;
+    private List<FlowNode> flowNodes;
 
+    @JsonIgnore
     private final Map<String, FlowNode> idToNode = new HashMap<>();
 
     Flow(List<FlowNode> flowNodes) {
+        this.setFlowNodes(flowNodes);
+    }
+
+    public void setFlowNodes(List<FlowNode> flowNodes) {
         this.flowNodes = flowNodes;
+        this.idToNode.clear();
         for (var flowNode : flowNodes) {
             var id = flowNode.getId();
             if (idToNode.containsKey(id)) {

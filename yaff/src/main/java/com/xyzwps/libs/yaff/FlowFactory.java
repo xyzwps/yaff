@@ -1,5 +1,7 @@
 package com.xyzwps.libs.yaff;
 
+import com.xyzwps.libs.yaff.commons.JSON;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -27,6 +29,12 @@ public class FlowFactory {
     public Flow createFlow(List<FlowNode> nodes) {
         check(nodes);
         return new Flow(nodes);
+    }
+
+    public Flow fromJSON(String json) {
+        var flow = JSON.parse(json, Flow.class);
+        check(flow.getFlowNodes());
+        return flow;
     }
 
     private void check(List<FlowNode> nodes) {

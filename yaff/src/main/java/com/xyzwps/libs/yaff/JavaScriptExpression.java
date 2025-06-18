@@ -1,14 +1,18 @@
 package com.xyzwps.libs.yaff;
 
 import com.xyzwps.libs.yaff.commons.JSON;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Value;
 
 import java.util.HashMap;
 
-public class JavaScriptExpression implements AssignExpression {
-    private final String expression;
-    private final String inputName;
+@Data
+@NoArgsConstructor
+public final class JavaScriptExpression implements AssignExpression {
+    private String expression;
+    private String inputName;
 
     public static final String TYPE = "javascript";
 
@@ -20,11 +24,6 @@ public class JavaScriptExpression implements AssignExpression {
     @Override
     public String getType() {
         return TYPE;
-    }
-
-    @Override
-    public String getInputName() {
-        return inputName;
     }
 
     @Override
