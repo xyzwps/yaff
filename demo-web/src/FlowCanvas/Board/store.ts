@@ -36,6 +36,52 @@ const useStore = create<AppState>((set, get) => ({
       }),
     });
   },
+  updateYaffNodeId: (nodeId: string, yaffNodeId: string) => {
+    set({
+      nodes: get().nodes.map((node) => {
+        if (node.id === nodeId) {
+          // it's important to create a new object here, to inform React Flow about the changes
+          return { ...node, data: { ...node.data, id: yaffNodeId } };
+        }
+        return node;
+      }),
+    });
+  },
+  updateYaffNodeDescription: (nodeId: string, yaffNodeDescription: string) => {
+    set({
+      nodes: get().nodes.map((node) => {
+        if (node.id === nodeId) {
+          // it's important to create a new object here, to inform React Flow about the changes
+          return {
+            ...node,
+            data: { ...node.data, description: yaffNodeDescription },
+          };
+        }
+        return node;
+      }),
+    });
+  },
+  updateYaffInput: (
+    nodeId: string,
+    yaffInputName: string,
+    yaffInputValue: string
+  ) => {
+    set({
+      nodes: get().nodes.map((node) => {
+        if (node.id === nodeId) {
+          const inputs = node.data.input as {};
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              input: { ...inputs, [yaffInputName]: yaffInputValue },
+            },
+          };
+        }
+        return node;
+      }),
+    });
+  },
   setNodes: (nodes) => {
     set({ nodes });
   },
