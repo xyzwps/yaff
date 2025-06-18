@@ -9,9 +9,10 @@ import {
   addEdge,
   type Connection,
 } from "@xyflow/react";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { applyEdgeChanges, applyNodeChanges } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
+import CommonNode from "../Node/CommonNode";
 
 const initialNodes: Node[] = [
   {
@@ -25,6 +26,12 @@ const initialNodes: Node[] = [
     position: { x: 100, y: 100 },
     data: { label: "World" },
   },
+  {
+    id: "node-1",
+    type: "commonNode",
+    position: { x: 0, y: 0 },
+    data: { value: "dddd" },
+  },
 ];
 
 const initialEdges: Edge[] = [];
@@ -32,6 +39,8 @@ const initialEdges: Edge[] = [];
 export default function Board() {
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
+
+  const nodeTypes = useMemo(() => ({ commonNode: CommonNode }), []);
 
   const onNodesChange = useCallback(
     (changes: NodeChange<Node>[]) =>
@@ -52,6 +61,7 @@ export default function Board() {
   return (
     <div style={{ height: 720, width: 1080, background: "#fafafa" }}>
       <ReactFlow
+        nodeTypes={nodeTypes}
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
