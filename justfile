@@ -3,7 +3,7 @@
     mvn clean test
 
 @git-remote:
-    git remote add origin https://gitee.com/xyzwps/yaff.git
+    git remote add origin git@gitee.com:xyzwps/yaff.git
     git remote add github git@github.com:xyzwps/yaff.git
 
 @git-push:
