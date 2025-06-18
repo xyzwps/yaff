@@ -1,9 +1,20 @@
 import { useEffect, useState } from "react";
 import { getMetaData } from "../../apis";
 import styles from "./index.module.css";
+import { useDnD } from "../Board/DnDContext";
 
 export default function NodeList() {
   const [nodes, setNodes] = useState<NodeMetaData[]>([]);
+
+  const [_, setMetaData] = useDnD();
+
+  const onDragStart = (
+    event: React.DragEvent<HTMLDivElement>,
+    meta: NodeMetaData
+  ) => {
+    setMetaData(meta);
+    event.dataTransfer.effectAllowed = "move";
+  };
 
   useEffect(() => {
     getMetaData()
@@ -18,15 +29,25 @@ export default function NodeList() {
   return (
     <div className={styles.node_list}>
       {nodes.map((metaData) => (
-        <NodeItem key={metaData.name} meta={metaData} />
+        <NodeItem
+          key={metaData.name}
+          meta={metaData}
+          onDragStart={(e) => onDragStart(e, metaData)}
+        />
       ))}
     </div>
   );
 }
 
-function NodeItem({ meta }: { meta: NodeMetaData }) {
+function NodeItem({
+  meta,
+  onDragStart,
+}: {
+  meta: NodeMetaData;
+  onDragStart: (e: React.DragEvent<HTMLDivElement>) => void;
+}) {
   return (
-    <div className={styles.node_item}>
+    <div className={styles.node_item} onDragStart={onDragStart} draggable>
       <code style={{ fontWeight: "bold" }}>#{meta.name}</code>
       <p style={{ margin: 0, fontSize: "0.8rem" }}>{meta.description}</p>
       {meta.input.length > 0 && (
