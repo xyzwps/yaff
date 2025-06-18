@@ -35,6 +35,7 @@ public class Flow {
     ///    - if 节点: 必须有两个 next
     ///    - case 节点: 最多可以有一个 default next，至少有一个 when next，不可以有其他 next
     ///  - 检查 node instance 和 node 本身是否匹配 TODO: 这个暂时检查不了
+    ///  - TODO: 确保是有向无环图
     private void check() {
         if (!idToNode.containsKey(NodeIds.START)) {
             throw new IllegalStateException("No start node found");
