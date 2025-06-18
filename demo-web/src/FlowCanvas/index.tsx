@@ -1,3 +1,4 @@
+import Board from "./Board";
 import NodeList from "./NodeList";
 import styles from "./index.module.css";
 
@@ -7,7 +8,9 @@ export default function FlowCanvas() {
       <div className={styles.flow_canvas_left}>
         <NodeList />
       </div>
-      <div>dd</div>
+      <div>
+        <Board />
+      </div>
     </div>
   );
 }
