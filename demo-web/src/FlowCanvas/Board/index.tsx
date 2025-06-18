@@ -1,66 +1,33 @@
-import {
-  ReactFlow,
-  Background,
-  Controls,
-  type Edge,
-  type EdgeChange,
-  type NodeChange,
-  type Node,
-  addEdge,
-  type Connection,
-} from "@xyflow/react";
-import { useState, useCallback, useMemo } from "react";
-import { applyEdgeChanges, applyNodeChanges } from "@xyflow/react";
+import { ReactFlow, Background, Controls } from "@xyflow/react";
+import { useMemo } from "react";
 import "@xyflow/react/dist/style.css";
 import CommonNode from "../Node/CommonNode";
 
-const initialNodes: Node[] = [
-  {
-    id: "1",
-    position: { x: 0, y: 0 },
-    data: { label: "Hello" },
-    type: "input",
-  },
-  {
-    id: "2",
-    position: { x: 100, y: 100 },
-    data: { label: "World" },
-  },
-  {
-    id: "node-1",
-    type: "commonNode",
-    position: { x: 0, y: 0 },
-    data: { value: "dddd" },
-  },
-];
+import { useShallow } from "zustand/react/shallow";
 
-const initialEdges: Edge[] = [];
+import useStore from "./store";
+import type { AppState } from "./types";
+import ColorChooserNode from "./ColorChooserNode";
+
+const selector = (state: AppState) => ({
+  nodes: state.nodes,
+  edges: state.edges,
+  onNodesChange: state.onNodesChange,
+  onEdgesChange: state.onEdgesChange,
+  onConnect: state.onConnect,
+});
+
+const nodeTypes = { commonNode: CommonNode, colorChooser: ColorChooserNode };
 
 export default function Board() {
-  const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState(initialEdges);
-
-  const nodeTypes = useMemo(() => ({ commonNode: CommonNode }), []);
-
-  const onNodesChange = useCallback(
-    (changes: NodeChange<Node>[]) =>
-      setNodes((nds) => applyNodeChanges(changes, nds)),
-    []
-  );
-  const onEdgesChange = useCallback(
-    (changes: EdgeChange<Edge>[]) =>
-      setEdges((eds) => applyEdgeChanges(changes, eds)),
-    []
-  );
-
-  const onConnect = useCallback(
-    (params: Edge | Connection) => setEdges((eds) => addEdge(params, eds)),
-    []
+  const { nodes, edges, onNodesChange, onEdgesChange, onConnect } = useStore(
+    useShallow(selector)
   );
 
   return (
     <div style={{ height: 720, width: 1080, background: "#fafafa" }}>
       <ReactFlow
+        // @ts-ignore
         nodeTypes={nodeTypes}
         nodes={nodes}
         edges={edges}
