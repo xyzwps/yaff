@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { getMetaData } from "../apis";
-import styles from "./NodeList.module.css";
+import { getMetaData } from "../../apis";
+import styles from "./index.module.css";
 
 export default function NodeList() {
   const [nodes, setNodes] = useState<NodeMetaData[]>([]);
