@@ -7,14 +7,16 @@ import {
 } from "@xyflow/react";
 
 import { initialNodes } from "./nodes";
-import { initialEdges } from "./edges";
 import { type AppState } from "./types";
 
 // this is our useStore hook that we can use in our components to get parts of the store and call actions
 const useStore = create<AppState>((set, get) => ({
   nodes: initialNodes,
-  edges: initialEdges,
-  setNodes: (nodes) => set({ nodes }),
+  edges: [],
+  setNodes: (nodes) => {
+    console.log("设置节点", nodes);
+    set({ nodes });
+  },
   setEdges: (edges) => set({ edges }),
   onNodesChange: (changes) => {
     set({ nodes: applyNodeChanges(changes, get().nodes) });

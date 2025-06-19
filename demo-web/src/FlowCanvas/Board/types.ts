@@ -44,3 +44,21 @@ export type YaffNodeData = Node<
   },
   "yaffNode"
 >;
+
+export type FlowNode = {
+  id: string;
+  ref?: string | null | undefined;
+  description?: string | null | undefined;
+  px?: number | null | undefined;
+  py?: number | null | undefined;
+  name: string;
+  next?: string[] | null | undefined;
+  assignExpressions?:
+    | {
+        expression: string;
+        inputName: string;
+        type: "javascript";
+      }[]
+    | null
+    | undefined;
+};

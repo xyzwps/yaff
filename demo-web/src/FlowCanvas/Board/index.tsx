@@ -11,7 +11,7 @@ import "@xyflow/react/dist/style.css";
 import { useShallow } from "zustand/react/shallow";
 
 import useStore from "./store";
-import type { AppState } from "./types";
+import type { AppState, FlowNode, YaffNodeData } from "./types";
 import YaffNode from "./YaffNode";
 import { useCallback } from "react";
 import { useDnD } from "./DnDContext";
@@ -42,39 +42,71 @@ export default function Board() {
     event.dataTransfer.dropEffect = "move";
   }, []);
 
-  const onDrop = useCallback(
-    (event: React.DragEvent) => {
-      event.preventDefault();
+  console.log("当前节点", nodes);
 
-      // check if the dropped element is valid
-      if (!meta) {
-        return;
-      }
+  const onDrop = (event: React.DragEvent) => {
+    event.preventDefault();
 
-      // project was renamed to screenToFlowPosition
-      // and you don't need to subtract the reactFlowBounds.left/top anymore
-      // details: https://reactflow.dev/whats-new/2023-11-10
-      const position = screenToFlowPosition({
-        x: event.clientX,
-        y: event.clientY,
-      });
-      const newNode = {
-        id: "n" + Date.now(),
-        type: "yaffNode",
-        position,
-        data: { description: "", input: {}, meta },
-      };
+    // check if the dropped element is valid
+    if (!meta) {
+      return;
+    }
 
-      const newNodes = [...nodes, newNode];
-      console.log("oldNodes", nodes);
-      console.log("newNodes", newNodes);
-      setNodes(newNodes);
-    },
-    [screenToFlowPosition, meta]
-  );
+    // project was renamed to screenToFlowPosition
+    // and you don't need to subtract the reactFlowBounds.left/top anymore
+    // details: https://reactflow.dev/whats-new/2023-11-10
+    const position = screenToFlowPosition({
+      x: event.clientX,
+      y: event.clientY,
+    });
+    const newNode = {
+      id: "n" + Date.now(),
+      type: "yaffNode",
+      position,
+      data: { description: "", input: {}, meta },
+    };
+
+    const newNodes = [...nodes, newNode];
+    console.log("旧节点", nodes);
+    console.log("新节点", newNodes);
+    setNodes(newNodes);
+  };
 
   const handleSave = () => {
-    console.log(nodes, edges);
+    const results: FlowNode[] = [];
+
+    for (const n of nodes) {
+      const { data } = n as YaffNodeData;
+      results.push({
+        id: n.id,
+        name: data.meta.name,
+        ref: data.ref,
+        description: data.description,
+        px: n.position.x,
+        py: n.position.y,
+        next: [],
+        assignExpressions: data.input
+          ? Object.entries(data.input).map(([name, value]) => ({
+              expression: value,
+              inputName: name,
+              type: "javascript",
+            }))
+          : undefined,
+      });
+    }
+
+    const idToNode: Record<string, FlowNode> = {};
+    for (const n of results) {
+      idToNode[n.id] = n;
+    }
+
+    for (const e of edges) {
+      const nid = e.source;
+      const node = idToNode[nid];
+      node.next?.push(e.target);
+    }
+
+    console.log("results: ", JSON.stringify(results));
   };
 
   return (
