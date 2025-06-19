@@ -2,6 +2,7 @@ package com.xyzwps.libs.yaff.example;
 
 import com.xyzwps.libs.yaff.*;
 import com.xyzwps.libs.yaff.NodeIds;
+import com.xyzwps.libs.yaff.ControlNode;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -19,7 +20,7 @@ class Example03Tests {
         var nodes = List.<FlowNode>of(
                 new FlowNode()
                         .id(NodeIds.START)
-                        .name(NoopNode.NAME)
+                        .name(YaffNode.NOOP_NODE_NAME)
                         .next("case"),
                 new FlowNode()
                         .id("case")

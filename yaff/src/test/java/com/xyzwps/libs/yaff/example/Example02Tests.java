@@ -2,6 +2,7 @@ package com.xyzwps.libs.yaff.example;
 
 import com.xyzwps.libs.yaff.*;
 import com.xyzwps.libs.yaff.NodeIds;
+import com.xyzwps.libs.yaff.ControlNode;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -23,11 +24,11 @@ class Example02Tests {
         var nodes = List.<FlowNode>of(
                 new FlowNode()
                         .id(NodeIds.START)
-                        .name(NoopNode.NAME)
+                        .name(YaffNode.NOOP_NODE_NAME)
                         .next("check"),
                 new FlowNode()
                         .id("check")
-                        .name(ControlNode.IfNode.IF_NODE_NAME)
+                        .name(ControlNode.IF_NODE_NAME)
                         .assignExpressions(new JavaScriptExpression("condition", "ctx.a1 > ctx.a2"))
                         .next("printA1", "printA2"),
                 new FlowNode()

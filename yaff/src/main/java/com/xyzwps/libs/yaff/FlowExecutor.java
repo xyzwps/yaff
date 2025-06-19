@@ -69,9 +69,9 @@ public class FlowExecutor {
      * 执行控制流，返回执行完之后下一个应该执行的节点 id。
      */
     private String executeControl(FlowNode flowNode, Node node, Flow flow, FlowContext context) {
-        return switch (node) {
-            case ControlNode.IfNode ifNode -> executeIf(flowNode, context);
-            case ControlNode.CaseNode caseNode -> executeCaseWhen(flowNode, caseNode, flow, context);
+        return switch (node.getName()) {
+            case ControlNode.IF_NODE_NAME -> executeIf(flowNode, context);
+            case ControlNode.CASE_NODE_NAME -> executeCaseWhen(flowNode, node, flow, context);
             default -> throw new RuntimeException("Invalid node: " + node.getName());
         };
     }
@@ -86,11 +86,11 @@ public class FlowExecutor {
         }
     }
 
-    private String executeCaseWhen(FlowNode flowNode, ControlNode.CaseNode node, Flow flow, FlowContext context) {
+    private String executeCaseWhen(FlowNode flowNode, Node node, Flow flow, FlowContext context) {
         var nextIds = flowNode.getNext();
 
         FlowNode defaultFlowNode = null;
-        ControlNode.DefaultNode defaultNode = null;
+        Node defaultNode = null;
 
         for (var nextId : nextIds) {
             var nextFlowNode = flow.getFlowNode(nextId);
@@ -102,17 +102,17 @@ public class FlowExecutor {
                 throw new RuntimeException("Node not registered: name=" + nextFlowNode.getName());
             }
 
-            switch (nextNode) {
-                case ControlNode.WhenNode whenNode -> {
-                    var inputs = collectInputs(nextFlowNode, whenNode, context);
-                    var conditionValue = inputs.get(ControlNode.WhenNode.CONDITION);
+            switch (nextNode.getName()) {
+                case ControlNode.WHEN_NODE_NAME -> {
+                    var inputs = collectInputs(nextFlowNode, nextNode, context);
+                    var conditionValue = inputs.get(ControlNode.CONDITION);
                     if (conditionValue instanceof Boolean bool && bool) {
                         return nextFlowNode.getNext().getFirst(); // TODO: 验证确实有且仅有一个
                     }
                 }
-                case ControlNode.DefaultNode it -> {
+                case ControlNode.DEFAULT_NODE_NAME -> {
                     if (defaultNode == null) {
-                        defaultNode = it;
+                        defaultNode = nextNode;
                         defaultFlowNode = nextFlowNode;
                     } else {
                         throw new IllegalStateException("Duplicate default node"); // TODO: 检查确实只有一个 default node

@@ -9,11 +9,12 @@ public class DefaultNodeRegister implements NodeRegister {
     private final Map<String, Node> nodes = new HashMap<>();
 
     public DefaultNodeRegister() {
-        register(new NoopNode());
-        register(new ControlNode.IfNode());
-        register(new ControlNode.CaseNode());
-        register(new ControlNode.WhenNode());
-        register(new ControlNode.DefaultNode());
+        register(ControlNode.ifNode);
+        register(ControlNode.caseNode);
+        register(ControlNode.whenNode);
+        register(ControlNode.defaultNode);
+        register(ControlNode.startNode);
+        register(YaffNode.noopNode);
     }
 
     @Override
