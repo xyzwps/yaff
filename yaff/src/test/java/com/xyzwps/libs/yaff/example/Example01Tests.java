@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static com.xyzwps.libs.yaff.example.Commons.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static com.xyzwps.libs.yaff.example.Commons.factory;
 
 
 class Example01Tests {
@@ -21,12 +21,12 @@ class Example01Tests {
         var nodes = List.<FlowNode>of(
                 new FlowNode()
                         .id(NodeIds.START)
-                        .name(TextToUpperNode.NAME)
+                        .name(TEXT_TO_UPPER_NODE_NAME)
                         .assignExpressions(new ConstantExpression("text", "Hello World"))
                         .next("print"),
                 new FlowNode()
                         .id("print")
-                        .name(PrintTextNode.NAME)
+                        .name(PRINT_TEXT_NODE_NAME)
                         .assignExpressions(new JavaScriptExpression("text", "start.text"))
                         .next(NodeIds.END)
         );

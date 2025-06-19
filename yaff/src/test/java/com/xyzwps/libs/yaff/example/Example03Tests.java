@@ -15,7 +15,7 @@ class Example03Tests {
     @Test
     void test() {
         var factory = new FlowFactory()
-                .register(new Example02Tests.PrintNode());
+                .register(Example02Tests.printNode);
 
         var nodes = List.<FlowNode>of(
                 new FlowNode()
@@ -34,7 +34,7 @@ class Example03Tests {
                         .next("print1"),
                 new FlowNode()
                         .id("print1")
-                        .name(Example02Tests.PrintNode.NAME)
+                        .name(Example02Tests.PRINT_NODE_NAME)
                         .assignExpressions(new ConstantExpression("text", "a1 is great"))
                         .next(NodeIds.END),
 
@@ -45,7 +45,7 @@ class Example03Tests {
                         .next("print2"),
                 new FlowNode()
                         .id("print2")
-                        .name(Example02Tests.PrintNode.NAME)
+                        .name(Example02Tests.PRINT_NODE_NAME)
                         .assignExpressions(new ConstantExpression("text", "a2 is great"))
                         .next(NodeIds.END),
 
@@ -55,7 +55,7 @@ class Example03Tests {
                         .next("print3"),
                 new FlowNode()
                         .id("print3")
-                        .name(Example02Tests.PrintNode.NAME)
+                        .name(Example02Tests.PRINT_NODE_NAME)
                         .assignExpressions(new ConstantExpression("text", "a1 is equal to a2"))
                         .next(NodeIds.END)
         );

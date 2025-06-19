@@ -17,9 +17,9 @@ class Example02Tests {
      * if node example
      */
     @Test
-    public void test() {
+    void test() {
         var factory = new FlowFactory()
-                .register(new PrintNode());
+                .register(printNode);
 
         var nodes = List.<FlowNode>of(
                 new FlowNode()
@@ -33,12 +33,12 @@ class Example02Tests {
                         .next("printA1", "printA2"),
                 new FlowNode()
                         .id("printA1")
-                        .name(PrintNode.NAME)
+                        .name(PRINT_NODE_NAME)
                         .assignExpressions(new ConstantExpression("text", "a1 is great"))
                         .next(NodeIds.END),
                 new FlowNode()
                         .id("printA2")
-                        .name(PrintNode.NAME)
+                        .name(PRINT_NODE_NAME)
                         .assignExpressions(new ConstantExpression("text", "a2 is great"))
                         .next(NodeIds.END)
         );
@@ -59,41 +59,22 @@ class Example02Tests {
         assertEquals("print('a2 is great')", context.get("printA2.printContent"));
     }
 
+    static final String PRINT_NODE_NAME = "print";
 
-    static class PrintNode implements Node {
-
-        public static final String NAME = "print";
-
-        @Override
-        public String getName() {
-            return NAME;
-        }
-
-        @Override
-        public String getDescription() {
-            return NAME;
-        }
-
-        @Override
-        public List<Parameter> getInputs() {
-            return List.of(new Parameter("text", ParameterType.STRING));
-        }
-
-        @Override
-        public List<Parameter> getOutputs() {
-            return List.of(new Parameter("printContent", ParameterType.STRING));
-        }
-
-        @Override
-        public void execute(Map<String, Object> inputs, FlowContext context) {
-            var textStr = inputs.get("text");
-            if (textStr instanceof String text) {
-                context.set("printContent", "print('" + text + "')");
-            } else {
-                throw new RuntimeException("Invalid input value");
+    static final Node printNode = new NodeTemplate(
+            PRINT_NODE_NAME,
+            "Prints a message",
+            List.of(new Parameter("text", ParameterType.STRING)),
+            List.of(new Parameter("printContent", ParameterType.STRING)),
+            (inputs, context) -> {
+                var textStr = inputs.get("text");
+                if (textStr instanceof String text) {
+                    context.set("printContent", "print('" + text + "')");
+                } else {
+                    throw new RuntimeException("Invalid input value");
+                }
             }
-        }
-    }
+    );
 
 
 }
