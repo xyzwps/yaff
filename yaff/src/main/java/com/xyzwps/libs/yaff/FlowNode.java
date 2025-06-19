@@ -31,13 +31,13 @@ public class FlowNode {
     ///
     /// - required: false
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Integer px;
+    private Float px;
 
     /// 节点在画布上的 y 坐标。
     ///
     /// - required: false
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Integer py;
+    private Float py;
 
     /// 节点的对应的 {@link Node} 的名字
     ///
