@@ -2,6 +2,7 @@ package com.xyzwps.libs.yaff;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.xyzwps.libs.yaff.commons.DAGChecker;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -28,6 +29,8 @@ public class Flow {
         this.check();
     }
 
+    /// TODO: 测试
+    ///
     /// 检查规则:
     ///  - id 规则
     ///    - 必须有一个 id 为 start 的节点
@@ -36,8 +39,8 @@ public class Flow {
     ///  - control 节点规则
     ///    - if 节点: 必须有两个 next
     ///    - case 节点: 最多可以有一个 default next，至少有一个 when next，不可以有其他 next
-    ///  - 检查 node instance 和 node 本身是否匹配 TODO: 这个暂时检查不了
-    ///  - TODO: 确保是有向无环图
+    ///  - 检查 node instance 和 node 本身是否匹配（这个不在本阶段检查）
+    ///  - 确保是有向无环图
     private void check() {
         if (!idToNode.containsKey(NodeIds.START)) {
             throw new IllegalStateException("No start node found");
@@ -45,7 +48,6 @@ public class Flow {
         if (idToNode.containsKey(NodeIds.CTX)) {
             throw new IllegalStateException("Node id cannot be ctx");
         }
-
 
         for (var node : flowNodes) {
             var next = node.getNext();
@@ -99,6 +101,11 @@ public class Flow {
                     }
                 }
             }
+        }
+
+        var isDag = DAGChecker.isDAG(flowNodes, FlowNode::getId, FlowNode::getNext);
+        if (!isDag) {
+            throw new IllegalStateException("Flow is not a DAG");
         }
     }
 

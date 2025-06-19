@@ -23,9 +23,7 @@ public interface Node {
 
     NodeMetaData getMetaData();
 
-    /**
-     * TODO: 返回一个新上下文，避免修改原上下文是不是好一点？
-     */
+    /// 根据输入的内容，执行节点任务，并返回结果。
     Object execute(Map<String, Object> inputs);
 
     static NodeBuilder builder() {

@@ -2,10 +2,12 @@ package com.xyzwps.libs.yaff;
 
 import com.xyzwps.libs.yaff.commons.JSON;
 import lombok.Data;
+import lombok.Getter;
 
 import java.util.List;
 import java.util.Objects;
 
+@Getter
 public class FlowFactory {
 
     private final NodeRegister nodeRegister;
@@ -21,10 +23,6 @@ public class FlowFactory {
     public FlowFactory register(Node node) {
         nodeRegister.register(node);
         return this;
-    }
-
-    public NodeRegister getNodeRegister() {
-        return nodeRegister;
     }
 
     public Flow createFlow(List<FlowNode> nodes) {
@@ -44,8 +42,20 @@ public class FlowFactory {
     }
 
 
+    /// 这里 check {@link Flow} check 不了的东西。
     private void check(List<FlowNode> nodes) {
-        // TODO:
+        if (nodes == null) {
+            throw new IllegalArgumentException("nodes cannot be null");
+        }
+        if (nodes.isEmpty()) {
+            throw new IllegalArgumentException("nodes cannot be empty");
+        }
+
+        for (FlowNode node : nodes) {
+            if (nodeRegister.getNode(node.getName()) == null) {
+                throw new IllegalArgumentException("Node not registered: name=" + node.getName());
+            }
+        }
     }
 
     public FlowExecutor getExecutor() {

@@ -12,10 +12,8 @@ public class FlowExecutor {
     }
 
     public void execute(Flow flow, FlowContext context) {
-
         var currentId = NodeIds.START;
         while (!NodeIds.END.equals(currentId)) {
-            // TODO: 避免无限循环
             var flowNode = getFlowNode(currentId, flow);
             var node = getNode(flowNode);
 
@@ -122,7 +120,7 @@ public class FlowExecutor {
                         defaultNode = nextNode;
                         defaultFlowNode = nextFlowNode;
                     } else {
-                        throw new IllegalStateException("Duplicate default node"); // TODO: 检查确实只有一个 default node
+                        throw new IllegalStateException("Duplicate default node");
                     }
                 }
                 default -> throw new RuntimeException("Invalid node: " + nextNode.getName());
