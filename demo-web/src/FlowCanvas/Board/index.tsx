@@ -6,15 +6,13 @@ import {
   useReactFlow,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import CommonNode from "../Node/CommonNode";
 
 import { useShallow } from "zustand/react/shallow";
 
 import useStore from "./store";
-import type { AppNode, AppState } from "./types";
-import ColorChooserNode from "./ColorChooserNode";
+import type { AppState } from "./types";
 import YaffNode from "./YaffNode";
-import { useCallback, useRef } from "react";
+import { useCallback } from "react";
 import { useDnD } from "./DnDContext";
 
 const selector = (state: AppState) => ({
@@ -27,15 +25,13 @@ const selector = (state: AppState) => ({
 });
 
 const nodeTypes = {
-  commonNode: CommonNode,
-  colorChooser: ColorChooserNode,
   yaffNode: YaffNode,
 };
 
 export default function Board() {
   const { nodes, edges, setNodes, onNodesChange, onEdgesChange, onConnect } =
     useStore(useShallow(selector));
-  const reactFlowWrapper = useRef(null);
+  // const reactFlowWrapper = useRef(null);
   const { screenToFlowPosition } = useReactFlow();
   const [meta] = useDnD();
 
@@ -77,11 +73,13 @@ export default function Board() {
     [screenToFlowPosition, meta]
   );
 
+  const handleSave = () => {
+    console.log(nodes, edges);
+  };
+
   return (
-    <div
-      style={{ height: 720, width: 1080, background: "#fafafa" }}
-      ref={reactFlowWrapper}
-    >
+    <div style={{ height: 720, width: 1080, background: "#fafafa" }}>
+      <button onClick={handleSave}>Save</button>
       <ReactFlow
         // @ts-ignore
         nodeTypes={nodeTypes}
@@ -90,9 +88,6 @@ export default function Board() {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
-        zoomOnScroll={false}
-        zoomOnPinch={false}
-        zoomOnDoubleClick={false}
         onDrop={onDrop}
         onDragOver={onDragOver}
         fitView
