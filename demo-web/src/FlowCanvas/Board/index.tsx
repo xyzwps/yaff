@@ -4,6 +4,7 @@ import {
   Controls,
   MiniMap,
   useReactFlow,
+  useViewport,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 
@@ -33,6 +34,7 @@ export default function Board() {
     useStore(useShallow(selector));
   // const reactFlowWrapper = useRef(null);
   const { screenToFlowPosition } = useReactFlow();
+  const { zoom } = useViewport();
   const [meta] = useDnD();
 
   const onDragOver = useCallback((event: React.DragEvent) => {
@@ -57,18 +59,16 @@ export default function Board() {
         y: event.clientY,
       });
       const newNode = {
-        id: "xx" + Date.now(),
+        id: "n" + Date.now(),
         type: "yaffNode",
         position,
-        data: {
-          id: "xxxx",
-          description: "",
-          input: {},
-          meta,
-        },
+        data: { description: "", input: {}, meta },
       };
 
-      setNodes(nodes.concat(newNode));
+      const newNodes = [...nodes, newNode];
+      console.log("oldNodes", nodes);
+      console.log("newNodes", newNodes);
+      setNodes(newNodes);
     },
     [screenToFlowPosition, meta]
   );
@@ -78,24 +78,29 @@ export default function Board() {
   };
 
   return (
-    <div style={{ height: 720, width: 1080, background: "#fafafa" }}>
-      <button onClick={handleSave}>Save</button>
-      <ReactFlow
-        // @ts-ignore
-        nodeTypes={nodeTypes}
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        onDrop={onDrop}
-        onDragOver={onDragOver}
-        fitView
-      >
-        <Background />
-        <Controls />
-        <MiniMap />
-      </ReactFlow>
+    <div>
+      <button className="btn" onClick={handleSave}>
+        Save
+      </button>{" "}
+      <span>{Math.round(zoom * 100)}%</span>
+      <div style={{ height: 720, width: 1080, background: "#fafafa" }}>
+        <ReactFlow
+          // @ts-ignore
+          nodeTypes={nodeTypes}
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          onDrop={onDrop}
+          onDragOver={onDragOver}
+          fitView
+        >
+          <Background />
+          <Controls />
+          <MiniMap />
+        </ReactFlow>
+      </div>
     </div>
   );
 }

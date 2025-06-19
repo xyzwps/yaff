@@ -2,76 +2,89 @@ import { Handle, Position, type NodeProps } from "@xyflow/react";
 import useStore from "./store";
 import { type YaffNodeData } from "./types";
 export default function YaffNode({ id, data }: NodeProps<YaffNodeData>) {
-  const updateYaffNodeId = useStore((state) => state.updateYaffNodeId);
+  const updateYaffNodeRef = useStore((state) => state.updateYaffNodeRef);
   const updateYaffInput = useStore((state) => state.updateYaffInput);
   const updateYaffNodeDescription = useStore(
     (state) => state.updateYaffNodeDescription
   );
 
-  const { meta } = data;
+  const {
+    meta: { inputs, name, description, output },
+  } = data;
+
+  const noRef =
+    name === "control.start" ||
+    name === "control.end" ||
+    name === "control.case" ||
+    name === "control.default" ||
+    name === "yaff.noop" ||
+    output === null || output === undefined;
+
+  const noDescription =
+    name === "control.start" ||
+    name === "control.end" ||
+    name === "control.case" ||
+    name === "yaff.noop";
+
+  const width = noDescription ? "w-36" : "w-80";
 
   return (
-    <div style={{ backgroundColor: "#CDCDFD", borderRadius: 10, padding: 8 }}>
-      <Handle type="target" position={Position.Top} />
-      <div>
-        <div>
-          ID <small>(用作其他节点引用此节点输出的变量名)</small>
-        </div>
-        <div>
-          <input
-            value={data.id}
-            style={{ width: "100%" }}
-            onChange={(e) => updateYaffNodeId(id, e.target.value)}
-          />
-        </div>
-      </div>
-      {meta.input && meta.input.length > 0 && (
-        <div>
-          {meta.input.map((input) => (
-            <div key={input.name}>
-              <div>
-                输入: {input.name} | {input.type}
+    <div className={`card rounded-md p-0 ${width} shadow-sm`}>
+      <Handle type="target" position={Position.Left} />
+      <h2 className="card-title rounded-t-md p-2 text-sm bg-linear-to-b from-indigo-200 to-indigo-50">
+        #{name}
+      </h2>
+      <div className="card-body p-2 bg-indigo-50">
+        {noRef || (
+          <div className="inline-flex items-center gap-2">
+            <div className="w-10">引用:</div>
+            <input
+              value={data.ref}
+              placeholder="用于后续节点使用本节点的输出"
+              className="input input-sm"
+              onChange={(e) => updateYaffNodeRef(id, e.target.value)}
+            />
+          </div>
+        )}
+        {noDescription || (
+          <div className="inline-flex items-center gap-2">
+            <div className="w-10">描述:</div>
+            <input
+              placeholder="描述此节点的用途"
+              className="input input-sm"
+              value={data.description}
+              onChange={(e) => updateYaffNodeDescription(id, e.target.value)}
+            />
+          </div>
+        )}
+        {inputs && inputs.length > 0 && (
+          <div>
+            {inputs.map((input) => (
+              <div key={input.name}>
+                <div className="inline-flex items-center gap-2">
+                  <div className="w-10">输入:</div> {input.name}
+                  <small className="font-mono text-indigo-500">
+                    {input.type}
+                  </small>
+                </div>
+                <input
+                  placeholder={input.name}
+                  className="input input-sm"
+                  value={data.input[input.name]}
+                  onChange={(e) =>
+                    updateYaffInput(id, input.name, e.target.value)
+                  }
+                />
               </div>
-              <input
-                placeholder={input.name}
-                style={{ width: "100%" }}
-                value={data.input[input.name]}
-                onChange={(e) =>
-                  updateYaffInput(id, input.name, e.target.value)
-                }
-              />
-            </div>
-          ))}
-        </div>
-      )}
-      <div>
-        <div>描述：</div>
-        <textarea
-          placeholder="描述"
-          style={{ width: "100%" }}
-          value={data.description}
-          onChange={(e) => updateYaffNodeDescription(id, e.target.value)}
-        />
+            ))}
+          </div>
+        )}
+
+        {description && (
+          <div className="text-xs text-slate-600">节点用途: {description}</div>
+        )}
       </div>
-      <div>
-        输出:{" "}
-        {meta.output.map((output) => (
-          <code
-            key={output.name}
-            style={{
-              padding: 2,
-              borderRadius: 4,
-              border: "1px solid #eee",
-              marginRight: 4,
-            }}
-          >
-            {output.name}
-          </code>
-        ))}
-      </div>
-      <div>节点类型: {meta.name}</div>
-      <div>节点作用: {meta.description}</div>
-      <Handle type="source" position={Position.Bottom} />
+      <Handle type="source" position={Position.Right} />
     </div>
   );
 }

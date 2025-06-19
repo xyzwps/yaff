@@ -2,22 +2,11 @@ import { type AppNode } from "./types";
 
 export const initialNodes = [
   {
-    id: "xx",
+    id: "start",
     type: "yaffNode",
-    position: { x: 400, y: 300 },
+    position: { x: 160, y: 300 },
     data: {
-      id: "xxxx",
-      description: "",
-      input: { min: "", max: "" },
-      meta: {
-        name: "demo.rng",
-        input: [
-          { name: "min", type: "FLOAT" },
-          { name: "max", type: "FLOAT" },
-        ],
-        output: [{ name: "result", type: "FLOAT" }],
-        description: "生成一个随机数",
-      },
+      meta: { name: "control.start", description: "开始节点" },
     },
   },
 ] as AppNode[];

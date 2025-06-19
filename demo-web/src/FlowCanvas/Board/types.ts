@@ -14,8 +14,7 @@ export type AppState = {
   onNodesChange: OnNodesChange<AppNode>;
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;
-  updateNodeColor: (nodeId: string, color: string) => void;
-  updateYaffNodeId: (nodeId: string, yaffNodeId: string) => void;
+  updateYaffNodeRef: (nodeId: string, yaffNodeRef: string) => void;
   updateYaffNodeDescription: (
     nodeId: string,
     yaffNodeDescription: string
@@ -39,7 +38,7 @@ export type ColorNode = Node<
 export type YaffNodeData = Node<
   {
     input: Record<string, string>;
-    id: string;
+    ref: string;
     description: string;
     meta: NodeMetaData;
   },

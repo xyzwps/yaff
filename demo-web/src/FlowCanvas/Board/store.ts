@@ -1,5 +1,10 @@
 import { create } from "zustand";
-import { addEdge, applyNodeChanges, applyEdgeChanges } from "@xyflow/react";
+import {
+  addEdge,
+  applyNodeChanges,
+  applyEdgeChanges,
+  MarkerType,
+} from "@xyflow/react";
 
 import { initialNodes } from "./nodes";
 import { initialEdges } from "./edges";
@@ -9,39 +14,37 @@ import { type AppState } from "./types";
 const useStore = create<AppState>((set, get) => ({
   nodes: initialNodes,
   edges: initialEdges,
+  setNodes: (nodes) => set({ nodes }),
+  setEdges: (edges) => set({ edges }),
   onNodesChange: (changes) => {
-    set({
-      nodes: applyNodeChanges(changes, get().nodes),
-    });
+    set({ nodes: applyNodeChanges(changes, get().nodes) });
   },
   onEdgesChange: (changes) => {
-    set({
-      edges: applyEdgeChanges(changes, get().edges),
-    });
+    set({ edges: applyEdgeChanges(changes, get().edges) });
   },
   onConnect: (connection) => {
     set({
-      edges: addEdge(connection, get().edges),
+      edges: addEdge(
+        {
+          markerEnd: {
+            type: MarkerType.ArrowClosed,
+            width: 32,
+            height: 24,
+            strokeWidth: 2,
+            color: "black",
+          },
+          ...connection,
+        },
+        get().edges
+      ),
     });
   },
-  updateNodeColor: (nodeId: string, color: string) => {
+  updateYaffNodeRef: (nodeId: string, yaffNodeRef: string) => {
     set({
       nodes: get().nodes.map((node) => {
         if (node.id === nodeId) {
           // it's important to create a new object here, to inform React Flow about the changes
-          return { ...node, data: { ...node.data, color } };
-        }
-
-        return node;
-      }),
-    });
-  },
-  updateYaffNodeId: (nodeId: string, yaffNodeId: string) => {
-    set({
-      nodes: get().nodes.map((node) => {
-        if (node.id === nodeId) {
-          // it's important to create a new object here, to inform React Flow about the changes
-          return { ...node, data: { ...node.data, id: yaffNodeId } };
+          return { ...node, data: { ...node.data, ref: yaffNodeRef } };
         }
         return node;
       }),
@@ -81,12 +84,6 @@ const useStore = create<AppState>((set, get) => ({
         return node;
       }),
     });
-  },
-  setNodes: (nodes) => {
-    set({ nodes });
-  },
-  setEdges: (edges) => {
-    set({ edges });
   },
 }));
 

@@ -1,11 +1,17 @@
 type NodeMetaData = {
   name: string
-  description: string
-  input: Parameter[]
-  output: Parameter[]
+  description?: string | null | undefined
+  inputs?: NodeInput[] | null | undefined
+  output?: NodeOutput | null | undefined
 }
 
-type Parameter = {
+type ParameterType = "INT" | "FLOAT" | "STRING" | "BOOL"
+
+type NodeInput = {
   name: string
-  type: "INT" | "FLOAT" | "STRING" | "BOOL"
+  type: ParameterType
+}
+
+type NodeOutput = {
+  type: ParameterType
 }
