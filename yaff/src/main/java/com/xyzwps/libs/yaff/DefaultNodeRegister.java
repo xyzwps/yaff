@@ -14,7 +14,9 @@ public class DefaultNodeRegister implements NodeRegister {
         register(ControlNode.whenNode);
         register(ControlNode.defaultNode);
         register(ControlNode.startNode);
+        register(ControlNode.endNode);
         register(YaffNode.noopNode);
+        register(YaffNode.rngNode);
     }
 
     @Override

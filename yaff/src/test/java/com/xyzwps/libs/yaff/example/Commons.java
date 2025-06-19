@@ -9,7 +9,6 @@ class Commons {
     static final String PRINT_TEXT_NODE_NAME = "example.printText";
     static final String TEXT_TO_UPPER_NODE_NAME = "example.textToUpper";
 
-    public static final String RNG_NODE_NAME = "demo.rng";
     public static final String SEND_MSG_NODE_NAME = "demo.sendMessage";
 
     public static final ArrayList<String> MESSAGES_RECEIVER = new ArrayList<>();
@@ -42,18 +41,6 @@ class Commons {
             })
             .build();
 
-    static Node RNG_NODE = Node.builder()
-            .name(RNG_NODE_NAME)
-            .description("生成一个随机数")
-            .inputs(new NodeInput("min", ParameterType.FLOAT),
-                    new NodeInput("max", ParameterType.FLOAT))
-            .output(new NodeOutput(ParameterType.FLOAT))
-            .execute((inputs) -> {
-                var min = ((Number) inputs.get("min")).doubleValue();
-                var max = ((Number) inputs.get("max")).doubleValue();
-                return (float) (Math.random() * (max - min) + min);
-            }).build();
-
     static Node SEND_MSG_NODE = Node.builder()
             .name(SEND_MSG_NODE_NAME)
             .description("发送消息")
@@ -70,6 +57,5 @@ class Commons {
     static final FlowFactory factory = new FlowFactory()
             .register(printTextNode)
             .register(textToUpperNode)
-            .register(RNG_NODE)
             .register(SEND_MSG_NODE);
 }

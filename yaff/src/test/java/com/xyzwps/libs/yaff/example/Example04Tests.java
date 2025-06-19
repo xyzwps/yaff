@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class Example04Tests {
 
     @Test
-    void test() {
+    void testRngNode() {
 
         var flowJSON = """
                 {
@@ -23,7 +23,7 @@ class Example04Tests {
                     },
                     {
                       "id": "n1750350189893",
-                      "name": "demo.rng",
+                      "name": "yaff.rng",
                       "ref": "r",
                       "description": "",
                       "px": 432.185899433957,

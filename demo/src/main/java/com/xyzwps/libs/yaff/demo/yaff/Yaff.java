@@ -9,18 +9,6 @@ public class Yaff {
     public static final String RNG_NODE_NAME = "demo.rng";
     public static final String SEND_MSG_NODE_NAME = "demo.sendMessage";
 
-    // TODO: 测试随机数
-    static Node RNG_NODE = Node.builder()
-            .name(RNG_NODE_NAME)
-            .description("生成一个随机数")
-            .inputs(new NodeInput("min", ParameterType.FLOAT),
-                    new NodeInput("max", ParameterType.FLOAT))
-            .output(new NodeOutput(ParameterType.FLOAT))
-            .execute((inputs) -> {
-                var min = (Float) inputs.get("min");
-                var max = (Float) inputs.get("max");
-                return (float) (Math.random() * (max - min) + min);
-            }).build();
 
     static Node SEND_MSG_NODE = Node.builder()
             .name(SEND_MSG_NODE_NAME)
@@ -39,7 +27,6 @@ public class Yaff {
 
     static {
         FACTORY.register(SEND_MSG_NODE);
-        FACTORY.register(RNG_NODE);
     }
 
     public static List<NodeMetaData> getMetaData() {
