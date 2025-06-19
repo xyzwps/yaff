@@ -1,6 +1,7 @@
 package com.xyzwps.libs.yaff;
 
 import com.xyzwps.libs.yaff.commons.JSON;
+import lombok.Data;
 
 import java.util.List;
 import java.util.Objects;
@@ -32,10 +33,16 @@ public class FlowFactory {
     }
 
     public Flow fromJSON(String json) {
-        var flow = JSON.parse(json, Flow.class);
+        var flow = JSON.parse(json, FlowData.class);
         check(flow.getFlowNodes());
-        return flow;
+        return new Flow(flow.getFlowNodes());
     }
+
+    @Data
+    static class FlowData {
+        private List<FlowNode> flowNodes;
+    }
+
 
     private void check(List<FlowNode> nodes) {
         // TODO:
