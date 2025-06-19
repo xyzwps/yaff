@@ -1,7 +1,5 @@
 package com.xyzwps.libs.yaff;
 
-import java.util.List;
-
 import static com.xyzwps.libs.yaff.ParameterType.*;
 
 public interface ControlNode {
@@ -13,43 +11,39 @@ public interface ControlNode {
 
     String CONDITION = "condition";
 
-    Node ifNode = new NodeTemplate(
-            IF_NODE_NAME,
-            "If node",
-            List.of(new Parameter("condition", BOOL)),
-            List.of(new Parameter("result", BOOL)),
-            (inputs, context) -> {
+    Node ifNode = Node.builder()
+            .name(IF_NODE_NAME)
+            .description("If 节点")
+            .inputs(new Parameter("condition", BOOL))
+            .outputs(new Parameter("result", BOOL))
+            .execute((inputs, context) -> {
                 var conditionValue = inputs.get("condition");
                 if (conditionValue instanceof Boolean condition) {
                     context.set("result", condition);
                 } else {
                     throw new RuntimeException("Invalid input value");
                 }
-            }
-    );
+            })
+            .build();
 
-    Node caseNode = new NodeTemplate(
-            CASE_NODE_NAME,
-            "Case node",
-            List.of(),
-            List.of());
+    Node caseNode = Node.builder()
+            .name(CASE_NODE_NAME)
+            .description("Case Node")
+            .build();
 
-    Node whenNode = new NodeTemplate(
-            WHEN_NODE_NAME,
-            "When node",
-            List.of(new Parameter(CONDITION, BOOL)),
-            List.of()
-    );
+    Node whenNode = Node.builder()
+            .name(WHEN_NODE_NAME)
+            .description("When Node")
+            .inputs(new Parameter(CONDITION, BOOL))
+            .build();
 
-    Node defaultNode = new NodeTemplate(
-            DEFAULT_NODE_NAME,
-            "Default node",
-            List.of(),
-            List.of());
+    Node defaultNode = Node.builder()
+            .name(DEFAULT_NODE_NAME)
+            .description("Default Node")
+            .build();
 
-    Node startNode = new NodeTemplate(
-            START_NODE_NAME,
-            "Start node",
-            List.of(),
-            List.of());
+    Node startNode = Node.builder()
+            .name(START_NODE_NAME)
+            .description("Start Node")
+            .build();
 }

@@ -10,36 +10,30 @@ public class Yaff {
     public static final String SEND_MSG_NODE_NAME = "demo.sendMessage";
 
     // TODO: 测试随机数
-    static Node RNG_NODE = new NodeTemplate(
-            RNG_NODE_NAME,
-            "生成一个随机数",
-            List.of(
-                    new Parameter("min", ParameterType.FLOAT),
-                    new Parameter("max", ParameterType.FLOAT)
-            ),
-            List.of(new Parameter("result", ParameterType.FLOAT)),
-            (inputs, context) -> {
+    static Node RNG_NODE = Node.builder()
+            .name(RNG_NODE_NAME)
+            .description("生成一个随机数")
+            .inputs(new Parameter("min", ParameterType.FLOAT),
+                    new Parameter("max", ParameterType.FLOAT))
+            .outputs(new Parameter("result", ParameterType.FLOAT))
+            .execute((inputs, context) -> {
                 var min = (Float) inputs.get("min");
                 var max = (Float) inputs.get("max");
                 var result = (float) (Math.random() * (max - min) + min);
                 context.set("result", result);
-            }
-    );
+            }).build();
 
-    static Node SEND_MSG_NODE = new NodeTemplate(
-            SEND_MSG_NODE_NAME,
-            "发送消息",
-            List.of(
-                    new Parameter("title", ParameterType.STRING),
-                    new Parameter("message", ParameterType.STRING)
-            ),
-            List.of(),
-            (inputs, context) -> {
+    static Node SEND_MSG_NODE = Node.builder()
+            .name(SEND_MSG_NODE_NAME)
+            .description("发送消息")
+            .inputs(new Parameter("title", ParameterType.STRING),
+                    new Parameter("message", ParameterType.STRING))
+            .execute((inputs, context) -> {
                 var title = (String) inputs.get("title");
                 var message = (String) inputs.get("message");
                 System.out.printf("发送消息: [%s] %s\n", title, message);
-            }
-    );
+            })
+            .build();
 
     public static final FlowFactory FACTORY = new FlowFactory();
 

@@ -6,7 +6,6 @@ import com.xyzwps.libs.yaff.ControlNode;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -61,20 +60,19 @@ class Example02Tests {
 
     static final String PRINT_NODE_NAME = "print";
 
-    static final Node printNode = new NodeTemplate(
-            PRINT_NODE_NAME,
-            "Prints a message",
-            List.of(new Parameter("text", ParameterType.STRING)),
-            List.of(new Parameter("printContent", ParameterType.STRING)),
-            (inputs, context) -> {
+    static final Node printNode = Node.builder()
+            .name(PRINT_NODE_NAME)
+            .description("Print a message")
+            .inputs(new Parameter("text", ParameterType.STRING))
+            .outputs(new Parameter("printContent", ParameterType.STRING))
+            .execute((inputs, context) -> {
                 var textStr = inputs.get("text");
                 if (textStr instanceof String text) {
                     context.set("printContent", "print('" + text + "')");
                 } else {
                     throw new RuntimeException("Invalid input value");
                 }
-            }
-    );
+            }).build();
 
 
 }

@@ -6,5 +6,8 @@ public interface YaffNode {
 
     String NOOP_NODE_NAME = "yaff.noop";
 
-    Node noopNode = new NodeTemplate(NOOP_NODE_NAME, "Noop node", List.of(), List.of());
+    Node noopNode = Node.builder()
+            .name(NOOP_NODE_NAME)
+            .description("Noop node")
+            .build();
 }
