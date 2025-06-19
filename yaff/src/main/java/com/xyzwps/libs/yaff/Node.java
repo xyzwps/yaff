@@ -2,27 +2,35 @@ package com.xyzwps.libs.yaff;
 
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public interface Node {
-    String getName();
-
-    // TODO: 应该返回一个 map
-    List<Parameter> getInputs();
-
-    List<Parameter> getOutputs();
-
-    String getDescription();
-
-    default NodeMetaData getMetaData() {
-        return new NodeMetaData(getName(), getInputs(), getOutputs(), getDescription());
+    default String getName() {
+        return getMetaData().name();
     }
+
+    default String getDescription() {
+        return getMetaData().description();
+    }
+
+    default List<NodeInput> getInputs() {
+        return getMetaData().inputs();
+    }
+
+    default NodeOutput getOutput() {
+        return getMetaData().output();
+    }
+
+    NodeMetaData getMetaData();
 
     /**
      * TODO: 返回一个新上下文，避免修改原上下文是不是好一点？
      */
-    void execute(Map<String, Object> inputs, FlowContext context);
+    Object execute(Map<String, Object> inputs);
 
     static NodeBuilder builder() {
         return new NodeBuilder();
     }
+
+    Pattern NODE_NAME_PATTERN = Pattern.compile("^[a-zA-Z_][a-zA-Z0-9_]*(\\.[a-zA-Z_][a-zA-Z0-9_]*)*$");
 }

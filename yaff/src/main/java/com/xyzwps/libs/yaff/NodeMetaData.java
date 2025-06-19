@@ -2,5 +2,8 @@ package com.xyzwps.libs.yaff;
 
 import java.util.List;
 
-public record NodeMetaData(String name, List<Parameter> input, List<Parameter> output, String description) {
+public record NodeMetaData(String name,
+                           String description,
+                           List<NodeInput> inputs,
+                           NodeOutput output) {
 }

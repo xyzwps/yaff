@@ -14,15 +14,14 @@ public interface ControlNode {
     Node ifNode = Node.builder()
             .name(IF_NODE_NAME)
             .description("If 节点")
-            .inputs(new Parameter("condition", BOOL))
-            .outputs(new Parameter("result", BOOL))
-            .execute((inputs, context) -> {
+            .inputs(new NodeInput("condition", BOOL))
+            .output(new NodeOutput(BOOL))
+            .execute((inputs) -> {
                 var conditionValue = inputs.get("condition");
                 if (conditionValue instanceof Boolean condition) {
-                    context.set("result", condition);
-                } else {
-                    throw new RuntimeException("Invalid input value");
+                    return condition;
                 }
+                throw new RuntimeException("Invalid inputs value");
             })
             .build();
 
@@ -34,7 +33,7 @@ public interface ControlNode {
     Node whenNode = Node.builder()
             .name(WHEN_NODE_NAME)
             .description("When Node")
-            .inputs(new Parameter(CONDITION, BOOL))
+            .inputs(new NodeInput(CONDITION, BOOL))
             .build();
 
     Node defaultNode = Node.builder()

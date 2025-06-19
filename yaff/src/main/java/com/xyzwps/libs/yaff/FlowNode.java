@@ -16,6 +16,11 @@ public class FlowNode {
     /// - required: true
     private String id;
 
+    /// 节点引用。用于后续节点访问本节点输出的结果。
+    ///
+    /// - required: false
+    private String ref;
+
     /// 节点要做之事的文字描述。
     ///
     /// - required: false
@@ -65,9 +70,29 @@ public class FlowNode {
         }
     }
 
+    private static void checkRef(String ref) {
+        if (ref == null) {
+            return;
+        }
+
+        if (!ID_PATTERN.matcher(ref).matches()) {
+            throw new IllegalArgumentException("Invalid ref: " + ref);
+        }
+    }
+
+    public void setRef(String ref) {
+        checkRef(ref);
+        this.ref = ref;
+    }
+
     public void setId(String id) {
         checkId(id);
         this.id = id;
+    }
+
+    public FlowNode ref(String ref) {
+        this.setRef(ref);
+        return this;
     }
 
     public FlowNode id(String id) {

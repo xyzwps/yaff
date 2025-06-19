@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Value;
 
-import java.util.HashMap;
-
 @Data
 @NoArgsConstructor
 public final class JavaScriptExpression implements AssignExpression {
@@ -44,28 +42,10 @@ public final class JavaScriptExpression implements AssignExpression {
      * @see SimpleFlowContext#set
      */
     private static String makeScript(FlowContext flowContext) {
-        var names = flowContext.getNames();
-        var allVars = new HashMap<String, HashMap<String, Object>>();
-        for (var name : names) {
-            var segments = name.split("\\.");
-            if (segments.length != 2) {
-                throw new RuntimeException("Invalid name: " + name);
-            }
-
-            var varName = segments[0];
-            var fieldName = segments[1];
-            if (!allVars.containsKey(varName)) {
-                allVars.put(varName, new HashMap<>());
-            }
-            allVars.get(varName).put(fieldName, flowContext.get(name));
-        }
-
         var scripts = new StringBuilder();
-
-        for (var entry : allVars.entrySet()) {
-            var varName = entry.getKey();
-            var varValue = entry.getValue();
-            scripts.append("var ").append(varName).append(" = ").append(JSON.stringify(varValue)).append(";\n");
+        for (var name : flowContext.getNames()) {
+            var value = flowContext.get(name);
+            scripts.append("var ").append(name).append(" = ").append(JSON.stringify(value)).append(";\n");
         }
         return scripts.toString();
     }

@@ -48,7 +48,7 @@ public class FlowFactory {
         // TODO:
     }
 
-    public FlowExecutor createExecutor() {
+    public FlowExecutor getExecutor() {
         return new FlowExecutor(nodeRegister);
     }
 }

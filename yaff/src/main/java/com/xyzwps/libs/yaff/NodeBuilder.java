@@ -6,43 +6,45 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 public class NodeBuilder {
     private String name;
     private String description;
-    private List<Parameter> inputs;
-    private List<Parameter> outputs;
-    private BiConsumer<Map<String, Object>, FlowContext> execute;
+    private List<NodeInput> inputs;
+    private NodeOutput output;
+    private Function<Map<String, Object>, Object> execute;
 
     public Node build() {
-        // TODO: 限制 name 格式
         if (name == null) {
             throw new IllegalArgumentException("Node name cannot be null");
+        }
+        if (!Node.NODE_NAME_PATTERN.matcher(name).matches()) {
+            throw new IllegalArgumentException("Node name is invalid");
         }
 
         if (description == null) {
             description = "";
         }
 
-        // TODO: 检查 input 每个参数
         if (inputs == null) {
             inputs = List.of();
         }
-
-        // TODO: 检查 input 每个参数
-        if (outputs == null) {
-            outputs = List.of();
+        for (var input : inputs) {
+            if (input == null) {
+                throw new IllegalArgumentException("Input is null");
+            }
         }
 
         if (execute == null) {
             execute = NodeBuilder::doNothing;
         }
 
-        return new TemplateNode(name, description, inputs, outputs, execute);
+        return new TemplateNode(name, description, inputs, output, execute);
     }
 
-    private static void doNothing(Map<String, Object> inputs, FlowContext context) {
+    private static Object doNothing(Map<String, Object> inputs) {
+        return null;
     }
 
     NodeBuilder() {
@@ -58,42 +60,37 @@ public class NodeBuilder {
         return this;
     }
 
-    public NodeBuilder inputs(Parameter... inputs) {
+    public NodeBuilder inputs(NodeInput... inputs) {
         this.inputs = Arrays.asList(inputs);
         return this;
     }
 
-    public NodeBuilder outputs(Parameter... outputs) {
-        this.outputs = Arrays.asList(outputs);
+    public NodeBuilder output(NodeOutput output) {
+        this.output = output;
         return this;
     }
 
-    public NodeBuilder execute(BiConsumer<Map<String, Object>, FlowContext> execute) {
+    public NodeBuilder execute(Function<Map<String, Object>, Object> execute) {
         this.execute = execute;
         return this;
     }
 
     @Getter
     private static final class TemplateNode implements Node {
-        private final String name;
-        private final String description;
-        private final List<Parameter> inputs;
-        private final List<Parameter> outputs;
-        private final BiConsumer<Map<String, Object>, FlowContext> execute;
+        private final NodeMetaData metaData;
+        private final Function<Map<String, Object>, Object> execute;
 
         private TemplateNode(String name, String description,
-                             List<Parameter> inputs, List<Parameter> outputs,
-                             BiConsumer<Map<String, Object>, FlowContext> execute) {
-            this.name = name;
-            this.description = description;
-            this.inputs = Collections.unmodifiableList(inputs);
-            this.outputs = Collections.unmodifiableList(outputs);
+                             List<NodeInput> inputs, NodeOutput output,
+                             Function<Map<String, Object>, Object> execute) {
+            this.metaData = new NodeMetaData(name, description,
+                    Collections.unmodifiableList(inputs), output);
             this.execute = execute;
         }
 
         @Override
-        public void execute(Map<String, Object> inputs, FlowContext context) {
-            execute.accept(inputs, context);
+        public Object execute(Map<String, Object> inputs) {
+            return execute.apply(inputs);
         }
     }
 }

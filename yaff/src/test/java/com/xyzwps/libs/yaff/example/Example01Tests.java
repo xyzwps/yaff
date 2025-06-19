@@ -22,62 +22,56 @@ class Example01Tests {
                 new FlowNode()
                         .id(NodeIds.START)
                         .name(TEXT_TO_UPPER_NODE_NAME)
+                        .ref("upper")
                         .assignExpressions(new ConstantExpression("text", "Hello World"))
                         .next("print"),
                 new FlowNode()
                         .id("print")
                         .name(PRINT_TEXT_NODE_NAME)
-                        .assignExpressions(new JavaScriptExpression("text", "start.text"))
+                        .ref("cmd")
+                        .assignExpressions(new JavaScriptExpression("text", "upper"))
                         .next(NodeIds.END)
         );
 
         var flow = factory.createFlow(nodes);
-        var executor = factory.createExecutor();
+        var executor = factory.getExecutor();
 
         var context = FlowContext.create();
-        assertNull(context.get("start.text"));
-        assertNull(context.get("print.cmd"));
+        assertNull(context.get("upper"));
+        assertNull(context.get("cmd"));
 
         executor.execute(flow, context);
-        assertEquals("HELLO WORLD", context.get("start.text"));
-        assertEquals("print(\"HELLO WORLD\")", context.get("print.cmd"));
+        assertEquals("HELLO WORLD", context.get("upper"));
+        assertEquals("print(\"HELLO WORLD\")", context.get("cmd"));
 
         System.out.println("flow: " + JSON.stringify(flow));
         System.out.println("meta: " + JSON.stringify(factory.getNodeRegister()));
     }
 
     @Test
-    void test2() {
+    void testFlowFromJSON() {
         var flowJSON = """
                 {"flowNodes":[
                     {
-                        "id":"start","name":"example.textToUpper","next":["print"],
-                        "assignExpressions":[{
-                            "type":"constant",
-                            "value":"Hello World",
-                            "inputName":"text"
-                        }]
+                        "id":"start","ref":"upper","name":"example.textToUpper","next":["print"],
+                        "assignExpressions":[{"value":"Hello World","inputName":"text","type":"constant"}]
                     },
                     {
-                        "id":"print","name":"example.printText","next":["end"],
-                        "assignExpressions":[{
-                            "type":"javascript",
-                            "expression":"start.text",
-                            "inputName":"text"
-                        }]
+                        "id":"print","ref":"cmd","name":"example.printText","next":["end"],
+                        "assignExpressions":[{"expression":"upper","inputName":"text","type":"javascript"}]
                     }
                 ]}
                 """;
         var flow = factory.fromJSON(flowJSON);
-        var executor = factory.createExecutor();
+        var executor = factory.getExecutor();
 
         var context = FlowContext.create();
-        assertNull(context.get("start.text"));
-        assertNull(context.get("print.cmd"));
+        assertNull(context.get("upper"));
+        assertNull(context.get("cmd"));
 
         executor.execute(flow, context);
-        assertEquals("HELLO WORLD", context.get("start.text"));
-        assertEquals("print(\"HELLO WORLD\")", context.get("print.cmd"));
+        assertEquals("HELLO WORLD", context.get("upper"));
+        assertEquals("print(\"HELLO WORLD\")", context.get("cmd"));
 
         System.out.println("flow: " + JSON.stringify(flow));
         System.out.println("meta: " + JSON.stringify(factory.getNodeRegister()));

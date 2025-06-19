@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 class Example03Tests {
 
     @Test
-    void test() {
+    void testCaseWhen() {
         var factory = new FlowFactory()
                 .register(Example02Tests.printNode);
 
@@ -30,21 +30,23 @@ class Example03Tests {
                 new FlowNode()
                         .id("when1")
                         .name(ControlNode.WHEN_NODE_NAME)
-                        .assignExpressions(new JavaScriptExpression("condition", "ctx.a1 > ctx.a2"))
+                        .assignExpressions(new JavaScriptExpression("condition", "a1 > a2"))
                         .next("print1"),
                 new FlowNode()
                         .id("print1")
                         .name(Example02Tests.PRINT_NODE_NAME)
+                        .ref("p1")
                         .assignExpressions(new ConstantExpression("text", "a1 is great"))
                         .next(NodeIds.END),
 
                 new FlowNode()
                         .id("when2")
                         .name(ControlNode.WHEN_NODE_NAME)
-                        .assignExpressions(new JavaScriptExpression("condition", "ctx.a1 < ctx.a2"))
+                        .assignExpressions(new JavaScriptExpression("condition", "a1 < a2"))
                         .next("print2"),
                 new FlowNode()
                         .id("print2")
+                        .ref("p2")
                         .name(Example02Tests.PRINT_NODE_NAME)
                         .assignExpressions(new ConstantExpression("text", "a2 is great"))
                         .next(NodeIds.END),
@@ -55,13 +57,14 @@ class Example03Tests {
                         .next("print3"),
                 new FlowNode()
                         .id("print3")
+                        .ref("p3")
                         .name(Example02Tests.PRINT_NODE_NAME)
                         .assignExpressions(new ConstantExpression("text", "a1 is equal to a2"))
                         .next(NodeIds.END)
         );
 
         var flow = factory.createFlow(nodes);
-        var executor = factory.createExecutor();
+        var executor = factory.getExecutor();
 
         // a1 > a2
         {
@@ -69,15 +72,15 @@ class Example03Tests {
             context.set("a1", 3);
             context.set("a2", 2);
 
-            assertNull(context.get("print1.printContent"));
-            assertNull(context.get("print2.printContent"));
-            assertNull(context.get("print3.printContent"));
+            assertNull(context.get("p1"));
+            assertNull(context.get("p2"));
+            assertNull(context.get("p3"));
 
             executor.execute(flow, context);
 
-            assertEquals("print('a1 is great')", context.get("print1.printContent"));
-            assertNull(context.get("print2.printContent"));
-            assertNull(context.get("print3.printContent"));
+            assertEquals("print('a1 is great')", context.get("p1"));
+            assertNull(context.get("p2"));
+            assertNull(context.get("p3"));
         }
 
         // a1 < a2
@@ -86,15 +89,15 @@ class Example03Tests {
             context.set("a1", 1);
             context.set("a2", 2);
 
-            assertNull(context.get("print1.printContent"));
-            assertNull(context.get("print2.printContent"));
-            assertNull(context.get("print3.printContent"));
+            assertNull(context.get("p1"));
+            assertNull(context.get("p2"));
+            assertNull(context.get("p3"));
 
             executor.execute(flow, context);
 
-            assertNull(context.get("print1.printContent"));
-            assertEquals("print('a2 is great')", context.get("print2.printContent"));
-            assertNull(context.get("print3.printContent"));
+            assertNull(context.get("p1"));
+            assertEquals("print('a2 is great')", context.get("p2"));
+            assertNull(context.get("p3"));
         }
 
         // a1 == a2
@@ -103,15 +106,15 @@ class Example03Tests {
             context.set("a1", 2);
             context.set("a2", 2);
 
-            assertNull(context.get("print1.printContent"));
-            assertNull(context.get("print2.printContent"));
-            assertNull(context.get("print3.printContent"));
+            assertNull(context.get("p1"));
+            assertNull(context.get("p2"));
+            assertNull(context.get("p3"));
 
             executor.execute(flow, context);
 
-            assertNull(context.get("print1.printContent"));
-            assertNull(context.get("print2.printContent"));
-            assertEquals("print('a1 is equal to a2')", context.get("print3.printContent"));
+            assertNull(context.get("p1"));
+            assertNull(context.get("p2"));
+            assertEquals("print('a1 is equal to a2')", context.get("p3"));
         }
     }
 }
