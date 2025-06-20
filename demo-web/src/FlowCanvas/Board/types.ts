@@ -4,6 +4,7 @@ import {
   type OnNodesChange,
   type OnEdgesChange,
   type OnConnect,
+  type NodeProps,
 } from "@xyflow/react";
 
 export type AppNode = Node;
@@ -11,6 +12,10 @@ export type AppNode = Node;
 export type AppState = {
   nodes: AppNode[];
   edges: Edge[];
+  showNodeEditor: boolean;
+  setShowNodeEditor: (show: boolean) => void;
+  selectedNode: NodeProps<YaffNodeData> | null;
+  setSelectedNode: (node: NodeProps<YaffNodeData> | null) => void;
   onNodesChange: OnNodesChange<AppNode>;
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;

@@ -13,10 +13,11 @@ import { type AppState } from "./types";
 const useStore = create<AppState>((set, get) => ({
   nodes: initialNodes,
   edges: [],
-  setNodes: (nodes) => {
-    console.log("设置节点", nodes);
-    set({ nodes });
-  },
+  showNodeEditor: false,
+  setShowNodeEditor: (show) => set({ showNodeEditor: show }),
+  selectedNode: null,
+  setSelectedNode: (node) => set({ selectedNode: node }),
+  setNodes: (nodes) => set({ nodes }),
   setEdges: (edges) => set({ edges }),
   onNodesChange: (changes) => {
     set({ nodes: applyNodeChanges(changes, get().nodes) });

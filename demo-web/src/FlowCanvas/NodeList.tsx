@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
-import { getMetaData } from "../apis";
 import { useDnD } from "./Board/DnDContext";
+import useInitStore from "./store.init";
 
 export default function NodeList() {
-  const [nodes, setNodes] = useState<NodeMetaData[]>([]);
+  const { metaOfNodes } = useInitStore((s) => s);
 
   const [_, setMetaData] = useDnD();
 
@@ -15,20 +14,9 @@ export default function NodeList() {
     event.dataTransfer.effectAllowed = "move";
   };
 
-  useEffect(() => {
-    getMetaData()
-      .then((res) => {
-        res.sort((a, b) => a.name.localeCompare(b.name));
-        setNodes(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
   return (
     <div className="list bg-base-100 rounded-box shadow-md">
-      {nodes.map((metaData) => (
+      {metaOfNodes.map((metaData) => (
         <NodeItem
           key={metaData.name}
           meta={metaData}

@@ -1,12 +1,7 @@
-import "./App.css";
 import FlowCanvas from "./FlowCanvas";
 
 function App() {
-  return (
-    <div className="app-container">
-      <FlowCanvas />;
-    </div>
-  );
+  return <FlowCanvas />;
 }
 
 export default App;

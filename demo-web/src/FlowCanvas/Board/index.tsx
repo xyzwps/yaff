@@ -15,6 +15,7 @@ import type { AppState, FlowNode, YaffNodeData } from "./types";
 import YaffNode from "./YaffNode";
 import { useCallback } from "react";
 import { useDnD } from "./DnDContext";
+import NodeDrawer from "./NodeDrawer";
 
 const selector = (state: AppState) => ({
   nodes: state.nodes,
@@ -42,8 +43,6 @@ export default function Board() {
     event.dataTransfer.dropEffect = "move";
   }, []);
 
-  console.log("当前节点", nodes);
-
   const onDrop = (event: React.DragEvent) => {
     event.preventDefault();
 
@@ -59,17 +58,20 @@ export default function Board() {
       x: event.clientX,
       y: event.clientY,
     });
+    const id =
+      meta.name === "control.start"
+        ? "start"
+        : meta.name === "control.end"
+        ? "end"
+        : `n${Date.now()}`;
     const newNode = {
-      id: "n" + Date.now(),
+      id,
       type: "yaffNode",
       position,
       data: { description: "", input: {}, meta },
     };
 
-    const newNodes = [...nodes, newNode];
-    console.log("旧节点", nodes);
-    console.log("新节点", newNodes);
-    setNodes(newNodes);
+    setNodes([...nodes, newNode]);
   };
 
   const handleSave = () => {
@@ -110,12 +112,15 @@ export default function Board() {
   };
 
   return (
-    <div>
-      <button className="btn" onClick={handleSave}>
-        Save
-      </button>{" "}
-      <span>{Math.round(zoom * 100)}%</span>
-      <div style={{ height: 720, width: 1080, background: "#fafafa" }}>
+    <div className="bg-pink-400 w-full h-full flex flex-col">
+      <div className="h-12">
+        <button className="btn" onClick={handleSave}>
+          Save
+        </button>{" "}
+        <span>{Math.round(zoom * 100)}%</span>
+        <NodeDrawer />
+      </div>
+      <div className="w-full h-full bg-slate-50">
         <ReactFlow
           // @ts-ignore
           nodeTypes={nodeTypes}
