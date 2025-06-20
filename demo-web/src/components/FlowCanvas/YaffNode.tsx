@@ -1,5 +1,5 @@
 import { Handle, Position, type NodeProps } from "@xyflow/react";
-import useStore from "./store";
+import useStore from "./store.flow";
 import { type YaffNodeData } from "./types";
 import { SHORT_PT } from "./dict";
 

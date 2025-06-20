@@ -1,4 +1,4 @@
-import { useDnD } from "./Board/DnDContext";
+import { useDnD } from "./DnDContext";
 import useInitStore from "./store.init";
 
 export default function NodeList() {

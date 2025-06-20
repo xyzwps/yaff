@@ -1,9 +1,10 @@
 import { ReactFlowProvider } from "@xyflow/react";
 import Board from "./Board";
 import NodeList from "./NodeList";
-import { DnDProvider } from "./Board/DnDContext";
+import { DnDProvider } from "./DnDContext";
 import useInitStore from "./store.init";
 import { useEffect } from "react";
+import useStore from "./store.flow";
 
 export default function FlowCanvas() {
   const { load, state } = useInitStore((s) => s);
@@ -27,6 +28,25 @@ export default function FlowCanvas() {
 }
 
 function DoneState() {
+  const { metaOfNodes } = useInitStore((s) => s);
+  const { setNodes } = useStore((s) => s);
+
+  useEffect(() => {
+    const startMeta = metaOfNodes.find((m) => m.name === "control.start");
+    setNodes(
+      startMeta
+        ? [
+            {
+              id: "start",
+              type: "yaffNode",
+              position: { x: 160, y: 300 },
+              data: { meta: startMeta },
+            },
+          ]
+        : []
+    );
+  }, [metaOfNodes]);
+
   return (
     <ReactFlowProvider>
       <DnDProvider>

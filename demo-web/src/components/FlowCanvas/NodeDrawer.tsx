@@ -1,5 +1,5 @@
 import { createPortal } from "react-dom";
-import useStore from "./store";
+import useStore from "./store.flow";
 import { useState } from "react";
 import type { NodeProps } from "@xyflow/react";
 import type { YaffNodeData } from "./types";

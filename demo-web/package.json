@@ -13,6 +13,7 @@
     "@tailwindcss/vite": "^4.1.10",
     "@xyflow/react": "^12.7.0",
     "ky": "^1.8.1",
+    "raviger": "^4.2.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "tailwindcss": "^4.1.10",

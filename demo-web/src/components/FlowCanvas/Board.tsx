@@ -10,7 +10,7 @@ import "@xyflow/react/dist/style.css";
 
 import { useShallow } from "zustand/react/shallow";
 
-import useStore from "./store";
+import useStore from "./store.flow";
 import type { AppState, FlowNode, YaffNodeData } from "./types";
 import YaffNode from "./YaffNode";
 import { useCallback } from "react";
