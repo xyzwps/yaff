@@ -35,6 +35,7 @@ function NodeDrawer0({ id, data }: NodeProps<YaffNodeData>) {
   } = useStore((s) => s);
 
   const [ref, setRef] = useState(data.ref);
+  const [refError, setRefError] = useState(false);
   const [description, setDescription] = useState(data.description);
   const [input, setInput] = useState(data.input);
   const inputs = data.meta.inputs;
@@ -69,15 +70,29 @@ function NodeDrawer0({ id, data }: NodeProps<YaffNodeData>) {
                 <legend className="fieldset-legend">输出引用:</legend>
                 <input
                   type="text"
-                  className="input input-sm"
+                  className={`input input-sm ${
+                    refError ? "input-error" : "input-primary"
+                  }`}
                   value={ref}
                   placeholder="用于后续节点使用本节点的输出"
                   onChange={(e) => {
-                    const v = e.target.value;
+                    const v = e.target.value || "";
+                    if (v.length === 0 || /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(v)) {
+                      setRefError(false);
+                      setRef(v);
+                      updateYaffNodeRef(id, v);
+                      return;
+                    }
+
+                    setRefError(true);
                     setRef(v);
-                    updateYaffNodeRef(id, v);
                   }}
                 />
+                {refError && (
+                  <p className="label">
+                    引用应匹配 <code>^[a-zA-Z_][a-zA-Z0-9_]*$</code>
+                  </p>
+                )}
               </fieldset>
             )}
             {inputs && inputs.length > 0 && (

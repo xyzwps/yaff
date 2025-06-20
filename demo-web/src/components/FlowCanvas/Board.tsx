@@ -16,6 +16,7 @@ import YaffNode from "./YaffNode";
 import { useCallback } from "react";
 import { useDnD } from "./DnDContext";
 import NodeDrawer from "./NodeDrawer";
+import { tsId } from "./utils";
 
 const selector = (state: AppState) => ({
   nodes: state.nodes,
@@ -63,7 +64,7 @@ export default function Board() {
         ? "start"
         : meta.name === "control.end"
         ? "end"
-        : `n${Date.now()}`;
+        : `n${tsId()}`;
     const newNode = {
       id,
       type: "yaffNode",
@@ -108,7 +109,7 @@ export default function Board() {
       node.next?.push(e.target);
     }
 
-    console.log("results: ", JSON.stringify(results));
+    alert(JSON.stringify(results, null, 2));
   };
 
   return (
