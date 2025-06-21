@@ -6,7 +6,6 @@ import java.util.List;
 
 public class Yaff {
 
-    public static final String RNG_NODE_NAME = "demo.rng";
     public static final String SEND_MSG_NODE_NAME = "demo.sendMessage";
 
 
