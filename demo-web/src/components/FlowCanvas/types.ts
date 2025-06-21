@@ -11,7 +11,11 @@ export type AppNode = Node;
 
 export type AppState = {
   nodes: AppNode[];
+  setNodes: (nodes: AppNode[]) => void;
   edges: Edge[];
+  setEdges: (edges: Edge[]) => void;
+  dedupKey: string;
+  setDedupKey: (dedupKey: string) => void;
   showNodeEditor: boolean;
   setShowNodeEditor: (show: boolean) => void;
   selectedNode: NodeProps<YaffNodeData> | null;
@@ -29,8 +33,6 @@ export type AppState = {
     yaffInputName: string,
     yaffInputValue: string
   ) => void;
-  setNodes: (nodes: AppNode[]) => void;
-  setEdges: (edges: Edge[]) => void;
 };
 
 export type ColorNode = Node<

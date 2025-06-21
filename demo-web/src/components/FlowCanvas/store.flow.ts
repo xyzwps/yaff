@@ -12,6 +12,8 @@ import { type AppState } from "./types";
 const useStore = create<AppState>((set, get) => ({
   nodes: [],
   edges: [],
+  dedupKey: "",
+  setDedupKey: (dedupKey) => set({ dedupKey }),
   showNodeEditor: false,
   setShowNodeEditor: (show) => set({ showNodeEditor: show }),
   selectedNode: null,

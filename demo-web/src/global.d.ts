@@ -15,3 +15,12 @@ type NodeInput = {
 type NodeOutput = {
   type: ParameterType;
 };
+
+type FlowRow = {
+  id: number;
+  dedupKey: string;
+  description: string;
+  data: string;
+  createdAt: string;
+  updatedAt: string;
+};

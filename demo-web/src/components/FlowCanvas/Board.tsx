@@ -17,6 +17,8 @@ import { useCallback } from "react";
 import { useDnD } from "./DnDContext";
 import NodeDrawer from "./NodeDrawer";
 import { tsId } from "./utils";
+import { createFlow } from "../../apis";
+import { useNavigate } from "raviger";
 
 const selector = (state: AppState) => ({
   nodes: state.nodes,
@@ -25,6 +27,7 @@ const selector = (state: AppState) => ({
   onNodesChange: state.onNodesChange,
   onEdgesChange: state.onEdgesChange,
   onConnect: state.onConnect,
+  dedupKey: state.dedupKey,
 });
 
 const nodeTypes = {
@@ -32,11 +35,19 @@ const nodeTypes = {
 };
 
 export default function Board() {
-  const { nodes, edges, setNodes, onNodesChange, onEdgesChange, onConnect } =
-    useStore(useShallow(selector));
+  const {
+    nodes,
+    edges,
+    dedupKey,
+    setNodes,
+    onNodesChange,
+    onEdgesChange,
+    onConnect,
+  } = useStore(useShallow(selector));
   // const reactFlowWrapper = useRef(null);
   const { screenToFlowPosition } = useReactFlow();
   const { zoom } = useViewport();
+  const navigate = useNavigate();
   const [meta] = useDnD();
 
   const onDragOver = useCallback((event: React.DragEvent) => {
@@ -109,7 +120,17 @@ export default function Board() {
       node.next?.push(e.target);
     }
 
-    alert(JSON.stringify(results, null, 2));
+    createFlow({
+      dedupKey,
+      description: "", // TODO: 图信息
+      data: { flowNodes: results },
+    })
+      .then(() => {
+        navigate("/flows");
+      })
+      .catch(() => {
+        alert("Failed to create flow");
+      });
   };
 
   return (

@@ -5,6 +5,7 @@ import { DnDProvider } from "./DnDContext";
 import useInitStore from "./store.init";
 import { useEffect } from "react";
 import useStore from "./store.flow";
+import { ulid } from "ulid";
 
 export default function FlowCanvas() {
   const { load, state } = useInitStore((s) => s);
@@ -29,22 +30,18 @@ export default function FlowCanvas() {
 
 function DoneState() {
   const { metaOfNodes } = useInitStore((s) => s);
-  const { setNodes } = useStore((s) => s);
+  const { setNodes, setDedupKey } = useStore((s) => s);
 
   useEffect(() => {
     const startMeta = metaOfNodes.find((m) => m.name === "control.start");
-    setNodes(
-      startMeta
-        ? [
-            {
-              id: "start",
-              type: "yaffNode",
-              position: { x: 160, y: 300 },
-              data: { meta: startMeta },
-            },
-          ]
-        : []
-    );
+    const startNode = {
+      id: "start",
+      type: "yaffNode",
+      position: { x: 160, y: 300 },
+      data: { meta: startMeta },
+    };
+    setDedupKey(ulid());
+    setNodes(startMeta ? [startNode] : []);
   }, [metaOfNodes]);
 
   return (
