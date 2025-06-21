@@ -63,6 +63,7 @@ public class DB {
     }
 
     public static void updateFlow(FlowRow row) {
+        row.setUpdatedAt(LocalDateTime.now());
         var sql = """
                 UPDATE flows
                 SET description = ?, data = ?, updated_at = ?

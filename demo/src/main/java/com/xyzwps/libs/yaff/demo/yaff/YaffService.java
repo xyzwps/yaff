@@ -70,7 +70,7 @@ public class YaffService implements HttpService {
             } else {
                 Yaff.FACTORY.fromJSON(row.getData());
                 DB.updateFlow(row);
-                response.status(204);
+                response.status(204).send();
             }
         }
     }
