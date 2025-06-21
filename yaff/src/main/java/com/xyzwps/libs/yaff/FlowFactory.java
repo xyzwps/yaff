@@ -56,6 +56,10 @@ public class FlowFactory {
     }
 
     public FlowExecutor getExecutor() {
-        return new FlowExecutor(nodeRegister);
+        return new FlowExecutor(nodeRegister, null);
+    }
+
+    public FlowExecutor getExecutor(FlowExecutorListener listener) {
+        return new FlowExecutor(nodeRegister, listener);
     }
 }

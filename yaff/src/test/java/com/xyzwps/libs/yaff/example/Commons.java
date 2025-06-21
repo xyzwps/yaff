@@ -1,6 +1,7 @@
 package com.xyzwps.libs.yaff.example;
 
 import com.xyzwps.libs.yaff.*;
+import com.xyzwps.libs.yaff.commons.JSON;
 
 import java.util.ArrayList;
 
@@ -12,6 +13,13 @@ class Commons {
     public static final String SEND_MSG_NODE_NAME = "demo.sendMessage";
 
     public static final ArrayList<String> MESSAGES_RECEIVER = new ArrayList<>();
+
+    public static final FlowExecutorListener LISTENER = new FlowExecutorListener() {
+        @Override
+        public void onFootPrint(FootPrint footPrint) {
+            System.out.println("=> " + JSON.stringify(footPrint));
+        }
+    };
 
     static final Node printTextNode = Node.builder()
             .name(PRINT_TEXT_NODE_NAME)

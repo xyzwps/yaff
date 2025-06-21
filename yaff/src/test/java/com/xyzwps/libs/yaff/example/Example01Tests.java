@@ -34,7 +34,7 @@ class Example01Tests {
         );
 
         var flow = factory.createFlow(nodes);
-        var executor = factory.getExecutor();
+        var executor = factory.getExecutor(LISTENER);
 
         var context = FlowContext.create();
         assertNull(context.get("upper"));
