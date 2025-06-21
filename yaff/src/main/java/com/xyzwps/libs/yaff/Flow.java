@@ -88,12 +88,6 @@ public class Flow {
         for (var node : flowNodes) {
             var name = node.getName();
             switch (name) {
-                case ControlNode.IF_NODE_NAME -> {
-                    var next = node.getNext();
-                    if (next == null || next.size() != 2) {
-                        throw new IllegalArgumentException("If node %s should have two next.".formatted(node.getId()));
-                    }
-                }
                 case ControlNode.CASE_NODE_NAME -> {
                     var next = node.getNext();
                     if (next == null || next.isEmpty()) {

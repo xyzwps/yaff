@@ -23,13 +23,20 @@ class Example02Tests {
                 new FlowNode()
                         .id(NodeIds.START)
                         .name(YaffNode.NOOP_NODE_NAME)
-                        .next("check"),
+                        .next("dispatch"),
                 new FlowNode()
-                        .id("check")
-                        .name(ControlNode.IF_NODE_NAME)
-                        .ref("check")
+                        .id("dispatch")
+                        .name(ControlNode.CASE_NODE_NAME)
+                        .next("case", "default"),
+                new FlowNode()
+                        .id("case")
+                        .name(ControlNode.WHEN_NODE_NAME)
                         .assignExpressions(new JavaScriptExpression("condition", "a1 > a2"))
-                        .next("printA1", "printA2"),
+                        .next("printA1"),
+                new FlowNode()
+                        .id("default")
+                        .name(ControlNode.DEFAULT_NODE_NAME)
+                        .next("printA2"),
                 new FlowNode()
                         .id("printA1")
                         .name(PRINT_NODE_NAME)
@@ -52,13 +59,11 @@ class Example02Tests {
             context.set("a1", 1);
             context.set("a2", 2);
 
-            assertNull(context.get("check"));
             assertNull(context.get("p1"));
             assertNull(context.get("p2"));
 
             executor.execute(flow, context);
 
-            assertEquals(Boolean.FALSE, context.get("check"));
             assertNull(context.get("p1"));
             assertEquals("print('a2 is great')", context.get("p2"));
         }
@@ -68,13 +73,11 @@ class Example02Tests {
             context.set("a1", 3);
             context.set("a2", 2);
 
-            assertNull(context.get("check"));
             assertNull(context.get("p1"));
             assertNull(context.get("p2"));
 
             executor.execute(flow, context);
 
-            assertEquals(Boolean.TRUE, context.get("check"));
             assertEquals("print('a1 is great')", context.get("p1"));
             assertNull(context.get("p2"));
         }

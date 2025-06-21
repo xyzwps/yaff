@@ -1,11 +1,13 @@
 package com.xyzwps.libs.yaff;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.*;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
+
+import static com.xyzwps.libs.yaff.commons.Utils.*;
 
 @NoArgsConstructor
 @Data
@@ -58,14 +60,13 @@ public class FlowNode {
     /// - required: true
     private List<AssignExpression> assignExpressions;
 
-    public static final Pattern ID_PATTERN = Pattern.compile("^[a-zA-Z_][a-zA-Z0-9_]*$");
 
     private static void checkId(String id) {
         if (id == null) {
             throw new IllegalArgumentException("id cannot be null");
         }
 
-        if (!ID_PATTERN.matcher(id).matches()) {
+        if (!isIdentifier(id)) {
             throw new IllegalArgumentException("Invalid id: " + id);
         }
     }
@@ -75,7 +76,7 @@ public class FlowNode {
             return;
         }
 
-        if (!ID_PATTERN.matcher(ref).matches()) {
+        if (!isIdentifier(ref)) {
             throw new IllegalArgumentException("Invalid ref: " + ref);
         }
     }
@@ -121,7 +122,7 @@ public class FlowNode {
             if (n == null) {
                 throw new IllegalArgumentException("next cannot be null");
             }
-            if (!ID_PATTERN.matcher(n).matches()) {
+            if (!isIdentifier(n)) {
                 throw new IllegalArgumentException("Invalid next: " + n);
             }
         }

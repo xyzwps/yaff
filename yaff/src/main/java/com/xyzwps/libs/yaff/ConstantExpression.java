@@ -18,8 +18,12 @@ public final class ConstantExpression implements AssignExpression {
     }
 
     public ConstantExpression(String name, Object value) {
-        this.inputName = name;
+        this.inputName = AssignExpression.validInputName(name);
         this.value = ParameterType.valid(value);
+    }
+
+    public void setInputName(String inputName) {
+        this.inputName = AssignExpression.validInputName(inputName);
     }
 
     @Override

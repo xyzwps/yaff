@@ -3,6 +3,7 @@ package com.xyzwps.libs.yaff;
 import java.util.HashMap;
 import java.util.Map;
 
+// TODO: 测试
 public class FlowExecutor {
 
     private final NodeRegister nodeRegister;
@@ -77,18 +78,9 @@ public class FlowExecutor {
      */
     private String executeControl(Object output, FlowNode flowNode, Node node, Flow flow, FlowContext context) {
         return switch (node.getName()) {
-            case ControlNode.IF_NODE_NAME -> executeIf(output, flowNode);
             case ControlNode.CASE_NODE_NAME -> executeCaseWhen(flowNode, node, flow, context);
             default -> throw new RuntimeException("Invalid node: " + node.getName());
         };
-    }
-
-    private String executeIf(Object output, FlowNode flowNode) {
-        if (output instanceof Boolean bool && bool) {
-            return flowNode.getNext().getFirst();
-        } else {
-            return flowNode.getNext().get(1);
-        }
     }
 
     private String executeCaseWhen(FlowNode flowNode, Node node, Flow flow, FlowContext context) {

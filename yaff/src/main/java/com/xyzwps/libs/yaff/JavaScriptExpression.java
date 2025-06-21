@@ -9,19 +9,23 @@ import org.graalvm.polyglot.Value;
 @Data
 @NoArgsConstructor
 public final class JavaScriptExpression implements AssignExpression {
-    private String expression;
+    private String expression; // TODO: 想个办法验证表达式
     private String inputName;
 
     public static final String TYPE = "javascript";
 
     public JavaScriptExpression(String name, String expression) {
-        this.inputName = name;
+        this.inputName = AssignExpression.validInputName(name);
         this.expression = expression;
     }
 
     @Override
     public String getType() {
         return TYPE;
+    }
+
+    public void setInputName(String inputName) {
+        this.inputName = AssignExpression.validInputName(inputName);
     }
 
     @Override

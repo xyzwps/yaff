@@ -1,6 +1,5 @@
 package com.xyzwps.libs.yaff.commons;
 
-import com.xyzwps.libs.yaff.NodeIds;
 
 import java.util.HashMap;
 import java.util.List;
@@ -9,11 +8,17 @@ import java.util.function.Function;
 public final class DAGChecker {
 
     public static <T, K> boolean isDAG(List<T> data, Function<T, K> getKey, Function<T, List<K>> getNext) {
+        Arguments.notNull(data, "data");
+        Arguments.notNull(getKey, "getKey");
+        Arguments.notNull(getNext, "getNext");
+
         var nodes = data.stream().map(d -> new GraphNode<>(d, getKey.apply(d), getNext.apply(d))).toList();
         return isDAG(nodes);
     }
 
     public static <T, K> boolean isDAG(List<GraphNode<T, K>> nodes) {
+        Arguments.notNull(nodes, "nodes");
+
         var keyToNode = new HashMap<K, GraphNode<T, K>>();
         for (var node : nodes) {
             keyToNode.put(node.key, node);

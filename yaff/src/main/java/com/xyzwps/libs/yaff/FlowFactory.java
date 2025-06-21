@@ -1,11 +1,11 @@
 package com.xyzwps.libs.yaff;
 
+import com.xyzwps.libs.yaff.commons.Arguments;
 import com.xyzwps.libs.yaff.commons.JSON;
 import lombok.Data;
 import lombok.Getter;
 
 import java.util.List;
-import java.util.Objects;
 
 @Getter
 public class FlowFactory {
@@ -13,7 +13,7 @@ public class FlowFactory {
     private final NodeRegister nodeRegister;
 
     public FlowFactory(NodeRegister nodeRegister) {
-        this.nodeRegister = Objects.requireNonNull(nodeRegister, "NodeRegister cannot be null");
+        this.nodeRegister = Arguments.notNull(nodeRegister, "nodeRegister");
     }
 
     public FlowFactory() {
@@ -44,16 +44,13 @@ public class FlowFactory {
 
     /// 这里 check {@link Flow} check 不了的东西。
     private void check(List<FlowNode> nodes) {
-        if (nodes == null) {
-            throw new IllegalArgumentException("nodes cannot be null");
-        }
-        if (nodes.isEmpty()) {
-            throw new IllegalArgumentException("nodes cannot be empty");
+        if (nodes == null || nodes.isEmpty()) {
+            throw new IllegalArgumentException("Argument nodes cannot be null or empty.");
         }
 
         for (FlowNode node : nodes) {
             if (nodeRegister.getNode(node.getName()) == null) {
-                throw new IllegalArgumentException("Node not registered: name=" + node.getName());
+                throw new YaffException("Node not registered: name=" + node.getName());
             }
         }
     }

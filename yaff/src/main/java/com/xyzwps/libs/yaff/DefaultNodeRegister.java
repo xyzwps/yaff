@@ -9,7 +9,6 @@ public class DefaultNodeRegister implements NodeRegister {
     private final Map<String, Node> nodes = new HashMap<>();
 
     public DefaultNodeRegister() {
-        register(ControlNode.ifNode);
         register(ControlNode.caseNode);
         register(ControlNode.whenNode);
         register(ControlNode.defaultNode);
