@@ -10,6 +10,8 @@ import { type AppState } from "./types";
 
 // this is our useStore hook that we can use in our components to get parts of the store and call actions
 const useStore = create<AppState>((set, get) => ({
+  mode: "create",
+  setMode: (mode) => set({ mode }),
   nodes: [],
   edges: [],
   dedupKey: "",

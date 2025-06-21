@@ -1,11 +1,5 @@
-import {
-  ReactFlow,
-  Background,
-  Controls,
-  MiniMap,
-  useReactFlow,
-  useViewport,
-} from "@xyflow/react";
+import { ReactFlow, Background, Controls, MiniMap } from "@xyflow/react";
+import { useReactFlow, useViewport } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 
 import { useShallow } from "zustand/react/shallow";
@@ -17,10 +11,11 @@ import { useCallback } from "react";
 import { useDnD } from "./DnDContext";
 import NodeDrawer from "./NodeDrawer";
 import { tsId } from "./utils";
-import { createFlow } from "../../apis";
+import { createFlow, updateFlow } from "../../apis";
 import { useNavigate } from "raviger";
 
 const selector = (state: AppState) => ({
+  mode: state.mode,
   nodes: state.nodes,
   edges: state.edges,
   setNodes: state.setNodes,
@@ -36,6 +31,7 @@ const nodeTypes = {
 
 export default function Board() {
   const {
+    mode,
     nodes,
     edges,
     dedupKey,
@@ -46,7 +42,7 @@ export default function Board() {
   } = useStore(useShallow(selector));
   // const reactFlowWrapper = useRef(null);
   const { screenToFlowPosition } = useReactFlow();
-  const { zoom } = useViewport();
+  const viewport = useViewport();
   const navigate = useNavigate();
   const [meta] = useDnD();
 
@@ -120,26 +116,32 @@ export default function Board() {
       node.next?.push(e.target);
     }
 
-    createFlow({
-      dedupKey,
-      description: "", // TODO: 图信息
-      data: { flowNodes: results },
-    })
-      .then(() => {
-        navigate("/flows");
-      })
-      .catch(() => {
-        alert("Failed to create flow");
-      });
+    mode === "create"
+      ? createFlow({
+          dedupKey,
+          description: "", // TODO: 图信息
+          data: { flowNodes: results },
+        })
+      : updateFlow({
+          id: +dedupKey,
+          description: "", // TODO: 图信息
+          data: { flowNodes: results },
+        })
+          .then(() => {
+            navigate("/flows");
+          })
+          .catch(() => {
+            alert(`Failed to ${mode} flow`);
+          });
   };
 
   return (
-    <div className="bg-pink-400 w-full h-full flex flex-col">
-      <div className="h-12">
-        <button className="btn" onClick={handleSave}>
-          Save
+    <div className="bg-base-400 w-full h-full flex flex-col">
+      <div className="h-12 inline-flex items-center gap-2 px-2">
+        <button className="btn btn-sm" onClick={handleSave}>
+          保存
         </button>{" "}
-        <span>{Math.round(zoom * 100)}%</span>
+        <span>{Math.round(viewport.zoom * 100)}%</span>
         <NodeDrawer />
       </div>
       <div className="w-full h-full bg-slate-50">
@@ -148,12 +150,12 @@ export default function Board() {
           nodeTypes={nodeTypes}
           nodes={nodes}
           edges={edges}
+          defaultViewport={{ zoom: 1, x: 0, y: 0 }}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
           onDrop={onDrop}
           onDragOver={onDragOver}
-          fitView
         >
           <Background />
           <Controls />

@@ -10,6 +10,8 @@ import {
 export type AppNode = Node;
 
 export type AppState = {
+  mode: "create" | "update";
+  setMode: (mode: "create" | "update") => void;
   nodes: AppNode[];
   setNodes: (nodes: AppNode[]) => void;
   edges: Edge[];

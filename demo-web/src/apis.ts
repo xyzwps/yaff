@@ -14,14 +14,36 @@ type CreateFlowPayload = {
   };
 };
 
-export const createFlow = async (payload: CreateFlowPayload) => {
-  const response = await ky.post("/apis/yaff/flows", {
+export const createFlow = (payload: CreateFlowPayload) =>
+  ky.post("/apis/yaff/flows", {
     json: {
       dedupKey: payload.dedupKey,
       description: payload.description,
       data: JSON.stringify(payload.data),
     },
   });
+
+type UpdateFlowPayload = {
+  id: number;
+  description: string;
+  data: {
+    flowNodes: FlowNode[];
+  };
+};
+
+export const updateFlow = (payload: UpdateFlowPayload) =>
+  ky.put(`/apis/yaff/flows/${payload.id}`, {
+    json: {
+      id: payload.id,
+      description: payload.description,
+      data: JSON.stringify(payload.data),
+    },
+  });
+
+export const deleteFlow = (id: number) => ky.delete(`/apis/yaff/flows/${id}`);
+
+export const getFlow = async (id: number): Promise<FlowRow> => {
+  const response = await ky.get(`/apis/yaff/flows/${id}`);
   return response.json();
 };
 

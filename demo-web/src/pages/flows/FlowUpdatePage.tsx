@@ -1,3 +1,21 @@
+import { useEffect, useState } from "react";
+import { getFlow } from "../../apis";
+import FlowCanvas from "../../components/FlowCanvas";
+
 export default function FlowUpdatePage({ id }: { id: number }) {
-  return <div>dd</div>;
+  const [row, setRow] = useState<FlowRow | null>(null);
+
+  useEffect(() => {
+    getFlow(id)
+      .then(setRow)
+      .catch((err) => {
+        console.log("getFlow error", id, err);
+      });
+  }, [id]);
+
+  if (row == null) {
+    return <div>Loading...</div>;
+  }
+
+  return <FlowCanvas row={row} />;
 }
