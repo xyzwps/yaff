@@ -10,6 +10,7 @@ import io.helidon.webserver.http.ServerResponse;
 import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class YaffService implements HttpService {
 
@@ -18,6 +19,10 @@ public class YaffService implements HttpService {
         httpRules.get("/metadata", this::getMetaData);
         httpRules.get("/flows", this::getAllFlows);
         httpRules.post("/flows", this::createFlow);
+        httpRules.get("/flows/{id}", this::getFlow);
+        httpRules.put("/flows/{id}", this::updateFlow);
+        httpRules.delete("/flows/{id}", this::deleteFlow);
+
     }
 
     private void getMetaData(ServerRequest request, ServerResponse response) {
@@ -26,6 +31,48 @@ public class YaffService implements HttpService {
 
     private void getAllFlows(ServerRequest request, ServerResponse response) {
         response.send(DB.getAllFlows());
+    }
+
+    private void getFlow(ServerRequest request, ServerResponse response) {
+        var idStr = request.path().pathParameters().get("id");
+        var id = Integer.parseInt(idStr);
+        var row = DB.getFlow(id);
+        if (row == null) {
+            response.status(404).send();
+        } else {
+            response.send(row);
+        }
+    }
+
+    private void deleteFlow(ServerRequest request, ServerResponse response) {
+        var idStr = request.path().pathParameters().get("id");
+        var id = Integer.parseInt(idStr);
+        var row = DB.getFlow(id);
+        if (row == null) {
+            response.status(404).send();
+        } else {
+            DB.deleteFlow(id);
+            response.status(204).send();
+        }
+    }
+
+    // TODO: 更细致的检查
+    private void updateFlow(ServerRequest request, ServerResponse response) {
+        var idStr = request.path().pathParameters().get("id");
+        var id = Integer.parseInt(idStr);
+        var oldRow = DB.getFlow(id);
+        if (oldRow == null) {
+            response.status(404).send();
+        } else {
+            var row = request.content().as(FlowRow.class);
+            if (!Objects.equals(row.getId(), id)) {
+                response.status(400).send();
+            } else {
+                Yaff.FACTORY.fromJSON(row.getData());
+                DB.updateFlow(row);
+                response.status(204);
+            }
+        }
     }
 
     private void createFlow(ServerRequest request, ServerResponse response) {
