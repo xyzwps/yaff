@@ -18,6 +18,8 @@ import java.time.format.DateTimeFormatter;
 public class JSON {
     public static final ObjectMapper OM = createMapper();
 
+    private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
     private static ObjectMapper createMapper() {
 
         var j8Time = new JavaTimeModule();
@@ -46,7 +48,7 @@ public class JSON {
             }
 
             if (p.hasToken(JsonToken.VALUE_STRING)) {
-                return LocalDateTime.parse(p.getText(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                return LocalDateTime.parse(p.getText(), DTF);
             }
 
             throw new JsonParseException(p, "Expected string or null");
@@ -65,7 +67,7 @@ public class JSON {
             if (value == null) {
                 gen.writeNull();
             } else {
-                gen.writeString(value.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+                gen.writeString(value.format(DTF));
             }
         }
     }
