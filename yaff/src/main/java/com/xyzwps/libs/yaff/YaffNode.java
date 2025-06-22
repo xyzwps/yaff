@@ -10,12 +10,12 @@ public interface YaffNode {
 
     Node noopNode = Node.builder()
             .name(NOOP_NODE_NAME)
-            .description("Noop node")
+            .description("一个不进行任何操作的节点。")
             .build();
 
     Node rngNode = Node.builder()
             .name(RNG_NODE_NAME)
-            .description("生成一个随机数")
+            .description("生成一个随机数。")
             .inputs(new NodeInput("min", ParameterType.FLOAT),
                     new NodeInput("max", ParameterType.FLOAT))
             .output(new NodeOutput(ParameterType.FLOAT))

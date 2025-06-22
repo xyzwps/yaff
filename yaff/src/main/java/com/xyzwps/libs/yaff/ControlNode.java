@@ -16,33 +16,33 @@ public interface ControlNode {
 
     Node caseNode = Node.builder()
             .name(CASE_NODE_NAME)
-            .description("Case 节点")
+            .description("Case-When 模式的入口节点。由此出发，可以指向多个 When 节点和最多一个 Default 节点。")
             .build();
 
     Node whenNode = Node.builder()
             .name(WHEN_NODE_NAME)
-            .description("条件节点")
+            .description("可以用于 Case-When 模式，也可以单独使用。单独使用时，如果条件值为 false，则直接结束整个流程。")
             .inputs(new NodeInput(CONDITION, BOOL))
             .build();
 
     Node defaultNode = Node.builder()
             .name(DEFAULT_NODE_NAME)
-            .description("默认分支")
+            .description("用于 Case-When 模式的 Fallback 逻辑，也可以单独使用。单独使用时，没有特殊作用。")
             .build();
 
     Node startNode = Node.builder()
             .name(START_NODE_NAME)
-            .description("开始节点")
+            .description("流程的开始节点。一个流程只能有一个。")
             .build();
 
     Node endNode = Node.builder()
             .name(END_NODE_NAME)
-            .description("结束节点")
+            .description("流程的结束节点。一个流程最多有一个。")
             .build();
 
     Node allNode = Node.builder()
             .name(ALL_NODE_NAME)
-            .description("执行所有")
+            .description("由此节点出发，可以指向多个任意节点。其后继节点会被逐个全部执行。")
             .build();
 
 }
