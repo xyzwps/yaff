@@ -31,6 +31,7 @@ const useStore = create<AppState>((set, get) => ({
     set({ edges: applyEdgeChanges(changes, get().edges) });
   },
   onConnect: (connection) => {
+    // TODO: 连线规则细化，比如普通节点只能有一个出度，case 只能进入到 when 和 default 等
     set({
       edges: addEdge(
         {

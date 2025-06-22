@@ -70,14 +70,17 @@ export default function Board() {
       x: event.clientX,
       y: event.clientY,
     });
-    const id =
-      meta.name === "control.start"
-        ? "start"
-        : meta.name === "control.end"
-        ? "end"
-        : `n${tsId()}`;
+
+    switch (meta.name) {
+      case "control.start":
+        return;
+      case "control.end":
+        const hasEnd = nodes.filter((it) => it.id === "end").length > 0;
+        if (hasEnd) return;
+    }
+
     const newNode = {
-      id,
+      id: genId(meta.name),
       type: "yaffNode",
       position,
       data: { description: "", input: {}, meta },
@@ -173,4 +176,15 @@ export default function Board() {
       </div>
     </div>
   );
+}
+
+function genId(metaName: string) {
+  switch (metaName) {
+    case "control.start":
+      return "start";
+    case "control.end":
+      return "end";
+    default:
+      return `n${tsId()}`;
+  }
 }
