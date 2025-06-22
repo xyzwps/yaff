@@ -9,7 +9,7 @@ import type { AppState, FlowNode, YaffNodeData } from "./types";
 import YaffNode from "./YaffNode";
 import { useCallback } from "react";
 import { useDnD } from "./DnDContext";
-import NodeDrawer from "./NodeDrawer";
+import BoardDrawer from "./BoardDrawer";
 import { tsId } from "./utils";
 import { createFlow, updateFlow } from "../../apis";
 import { useNavigate } from "raviger";
@@ -23,6 +23,8 @@ const selector = (state: AppState) => ({
   onEdgesChange: state.onEdgesChange,
   onConnect: state.onConnect,
   dedupKey: state.dedupKey,
+  flowDescription: state.flowDescription,
+  setEditorMode: state.setEditorMode,
 });
 
 const nodeTypes = {
@@ -35,10 +37,12 @@ export default function Board() {
     nodes,
     edges,
     dedupKey,
+    flowDescription,
     setNodes,
     onNodesChange,
     onEdgesChange,
     onConnect,
+    setEditorMode,
   } = useStore(useShallow(selector));
   // const reactFlowWrapper = useRef(null);
   const { screenToFlowPosition } = useReactFlow();
@@ -119,12 +123,12 @@ export default function Board() {
     mode === "create"
       ? createFlow({
           dedupKey,
-          description: "", // TODO: 图信息
+          description: flowDescription,
           data: { flowNodes: results },
         })
       : updateFlow({
           id: +dedupKey,
-          description: "", // TODO: 图信息
+          description: flowDescription,
           data: { flowNodes: results },
         })
           .then(() => {
@@ -135,14 +139,19 @@ export default function Board() {
           });
   };
 
+  const showFlowInfo = () => setEditorMode("flow");
+
   return (
     <div className="bg-base-400 w-full h-full flex flex-col">
       <div className="h-12 inline-flex items-center gap-2 px-2">
         <button className="btn btn-sm" onClick={handleSave}>
           保存
         </button>{" "}
+        <button className="btn btn-sm" onClick={showFlowInfo}>
+          流程信息
+        </button>{" "}
         <span>{Math.round(viewport.zoom * 100)}%</span>
-        <NodeDrawer />
+        <BoardDrawer />
       </div>
       <div className="w-full h-full bg-slate-50">
         <ReactFlow

@@ -9,19 +9,25 @@ import {
 
 export type AppNode = Node;
 
+type Mode = "create" | "update";
+
+type EditorMode = "flow" | "node" | "none";
+
 export type AppState = {
-  mode: "create" | "update";
-  setMode: (mode: "create" | "update") => void;
+  mode: Mode;
+  setMode: (mode: Mode) => void;
+  editorMode: EditorMode;
+  setEditorMode: (mode: EditorMode) => void;
   nodes: AppNode[];
   setNodes: (nodes: AppNode[]) => void;
   edges: Edge[];
   setEdges: (edges: Edge[]) => void;
   dedupKey: string;
   setDedupKey: (dedupKey: string) => void;
-  showNodeEditor: boolean;
-  setShowNodeEditor: (show: boolean) => void;
   selectedNode: NodeProps<YaffNodeData> | null;
   setSelectedNode: (node: NodeProps<YaffNodeData> | null) => void;
+  flowDescription: string;
+  setFlowDescription: (v: string) => void;
   onNodesChange: OnNodesChange<AppNode>;
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;

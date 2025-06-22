@@ -12,16 +12,18 @@ import { type AppState } from "./types";
 const useStore = create<AppState>((set, get) => ({
   mode: "create",
   setMode: (mode) => set({ mode }),
+  editorMode: "none",
+  setEditorMode: (mode) => set({ editorMode: mode }),
   nodes: [],
+  setNodes: (nodes) => set({ nodes }),
   edges: [],
+  setEdges: (edges) => set({ edges }),
   dedupKey: "",
   setDedupKey: (dedupKey) => set({ dedupKey }),
-  showNodeEditor: false,
-  setShowNodeEditor: (show) => set({ showNodeEditor: show }),
   selectedNode: null,
   setSelectedNode: (node) => set({ selectedNode: node }),
-  setNodes: (nodes) => set({ nodes }),
-  setEdges: (edges) => set({ edges }),
+  flowDescription: "",
+  setFlowDescription: (description) => set({ flowDescription: description }),
   onNodesChange: (changes) => {
     set({ nodes: applyNodeChanges(changes, get().nodes) });
   },

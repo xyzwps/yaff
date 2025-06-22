@@ -2,6 +2,7 @@ import { Handle, Position, type NodeProps } from "@xyflow/react";
 import useStore from "./store.flow";
 import { type YaffNodeData } from "./types";
 import { SHORT_PT } from "./dict";
+import NodeIcon from "./NodeIcon";
 
 const TITLE_BG: Record<string, string> = {
   "control.start": "from-sky-200",
@@ -13,11 +14,8 @@ const TITLE_BG: Record<string, string> = {
 
 export default function YaffNode(props: NodeProps<YaffNodeData>) {
   const { data } = props;
-  const { setShowNodeEditor, setSelectedNode } = useStore((s) => s);
-
-  const {
-    meta: { inputs, name, description, output },
-  } = data;
+  const { setEditorMode, setSelectedNode } = useStore((s) => s);
+  const { inputs, name, description, output } = data.meta;
 
   const zhai =
     name === "control.start" ||
@@ -34,20 +32,21 @@ export default function YaffNode(props: NodeProps<YaffNodeData>) {
       className={`card rounded-md p-0 ${width} shadow-sm`}
       onClick={() => {
         setSelectedNode(JSON.parse(JSON.stringify(props)));
-        setShowNodeEditor(true);
+        setEditorMode("node");
       }}
     >
       <Handle type="target" position={Position.Left} />
       <h2
         className={`card-title rounded-t-md p-2 text-sm bg-linear-to-b ${titleBg} to-indigo-50`}
       >
-        #{name}
+        <NodeIcon name={name} size={16} />
+        {name}
       </h2>
       <div className="card-body p-2 bg-indigo-50">
         {data.description && (
-          <div className="inline-flex items-center gap-2">
-            <div className="w-10">描述:</div>
-            <div>{data.description}</div>
+          <div className="text-xs text-slate-600">
+            <span className="w-10 font-bold">描述:&nbsp;</span>
+            {data.description}
           </div>
         )}
         {inputs && inputs.length > 0 && (

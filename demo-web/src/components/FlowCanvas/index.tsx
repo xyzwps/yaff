@@ -41,7 +41,8 @@ export default function FlowCanvas({ row }: FlowCanvasProps) {
 
 function DoneState({ row }: FlowCanvasProps) {
   const { metaOfNodes } = useInitStore((s) => s);
-  const { setNodes, setEdges, setDedupKey, setMode } = useStore((s) => s);
+  const { setNodes, setEdges, setDedupKey, setMode, setFlowDescription } =
+    useStore((s) => s);
 
   const nameToMeta = _.keyBy(metaOfNodes, "name");
 
@@ -49,6 +50,8 @@ function DoneState({ row }: FlowCanvasProps) {
     if (row) {
       setMode("update");
       setDedupKey(row.id + "");
+      setFlowDescription(row.description);
+
       const flow = JSON.parse(row.data) as { flowNodes: FlowNode[] };
       setNodes(
         flow.flowNodes.map((it) => ({

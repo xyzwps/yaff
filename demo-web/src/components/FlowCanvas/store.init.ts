@@ -20,7 +20,17 @@ const useInitStore = create<InitState>((set, get) => ({
     set({ state: "loading" });
     try {
       const metaOfNodes = await getMetaData();
-      set({ metaOfNodes, state: "done" });
+      const controlMeta: NodeMetaData[] = [];
+      const restMeta: NodeMetaData[] = [];
+      for (const meta of metaOfNodes) {
+        if (meta.name.startsWith("control.")) {
+          controlMeta.push(meta);
+        } else {
+          restMeta.push(meta);
+        }
+      }
+
+      set({ metaOfNodes: [...controlMeta, ...restMeta], state: "done" });
     } catch (e) {
       set({ state: "error" });
       console.error(e);
