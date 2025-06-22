@@ -8,6 +8,7 @@ public interface ControlNode {
     String DEFAULT_NODE_NAME = "control.default";
     String START_NODE_NAME = "control.start";
     String END_NODE_NAME = "control.end";
+    String ALL_NODE_NAME = "control.all";
 
     String CONDITION = "condition";
 
@@ -38,4 +39,10 @@ public interface ControlNode {
             .name(END_NODE_NAME)
             .description("结束节点")
             .build();
+
+    Node allNode = Node.builder()
+            .name(ALL_NODE_NAME)
+            .description("执行所有")
+            .build();
+
 }

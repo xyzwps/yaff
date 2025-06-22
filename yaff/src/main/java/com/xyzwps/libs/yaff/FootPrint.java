@@ -12,6 +12,7 @@ import java.util.Map;
         @JsonSubTypes.Type(value = FootPrint.OutputExecuted.class, name = "output-executed"),
         @JsonSubTypes.Type(value = FootPrint.PutRefIntoContext.class, name = "put-ref-into-context"),
         @JsonSubTypes.Type(value = FootPrint.End.class, name = "end"),
+        @JsonSubTypes.Type(value = FootPrint.BranchEnd.class, name = "branch-end"),
         @JsonSubTypes.Type(value = FootPrint.CheckWhenNode.class, name = "check-when-node"),
         @JsonSubTypes.Type(value = FootPrint.ToNext.class, name = "to-next")
 })
@@ -32,6 +33,9 @@ public sealed interface FootPrint {
     record End() implements FootPrint {
     }
 
+    record BranchEnd(String branchStartId) implements FootPrint {
+    }
+
     record CheckWhenNode(String id) implements FootPrint {
     }
 
@@ -39,5 +43,4 @@ public sealed interface FootPrint {
     }
 
     FootPrint END = new End();
-
 }

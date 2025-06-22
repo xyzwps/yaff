@@ -23,6 +23,8 @@ public interface FlowContext {
 
     Set<String> getNames();
 
+    FlowContext clone();
+
     static FlowContext create() {
         return new SimpleFlowContext();
     }

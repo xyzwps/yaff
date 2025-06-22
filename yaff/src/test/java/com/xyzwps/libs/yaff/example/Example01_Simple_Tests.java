@@ -11,7 +11,7 @@ import static com.xyzwps.libs.yaff.TestCommons.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-class Example01Tests {
+class Example01_Simple_Tests {
 
     /**
      * simple example

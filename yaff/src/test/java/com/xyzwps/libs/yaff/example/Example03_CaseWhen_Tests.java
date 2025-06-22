@@ -10,12 +10,12 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-class Example03Tests {
+class Example03_CaseWhen_Tests {
 
     @Test
     void testCaseWhen() {
         var factory = new FlowFactory()
-                .register(Example02Tests.printNode);
+                .register(Example02_If_Tests.printNode);
 
         var nodes = List.<FlowNode>of(
                 new FlowNode()
@@ -34,7 +34,7 @@ class Example03Tests {
                         .next("print1"),
                 new FlowNode()
                         .id("print1")
-                        .name(Example02Tests.PRINT_NODE_NAME)
+                        .name(Example02_If_Tests.PRINT_NODE_NAME)
                         .ref("p1")
                         .assignExpressions(new ConstantExpression("text", "a1 is great"))
                         .next(NodeIds.END),
@@ -47,7 +47,7 @@ class Example03Tests {
                 new FlowNode()
                         .id("print2")
                         .ref("p2")
-                        .name(Example02Tests.PRINT_NODE_NAME)
+                        .name(Example02_If_Tests.PRINT_NODE_NAME)
                         .assignExpressions(new ConstantExpression("text", "a2 is great"))
                         .next(NodeIds.END),
 
@@ -58,7 +58,7 @@ class Example03Tests {
                 new FlowNode()
                         .id("print3")
                         .ref("p3")
-                        .name(Example02Tests.PRINT_NODE_NAME)
+                        .name(Example02_If_Tests.PRINT_NODE_NAME)
                         .assignExpressions(new ConstantExpression("text", "a1 is equal to a2"))
                         .next(NodeIds.END)
         );

@@ -1,6 +1,7 @@
 package com.xyzwps.libs.yaff;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 // TODO: 测试
@@ -15,38 +16,53 @@ public class FlowExecutor {
         this.listener = listener == null ? FlowExecutorListener.NOOP : listener;
     }
 
+    enum EndType {
+        END,
+        BRANCH_END
+    }
+
     public void execute(Flow flow, FlowContext context) {
-        var currentId = NodeIds.START;
+        execute(flow, context, NodeIds.START, EndType.END);
+    }
+
+    private void execute(Flow flow, FlowContext context, String start, EndType endType) {
+        var currentId = start;
         while (!NodeIds.END.equals(currentId)) {
             var flowNode = getFlowNode(currentId, flow);
             var node = getNode(flowNode);
 
             listener.onFootPrint(new FootPrint.BeforeNode(currentId, node.getName()));
 
-            var inputs = collectInputs(flowNode, node, context);
-            listener.onFootPrint(new FootPrint.InputsCalculated(currentId, inputs));
+            var nextId = switch (node.getName()) {
+                case ControlNode.CASE_NODE_NAME -> executeCase(flowNode, node, flow, context);
+                case ControlNode.WHEN_NODE_NAME -> executeWhen(flowNode, node, context);
+                case ControlNode.ALL_NODE_NAME -> executeAll(flowNode, node, flow, context);
+                default -> executeCommonNode(flowNode, node, context);
+            };
 
-            var output = node.execute(inputs);
-            listener.onFootPrint(new FootPrint.OutputExecuted(currentId, output));
-
-            var ref = flowNode.getRef();
-            if (ref != null) {
-                context.set(ref, output);
-                listener.onFootPrint(new FootPrint.PutRefIntoContext(currentId, ref, output));
+            if (nextId == null) {
+                break;
             }
 
-            var next = flowNode.getNext();
-            if (next == null || next.isEmpty()) {
-                break;
-            } else if (next.size() > 1) {
-                currentId = executeControl(flowNode, node, flow, context);
-            } else {
-                var nextId = next.getFirst();
-                listener.onFootPrint(new FootPrint.ToNext(currentId, nextId));
-                currentId = nextId;
+            listener.onFootPrint(new FootPrint.ToNext(currentId, nextId));
+            currentId = nextId;
+        }
+        switch (endType) {
+            case END -> listener.onFootPrint(FootPrint.END);
+            case BRANCH_END -> listener.onFootPrint(new FootPrint.BranchEnd(currentId));
+        }
+    }
+
+    private String executeAll(FlowNode flowNode, Node node, Flow flow, FlowContext context) {
+        var next = flowNode.getNext();
+        if (next == null || next.isEmpty()) {
+            listener.onFootPrint(FootPrint.END);
+        } else {
+            for (var nextId : next) {
+                execute(flow, context, nextId, EndType.BRANCH_END);
             }
         }
-        listener.onFootPrint(FootPrint.END);
+        return null;
     }
 
     private Node getNode(FlowNode flowNode) {
@@ -86,17 +102,47 @@ public class FlowExecutor {
         return inputs;
     }
 
-    /**
-     * 执行控制流，返回执行完之后下一个应该执行的节点 id。
-     */
-    private String executeControl(FlowNode flowNode, Node node, Flow flow, FlowContext context) {
-        return switch (node.getName()) {
-            case ControlNode.CASE_NODE_NAME -> executeCaseWhen(flowNode, node, flow, context);
-            default -> throw new YaffException("Invalid node: " + node.getName());
-        };
+    private String executeCommonNode(FlowNode flowNode, Node node, FlowContext context) {
+        var currentId = flowNode.getId();
+        var inputs = collectInputs(flowNode, node, context);
+        listener.onFootPrint(new FootPrint.InputsCalculated(currentId, inputs));
+
+        var output = node.execute(inputs);
+        listener.onFootPrint(new FootPrint.OutputExecuted(currentId, output));
+
+        var ref = flowNode.getRef();
+        if (ref != null) {
+            context.set(ref, output);
+            listener.onFootPrint(new FootPrint.PutRefIntoContext(currentId, ref, output));
+        }
+
+        return first(flowNode.getNext());
     }
 
-    private String executeCaseWhen(FlowNode flowNode, Node node, Flow flow, FlowContext context) {
+
+    private static <T> T first(List<T> list) {
+        return list == null ? null : list.isEmpty() ? null : list.getFirst();
+    }
+
+    private String executeWhen(FlowNode whenFlowNode, Node whenNode, FlowContext context) {
+        var whenId = whenFlowNode.getId();
+        listener.onFootPrint(new FootPrint.CheckWhenNode(whenId));
+
+        var inputs = collectInputs(whenFlowNode, whenNode, context);
+        listener.onFootPrint(new FootPrint.InputsCalculated(whenId, inputs));
+
+        var conditionValue = inputs.get(ControlNode.CONDITION);
+        if (conditionValue instanceof Boolean bool && bool) {
+            var afterId = first(whenFlowNode.getNext());
+            if (afterId != null) {
+                listener.onFootPrint(new FootPrint.ToNext(whenId, afterId));
+            }
+            return afterId;
+        }
+        return null; // end
+    }
+
+    private String executeCase(FlowNode flowNode, Node node, Flow flow, FlowContext context) {
         var caseId = flowNode.getId();
         var whenIds = flowNode.getNext();
 
@@ -116,8 +162,10 @@ public class FlowExecutor {
 
                     var conditionValue = inputs.get(ControlNode.CONDITION);
                     if (conditionValue instanceof Boolean bool && bool) {
-                        var afterId = whenFlowNode.getNext().getFirst(); // TODO: 验证确实有且仅有一个
-                        listener.onFootPrint(new FootPrint.ToNext(whenId, afterId));
+                        var afterId = first(whenFlowNode.getNext());
+                        if (afterId != null) {
+                            listener.onFootPrint(new FootPrint.ToNext(whenId, afterId));
+                        }
                         return afterId;
                     }
                 }
@@ -136,9 +184,10 @@ public class FlowExecutor {
         if (defaultFlowNode != null) {
             listener.onFootPrint(new FootPrint.ToNext(caseId, defaultFlowNode.getId()));
 
-            var afterId = defaultFlowNode.getNext().getFirst();  // TODO: 验证确实有且仅有一个
-            listener.onFootPrint(new FootPrint.ToNext(defaultFlowNode.getId(), afterId));
-
+            var afterId = first(defaultFlowNode.getNext());
+            if (afterId != null) {
+                listener.onFootPrint(new FootPrint.ToNext(defaultFlowNode.getId(), afterId));
+            }
             return afterId;
         }
         throw new YaffException("No default node found");

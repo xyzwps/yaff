@@ -260,6 +260,26 @@ class FlowTests {
             var ex = assertThrows(YaffException.class, () -> factory.createFlow(nodes));
             assertEquals("Unexpected next of case node case", ex.getMessage());
         }
+
+        @Test
+        void justWhen() {
+            var nodes = List.<FlowNode>of(
+                    new FlowNode().id(NodeIds.START).name(YaffNode.NOOP_NODE_NAME)
+                            .next("when"),
+                    new FlowNode().id("when").name(ControlNode.WHEN_NODE_NAME)
+            );
+            factory.createFlow(nodes);
+        }
+
+        @Test
+        void justDefault() {
+            var nodes = List.<FlowNode>of(
+                    new FlowNode().id(NodeIds.START).name(YaffNode.NOOP_NODE_NAME)
+                            .next("def"),
+                    new FlowNode().id("def").name(ControlNode.DEFAULT_NODE_NAME)
+            );
+            factory.createFlow(nodes);
+        }
     }
 
     @Nested

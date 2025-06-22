@@ -24,6 +24,9 @@ import java.util.Map;
 ///     - next 节点必须存在
 ///     - 最多有一个 default 节点
 ///     - 其他都是 when 节点
+///   - all 节点的 next 可以有多个
+///   - when 节点的 parent 不必是 case 节点
+///   - default 节点的 parent 不必是 case 节点
 ///   - end 节点没有 next
 ///   - 其他节点只有一个 next，且 next 必须存在，除非 next 是 end
 /// - R3: control 节点规则
@@ -102,6 +105,22 @@ public class Flow {
                 case ControlNode.END_NODE_NAME -> {
                     if (next != null && !next.isEmpty()) {
                         throw new YaffException("End node cannot have next.");
+                    }
+                }
+                case ControlNode.ALL_NODE_NAME -> {
+                    if (next == null || next.isEmpty()) {
+                        // do nothing
+                    } else {
+                        // next node should exist
+                        for (var n : next) {
+                            if (NodeIds.END.equals(n)) {
+                                continue; // ok
+                            }
+                            if (idToNode.containsKey(n)) {
+                                continue; // ok
+                            }
+                            throw new YaffException("FlowNode %s does not exist.".formatted(n));
+                        }
                     }
                 }
                 default -> {

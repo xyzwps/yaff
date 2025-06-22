@@ -9,11 +9,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class Example02Tests {
+class Example02_If_Tests {
 
-    /**
-     * if node example
-     */
+    /// `If` example.
+    ///
+    /// We use when node to check.
     @Test
     void testIf() {
         var factory = new FlowFactory()
@@ -23,31 +23,17 @@ class Example02Tests {
                 new FlowNode()
                         .id(NodeIds.START)
                         .name(YaffNode.NOOP_NODE_NAME)
-                        .next("dispatch"),
+                        .next("when"),
                 new FlowNode()
-                        .id("dispatch")
-                        .name(ControlNode.CASE_NODE_NAME)
-                        .next("case", "default"),
-                new FlowNode()
-                        .id("case")
+                        .id("when")
                         .name(ControlNode.WHEN_NODE_NAME)
                         .assignExpressions(new JavaScriptExpression("condition", "a1 > a2"))
                         .next("printA1"),
-                new FlowNode()
-                        .id("default")
-                        .name(ControlNode.DEFAULT_NODE_NAME)
-                        .next("printA2"),
                 new FlowNode()
                         .id("printA1")
                         .name(PRINT_NODE_NAME)
                         .ref("p1")
                         .assignExpressions(new ConstantExpression("text", "a1 is great"))
-                        .next(NodeIds.END),
-                new FlowNode()
-                        .id("printA2")
-                        .name(PRINT_NODE_NAME)
-                        .ref("p2")
-                        .assignExpressions(new ConstantExpression("text", "a2 is great"))
                         .next(NodeIds.END)
         );
 
@@ -60,12 +46,8 @@ class Example02Tests {
             context.set("a2", 2);
 
             assertNull(context.get("p1"));
-            assertNull(context.get("p2"));
-
             executor.execute(flow, context);
-
             assertNull(context.get("p1"));
-            assertEquals("print('a2 is great')", context.get("p2"));
         }
 
         {
@@ -74,12 +56,10 @@ class Example02Tests {
             context.set("a2", 2);
 
             assertNull(context.get("p1"));
-            assertNull(context.get("p2"));
 
             executor.execute(flow, context);
 
             assertEquals("print('a1 is great')", context.get("p1"));
-            assertNull(context.get("p2"));
         }
     }
 

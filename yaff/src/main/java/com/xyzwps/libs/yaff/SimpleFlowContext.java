@@ -33,4 +33,11 @@ public class SimpleFlowContext implements FlowContext {
     public Set<String> getNames() {
         return map.keySet();
     }
+
+    @Override
+    public FlowContext clone() {
+        var newContext = new SimpleFlowContext();
+        newContext.map.putAll(this.map);
+        return newContext;
+    }
 }
