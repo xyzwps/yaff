@@ -46,6 +46,10 @@ public final class DAGChecker {
 
             for (var ready : zeroInDegreeNodes) {
                 keyToNode.remove(ready.key);
+                if (ready.next == null) {
+                    continue;
+                }
+
                 for (var next : ready.next) {
                     var nextNode = keyToNode.get(next);
                     if (nextNode != null) {

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.xyzwps.libs.yaff.example.Commons.*;
+import static com.xyzwps.libs.yaff.TestCommons.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 

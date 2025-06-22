@@ -1,9 +1,10 @@
 package com.xyzwps.libs.yaff.example;
 
+import com.xyzwps.libs.yaff.TestCommons;
 import com.xyzwps.libs.yaff.FlowContext;
 import org.junit.jupiter.api.Test;
 
-import static com.xyzwps.libs.yaff.example.Commons.factory;
+import static com.xyzwps.libs.yaff.TestCommons.factory;
 import static org.junit.jupiter.api.Assertions.*;
 
 class Example04Tests {
@@ -165,13 +166,13 @@ class Example04Tests {
             var v = (Double) r;
             if (v < 34) {
                 low++;
-                assertEquals("[小随机数]: 小随机数已生成", Commons.MESSAGES_RECEIVER.getLast());
+                assertEquals("[小随机数]: 小随机数已生成", TestCommons.MESSAGES_RECEIVER.getLast());
             } else if (v < 67) {
                 mid++;
-                assertEquals("[中随机数]: 中随机数已生成", Commons.MESSAGES_RECEIVER.getLast());
+                assertEquals("[中随机数]: 中随机数已生成", TestCommons.MESSAGES_RECEIVER.getLast());
             } else {
                 high++;
-                assertEquals("[大随机数]: 大随机数已生成", Commons.MESSAGES_RECEIVER.getLast());
+                assertEquals("[大随机数]: 大随机数已生成", TestCommons.MESSAGES_RECEIVER.getLast());
             }
         }
 

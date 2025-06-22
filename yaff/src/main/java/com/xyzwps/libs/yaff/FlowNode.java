@@ -63,11 +63,11 @@ public class FlowNode {
 
     private static void checkId(String id) {
         if (id == null) {
-            throw new IllegalArgumentException("id cannot be null");
+            throw new YaffException("FlowNode id cannot be null.");
         }
 
         if (!isIdentifier(id)) {
-            throw new IllegalArgumentException("Invalid id: " + id);
+            throw new YaffException("Invalid id: " + id);
         }
     }
 

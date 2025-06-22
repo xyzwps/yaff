@@ -1,14 +1,13 @@
-package com.xyzwps.libs.yaff.example;
+package com.xyzwps.libs.yaff;
 
-import com.xyzwps.libs.yaff.*;
 import com.xyzwps.libs.yaff.commons.JSON;
 
 import java.util.ArrayList;
 
-class Commons {
+public class TestCommons {
 
-    static final String PRINT_TEXT_NODE_NAME = "example.printText";
-    static final String TEXT_TO_UPPER_NODE_NAME = "example.textToUpper";
+    public static final String PRINT_TEXT_NODE_NAME = "example.printText";
+    public static final String TEXT_TO_UPPER_NODE_NAME = "example.textToUpper";
 
     public static final String SEND_MSG_NODE_NAME = "demo.sendMessage";
 
@@ -62,7 +61,7 @@ class Commons {
             })
             .build();
 
-    static final FlowFactory factory = new FlowFactory()
+    public static final FlowFactory factory = new FlowFactory()
             .register(printTextNode)
             .register(textToUpperNode)
             .register(SEND_MSG_NODE);
