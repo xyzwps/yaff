@@ -1,5 +1,6 @@
 package com.xyzwps.libs.yaff;
 
+// TODO: 支持更多类型
 public enum ParameterType {
     STRING, INT, FLOAT, BOOL;
 
