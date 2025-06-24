@@ -1,4 +1,4 @@
-package com.xyzwps.libs.yaff.demo.commons;
+package com.xyzwps.libs.demo.commons;
 
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.DeserializationContext;

@@ -1,4 +1,4 @@
-package com.xyzwps.libs.yaff.demo.yaff;
+package com.xyzwps.libs.demo.commons;
 
 import com.xyzwps.libs.yaff.*;
 
@@ -7,7 +7,6 @@ import java.util.List;
 public class Yaff {
 
     public static final String SEND_MSG_NODE_NAME = "demo.sendMessage";
-
 
     static Node SEND_MSG_NODE = Node.builder()
             .name(SEND_MSG_NODE_NAME)
