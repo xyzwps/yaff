@@ -8,7 +8,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static com.xyzwps.yaff.core.TestCommons.*;
 
-class Example05_All_Tests {
+class Example05AllTests {
 
     @Test
     void test() {
@@ -18,15 +18,15 @@ class Example05_All_Tests {
                         .next("b1", "b2", "b3"),
                 new FlowNode().id("b1")
                         .name(PRINT_TEXT_NODE_NAME)
-                        .assignExpressions(new ConstantExpression("text", "b1"))
+                        .assignExpressions(new JavaScriptExpression("text", "'b1'"))
                         .ref("b1"),
                 new FlowNode().id("b2")
                         .name(PRINT_TEXT_NODE_NAME)
-                        .assignExpressions(new ConstantExpression("text", "b2"))
+                        .assignExpressions(new JavaScriptExpression("text", "'b2'"))
                         .ref("b2"),
                 new FlowNode().id("b3")
                         .name(PRINT_TEXT_NODE_NAME)
-                        .assignExpressions(new ConstantExpression("text", "b3"))
+                        .assignExpressions(new JavaScriptExpression("text", "'b3'"))
                         .ref("b3")
         );
 

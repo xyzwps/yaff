@@ -11,16 +11,15 @@ import static com.fasterxml.jackson.annotation.JsonSubTypes.Type;
         include = JsonTypeInfo.As.EXISTING_PROPERTY,
         property = "type")
 @JsonSubTypes({
-        @Type(value = ConstantExpression.class, name = ConstantExpression.TYPE),
         @Type(value = JavaScriptExpression.class, name = JavaScriptExpression.TYPE)
 })
-public sealed interface AssignExpression permits ConstantExpression, JavaScriptExpression {
+public sealed interface AssignExpression permits JavaScriptExpression {
 
     String getInputName();
 
     String getType();
 
-    Object calculate(FlowContext flowContext, ParameterType resultType);
+    Object calculate(FlowContext flowContext, Class<?> resultType);
 
 
     static String validInputName(String inputName) {

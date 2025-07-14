@@ -10,7 +10,7 @@ import static com.xyzwps.yaff.core.TestCommons.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-class Example01_Simple_Tests {
+class Example01SimpleTests {
 
     /**
      * simple example
@@ -22,7 +22,7 @@ class Example01_Simple_Tests {
                         .id(NodeIds.START)
                         .name(TEXT_TO_UPPER_NODE_NAME)
                         .ref("upper")
-                        .assignExpressions(new ConstantExpression("text", "Hello World"))
+                        .assignExpressions(new JavaScriptExpression("text", "'Hello World'"))
                         .next("print"),
                 new FlowNode()
                         .id("print")
@@ -53,7 +53,7 @@ class Example01_Simple_Tests {
                 {"flowNodes":[
                     {
                         "id":"start","ref":"upper","name":"example.textToUpper","next":["print"],
-                        "assignExpressions":[{"value":"Hello World","inputName":"text","type":"constant"}]
+                        "assignExpressions":[{"expression":"'Hello World'","inputName":"text","type":"javascript"}]
                     },
                     {
                         "id":"print","ref":"cmd","name":"example.printText","next":["end"],

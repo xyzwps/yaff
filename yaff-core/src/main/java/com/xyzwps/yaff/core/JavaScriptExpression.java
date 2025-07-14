@@ -29,12 +29,22 @@ public final class JavaScriptExpression implements AssignExpression {
     }
 
     @Override
-    public Object calculate(FlowContext flowContext, ParameterType resultType) {
+    public Object calculate(FlowContext flowContext, Class<?> resultType) {
         try (var context = Context.create()) {
-            var script = makeScript(flowContext) + expression;
+            var script = makeScript(flowContext, expression);
             var value = context.eval("js", script);
             return convert(value, resultType);
         }
+    }
+
+    private static Object convert(Value value, Class<?> resultType) {
+        if (value == null) {
+            return null;
+        }
+        if (value.isNull()) {
+            return null;
+        }
+        return JSON.parse(value.asString(), resultType);
     }
 
 
@@ -45,47 +55,13 @@ public final class JavaScriptExpression implements AssignExpression {
      * @return 脚本
      * @see SimpleFlowContext#set
      */
-    private static String makeScript(FlowContext flowContext) {
+    private static String makeScript(FlowContext flowContext, String expression) {
         var scripts = new StringBuilder();
         for (var name : flowContext.getNames()) {
             var value = flowContext.get(name);
             scripts.append("var ").append(name).append(" = ").append(JSON.stringify(value)).append(";\n");
         }
+        scripts.append("JSON.stringify(").append(expression).append(")");
         return scripts.toString();
-    }
-
-
-    private static Object convert(Value value, ParameterType resultType) {
-        switch (resultType) {
-            case INT -> {
-                if (value.isNumber()) {
-                    return value.asInt();
-                } else {
-                    throw new RuntimeException("Not a number");
-                }
-            }
-            case FLOAT -> {
-                if (value.isNumber()) {
-                    return value.asDouble();
-                } else {
-                    throw new RuntimeException("Not a number");
-                }
-            }
-            case STRING -> {
-                if (value.isString()) {
-                    return value.asString();
-                } else {
-                    throw new RuntimeException("Not a string");
-                }
-            }
-            case BOOL -> {
-                if (value.isBoolean()) {
-                    return value.asBoolean();
-                } else {
-                    throw new RuntimeException("Not a boolean");
-                }
-            }
-        }
-        throw new RuntimeException("Unhandled parameter type: " + resultType);
     }
 }

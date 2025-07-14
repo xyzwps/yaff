@@ -21,7 +21,7 @@ public class SimpleFlowContext implements FlowContext {
 
     @Override
     public void set(String name, Object value) {
-        map.put(validName(name), ParameterType.valid(value));
+        map.put(validName(name), value);
     }
 
     @Override

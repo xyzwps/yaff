@@ -8,12 +8,12 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-class Example03_CaseWhen_Tests {
+class Example03CaseWhenTests {
 
     @Test
     void testCaseWhen() {
         var factory = new FlowFactory()
-                .register(Example02_If_Tests.printNode);
+                .register(Example02IfTests.printNode);
 
         var nodes = List.<FlowNode>of(
                 new FlowNode()
@@ -32,9 +32,9 @@ class Example03_CaseWhen_Tests {
                         .next("print1"),
                 new FlowNode()
                         .id("print1")
-                        .name(Example02_If_Tests.PRINT_NODE_NAME)
+                        .name(Example02IfTests.PRINT_NODE_NAME)
                         .ref("p1")
-                        .assignExpressions(new ConstantExpression("text", "a1 is great"))
+                        .assignExpressions(new JavaScriptExpression("text", "'a1 is great'"))
                         .next(NodeIds.END),
 
                 new FlowNode()
@@ -45,8 +45,8 @@ class Example03_CaseWhen_Tests {
                 new FlowNode()
                         .id("print2")
                         .ref("p2")
-                        .name(Example02_If_Tests.PRINT_NODE_NAME)
-                        .assignExpressions(new ConstantExpression("text", "a2 is great"))
+                        .name(Example02IfTests.PRINT_NODE_NAME)
+                        .assignExpressions(new JavaScriptExpression("text", "'a2 is great'"))
                         .next(NodeIds.END),
 
                 new FlowNode()
@@ -56,8 +56,8 @@ class Example03_CaseWhen_Tests {
                 new FlowNode()
                         .id("print3")
                         .ref("p3")
-                        .name(Example02_If_Tests.PRINT_NODE_NAME)
-                        .assignExpressions(new ConstantExpression("text", "a1 is equal to a2"))
+                        .name(Example02IfTests.PRINT_NODE_NAME)
+                        .assignExpressions(new JavaScriptExpression("text", "'a1 is equal to a2'"))
                         .next(NodeIds.END)
         );
 

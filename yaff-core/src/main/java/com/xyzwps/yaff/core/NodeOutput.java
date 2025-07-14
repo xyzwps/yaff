@@ -1,4 +1,4 @@
 package com.xyzwps.yaff.core;
 
-public record NodeOutput(ParameterType type) {
+public record NodeOutput(Class<?> type) {
 }

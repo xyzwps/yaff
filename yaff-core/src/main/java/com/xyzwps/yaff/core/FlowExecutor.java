@@ -82,7 +82,7 @@ public class FlowExecutor {
     }
 
     private Map<String, Object> collectInputs(FlowNode flowNode, Node node, FlowContext context) {
-        Map<String, ParameterType> inputTypes = new HashMap<>();
+        Map<String, Class<?>> inputTypes = new HashMap<>();
         for (var input : node.getInputs()) {
             inputTypes.put(input.name(), input.type());
         }

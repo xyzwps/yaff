@@ -7,7 +7,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class Example02_If_Tests {
+class Example02IfTests {
 
     /// `If` example.
     ///
@@ -31,7 +31,7 @@ class Example02_If_Tests {
                         .id("printA1")
                         .name(PRINT_NODE_NAME)
                         .ref("p1")
-                        .assignExpressions(new ConstantExpression("text", "a1 is great"))
+                        .assignExpressions(new JavaScriptExpression("text", "'a1 is great'"))
                         .next(NodeIds.END)
         );
 
@@ -66,8 +66,8 @@ class Example02_If_Tests {
     static final Node printNode = Node.builder()
             .name(PRINT_NODE_NAME)
             .description("Print a message")
-            .inputs(new NodeInput("text", ParameterType.STRING))
-            .output(new NodeOutput(ParameterType.STRING))
+            .inputs(new NodeInput("text", String.class))
+            .output(new NodeOutput(String.class))
             .execute((inputs) -> {
                 var textStr = inputs.get("text");
                 if (textStr instanceof String text) {

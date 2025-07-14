@@ -23,8 +23,8 @@ public class TestCommons {
     static final Node printTextNode = Node.builder()
             .name(PRINT_TEXT_NODE_NAME)
             .description("Prints text to console")
-            .inputs(new NodeInput("text", ParameterType.STRING))
-            .output(new NodeOutput(ParameterType.STRING))
+            .inputs(new NodeInput("text", String.class))
+            .output(new NodeOutput(String.class))
             .execute((inputs) -> {
                 var textValue = inputs.get("text");
                 if (textValue instanceof String text) {
@@ -37,8 +37,8 @@ public class TestCommons {
     static final Node textToUpperNode = Node.builder()
             .name(TEXT_TO_UPPER_NODE_NAME)
             .description("Convert text to upper case")
-            .inputs(new NodeInput("text", ParameterType.STRING))
-            .output(new NodeOutput(ParameterType.STRING))
+            .inputs(new NodeInput("text", String.class))
+            .output(new NodeOutput(String.class))
             .execute((inputs) -> {
                 Object textValue = inputs.get("text");
                 if (textValue instanceof String text) {
@@ -51,8 +51,8 @@ public class TestCommons {
     static Node SEND_MSG_NODE = Node.builder()
             .name(SEND_MSG_NODE_NAME)
             .description("发送消息")
-            .inputs(new NodeInput("title", ParameterType.STRING),
-                    new NodeInput("message", ParameterType.STRING))
+            .inputs(new NodeInput("title", String.class),
+                    new NodeInput("message", String.class))
             .execute((inputs) -> {
                 var title = (String) inputs.get("title");
                 var message = (String) inputs.get("message");

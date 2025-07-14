@@ -13,8 +13,8 @@ public class Yaff {
     static Node SEND_MSG_NODE = Node.builder()
             .name(SEND_MSG_NODE_NAME)
             .description("发送消息")
-            .inputs(new NodeInput("title", ParameterType.STRING),
-                    new NodeInput("message", ParameterType.STRING))
+            .inputs(new NodeInput("title", String.class),
+                    new NodeInput("message", String.class))
             .execute((inputs) -> {
                 var title = (String) inputs.get("title");
                 var message = (String) inputs.get("message");

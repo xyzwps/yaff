@@ -24,7 +24,7 @@ class FlowTests {
                     new FlowNode()
                             .id("toUpper")
                             .name(TEXT_TO_UPPER_NODE_NAME)
-                            .assignExpressions(new ConstantExpression("text", "Hello"))
+                            .assignExpressions(new JavaScriptExpression("text", "\"Hello\""))
                             .ref("upperText")
             );
             var flow = factory.createFlow(nodes);
@@ -44,7 +44,7 @@ class FlowTests {
                     new FlowNode()
                             .id("toUpper")
                             .name(TEXT_TO_UPPER_NODE_NAME)
-                            .assignExpressions(new ConstantExpression("text", "Hello"))
+                            .assignExpressions(new JavaScriptExpression("text", "'Hello'"))
                             .ref("upperText")
                             .next(NodeIds.END)
             );
@@ -65,7 +65,7 @@ class FlowTests {
                     new FlowNode()
                             .id("toUpper")
                             .name(TEXT_TO_UPPER_NODE_NAME)
-                            .assignExpressions(new ConstantExpression("text", "Hello"))
+                            .assignExpressions(new JavaScriptExpression("text", "'Hello'"))
                             .ref("upperText")
                             .next(NodeIds.END),
                     new FlowNode()
@@ -89,7 +89,7 @@ class FlowTests {
                     new FlowNode()
                             .id("toUpper")
                             .name(TEXT_TO_UPPER_NODE_NAME)
-                            .assignExpressions(new ConstantExpression("text", "Hello"))
+                            .assignExpressions(new JavaScriptExpression("text", "'Hello'"))
                             .ref("upperText")
             );
             var ex = assertThrows(YaffException.class, () -> factory.createFlow(nodes));
@@ -112,7 +112,7 @@ class FlowTests {
                     new FlowNode()
                             .id(NodeIds.START)
                             .name(TEXT_TO_UPPER_NODE_NAME)
-                            .assignExpressions(new ConstantExpression("text", "Hello"))
+                            .assignExpressions(new JavaScriptExpression("text", "'Hello'"))
                             .ref("upperText")
             );
             var ex = assertThrows(YaffException.class, () -> factory.createFlow(nodes));
@@ -134,7 +134,7 @@ class FlowTests {
                     new FlowNode()
                             .id("toUpper")
                             .name(TEXT_TO_UPPER_NODE_NAME)
-                            .assignExpressions(new ConstantExpression("text", "Hello"))
+                            .assignExpressions(new JavaScriptExpression("text", "'Hello'"))
                             .ref("upperText")
                             .next("xx")
             );
@@ -152,7 +152,7 @@ class FlowTests {
                     new FlowNode()
                             .id("toUpper")
                             .name(TEXT_TO_UPPER_NODE_NAME)
-                            .assignExpressions(new ConstantExpression("text", "Hello"))
+                            .assignExpressions(new JavaScriptExpression("text", "'Hello'"))
                             .ref("upperText")
                             .next(NodeIds.END),
                     new FlowNode()
@@ -170,16 +170,16 @@ class FlowTests {
                     new FlowNode().id(NodeIds.START).name(YaffNode.NOOP_NODE_NAME)
                             .next("toUpper"),
                     new FlowNode().id("toUpper").name(TEXT_TO_UPPER_NODE_NAME)
-                            .assignExpressions(new ConstantExpression("text", "Hello"))
+                            .assignExpressions(new JavaScriptExpression("text", "'Hello'"))
                             .ref("upperText")
                             .next("case"),
                     new FlowNode().id("case").name(ControlNode.CASE_NODE_NAME)
                             .next("when1", "when2", "default"),
                     new FlowNode().id("when1").name(ControlNode.WHEN_NODE_NAME)
-                            .assignExpressions(new ConstantExpression(ControlNode.CONDITION, true))
+                            .assignExpressions(new JavaScriptExpression(ControlNode.CONDITION, "true"))
                             .next("a1"),
                     new FlowNode().id("when2").name(ControlNode.WHEN_NODE_NAME)
-                            .assignExpressions(new ConstantExpression(ControlNode.CONDITION, true))
+                            .assignExpressions(new JavaScriptExpression(ControlNode.CONDITION, "true"))
                             .next("a2"),
                     new FlowNode().id("default").name(ControlNode.DEFAULT_NODE_NAME)
                             .next("d"),
@@ -197,7 +197,7 @@ class FlowTests {
                     new FlowNode().id(NodeIds.START).name(YaffNode.NOOP_NODE_NAME)
                             .next("toUpper"),
                     new FlowNode().id("toUpper").name(TEXT_TO_UPPER_NODE_NAME)
-                            .assignExpressions(new ConstantExpression("text", "Hello"))
+                            .assignExpressions(new JavaScriptExpression("text", "'Hello'"))
                             .ref("upperText")
                             .next("case"),
                     new FlowNode().id("case").name(ControlNode.CASE_NODE_NAME)
@@ -212,13 +212,13 @@ class FlowTests {
                     new FlowNode().id(NodeIds.START).name(YaffNode.NOOP_NODE_NAME)
                             .next("toUpper"),
                     new FlowNode().id("toUpper").name(TEXT_TO_UPPER_NODE_NAME)
-                            .assignExpressions(new ConstantExpression("text", "Hello"))
+                            .assignExpressions(new JavaScriptExpression("text", "'Hello'"))
                             .ref("upperText")
                             .next("case"),
                     new FlowNode().id("case").name(ControlNode.CASE_NODE_NAME)
                             .next("when1"),
                     new FlowNode().id("when1").name(ControlNode.WHEN_NODE_NAME)
-                            .assignExpressions(new ConstantExpression(ControlNode.CONDITION, true))
+                            .assignExpressions(new JavaScriptExpression(ControlNode.CONDITION, "true"))
             );
             var ex = assertThrows(YaffException.class, () -> factory.createFlow(nodes));
             assertEquals("Case node should have at least two next nodes.", ex.getMessage());
@@ -230,7 +230,7 @@ class FlowTests {
                     new FlowNode().id(NodeIds.START).name(YaffNode.NOOP_NODE_NAME)
                             .next("toUpper"),
                     new FlowNode().id("toUpper").name(TEXT_TO_UPPER_NODE_NAME)
-                            .assignExpressions(new ConstantExpression("text", "Hello"))
+                            .assignExpressions(new JavaScriptExpression("text", "'Hello'"))
                             .ref("upperText")
                             .next("case"),
                     new FlowNode().id("case").name(ControlNode.CASE_NODE_NAME)
@@ -248,13 +248,13 @@ class FlowTests {
                     new FlowNode().id(NodeIds.START).name(YaffNode.NOOP_NODE_NAME)
                             .next("toUpper"),
                     new FlowNode().id("toUpper").name(TEXT_TO_UPPER_NODE_NAME)
-                            .assignExpressions(new ConstantExpression("text", "Hello"))
+                            .assignExpressions(new JavaScriptExpression("text", "'Hello'"))
                             .ref("upperText")
                             .next("case"),
                     new FlowNode().id("case").name(ControlNode.CASE_NODE_NAME)
                             .next("w1", "d2"),
                     new FlowNode().id("w1").name(ControlNode.WHEN_NODE_NAME)
-                            .assignExpressions(new ConstantExpression(ControlNode.CONDITION, true)),
+                            .assignExpressions(new JavaScriptExpression(ControlNode.CONDITION, "true")),
                     new FlowNode().id("d2").name(YaffNode.NOOP_NODE_NAME)
             );
             var ex = assertThrows(YaffException.class, () -> factory.createFlow(nodes));
@@ -295,7 +295,7 @@ class FlowTests {
                     new FlowNode()
                             .id("toUpper")
                             .name(TEXT_TO_UPPER_NODE_NAME)
-                            .assignExpressions(new ConstantExpression("text", "Hello"))
+                            .assignExpressions(new JavaScriptExpression("text", "'Hello'"))
                             .ref("upperText")
                             .next("next"),
                     new FlowNode()
@@ -317,7 +317,7 @@ class FlowTests {
                     new FlowNode()
                             .id("toUpper")
                             .name(TEXT_TO_UPPER_NODE_NAME)
-                            .assignExpressions(new ConstantExpression("text", "Hello"))
+                            .assignExpressions(new JavaScriptExpression("text", "'Hello'"))
                             .ref("upperText"),
                     new FlowNode()
                             .id("next")

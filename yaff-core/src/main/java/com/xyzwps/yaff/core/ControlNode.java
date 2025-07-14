@@ -1,6 +1,5 @@
 package com.xyzwps.yaff.core;
 
-import static com.xyzwps.yaff.core.ParameterType.*;
 
 public interface ControlNode {
     String CASE_NODE_NAME = "control.case";
@@ -22,7 +21,7 @@ public interface ControlNode {
     Node whenNode = Node.builder()
             .name(WHEN_NODE_NAME)
             .description("可以用于 Case-When 模式，也可以单独使用。单独使用时，如果条件值为 false，则直接结束整个流程。")
-            .inputs(new NodeInput(CONDITION, BOOL))
+            .inputs(new NodeInput(CONDITION, boolean.class))
             .build();
 
     Node defaultNode = Node.builder()

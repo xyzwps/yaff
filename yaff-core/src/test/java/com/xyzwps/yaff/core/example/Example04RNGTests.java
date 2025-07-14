@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import static com.xyzwps.yaff.core.TestCommons.factory;
 import static org.junit.jupiter.api.Assertions.*;
 
-class Example04_RNG_Tests {
+class Example04RNGTests {
 
     @Test
     void testRngNode() {
