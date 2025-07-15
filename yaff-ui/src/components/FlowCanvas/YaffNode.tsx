@@ -1,8 +1,8 @@
 import { Handle, Position, type NodeProps } from "@xyflow/react";
 import useStore from "./store.flow";
 import { type YaffNodeData } from "./types";
-import { SHORT_PT } from "./dict";
 import NodeIcon from "./NodeIcon";
+import type { NodeInput, NodeOutput } from "../../types";
 
 const TITLE_BG: Record<string, string> = {
   "control.start": "from-sky-200",
@@ -77,22 +77,22 @@ export default function YaffNode(props: NodeProps<YaffNodeData>) {
   );
 }
 
-function InputInfo({ type, name }: NodeInput) {
+function InputInfo({ schema, name }: NodeInput) {
   return (
     <div className="badge badge-sm text-md">
-      <small className="text-indigo-500">{SHORT_PT[type]}</small>
+      <small className="text-indigo-500">{schema.type}</small>
       {name}
     </div>
   );
 }
 
 function OutputInfo({
-  type,
+  schema,
   ref,
 }: NodeOutput & { ref?: string | null | undefined }) {
   return (
     <div className="badge badge-sm text-md">
-      <small className="text-indigo-500">{SHORT_PT[type]}</small>
+      <small className="text-indigo-500">{schema.type}</small>
       {ref}
     </div>
   );

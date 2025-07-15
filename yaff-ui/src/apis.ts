@@ -1,5 +1,6 @@
 import ky from "ky";
 import type { FlowNode } from "./components/FlowCanvas/types";
+import type { FlowRow, NodeMetaData } from "./types";
 
 export const getMetaData = async (): Promise<NodeMetaData[]> => {
   const response = await ky.get("/apis/yaff/metadata");

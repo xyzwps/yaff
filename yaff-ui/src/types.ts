@@ -1,24 +1,23 @@
-type NodeMetaData = {
+import type { JSONSchema } from "json-schema-typed";
+
+export type NodeMetaData = {
   name: string;
   description?: string | null | undefined;
   inputs?: NodeInput[] | null | undefined;
   output?: NodeOutput | null | undefined;
 };
 
-type ParameterType = "INT" | "FLOAT" | "STRING" | "BOOL";
-
-type NodeInput = {
+export type NodeInput = {
   name: string;
-  type: ParameterType;
+  schema: JSONSchema;
 };
 
-type NodeOutput = {
-  type: ParameterType;
+export type NodeOutput = {
+  schema: JSONSchema;
 };
 
-type FlowRow = {
+export type FlowRow = {
   id: number;
-  dedupKey: string;
   description: string;
   data: string;
   createdAt: string;

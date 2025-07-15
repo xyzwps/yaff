@@ -5,3 +5,16 @@ spring.datasource:
   username:
   password:
 spring.jpa.hibernate.ddl-auto: update
+
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /dev/swagger-ui/index.html
+    url: /dev/api-docs.yaml
+  api-docs:
+    enabled: true
+    path: /dev/api-docs.yaml
+
+
+
+management.endpoints.web.exposure.include: "*"

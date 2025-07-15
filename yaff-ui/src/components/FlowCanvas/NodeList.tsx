@@ -1,3 +1,4 @@
+import type { NodeMetaData } from "../../types";
 import { useDnD } from "./DnDContext";
 import NodeIcon from "./NodeIcon";
 import useInitStore from "./store.init";

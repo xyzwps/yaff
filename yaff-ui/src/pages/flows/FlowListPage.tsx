@@ -2,6 +2,7 @@ import { Link, useNavigate } from "raviger";
 import { useEffect, useState } from "react";
 import { getAllFlows, deleteFlow } from "../../apis";
 import _ from "lodash";
+import type { FlowRow } from "../../types";
 
 export default function FlowListPage() {
   const [rows, setRows] = useState<FlowRow[]>([]);

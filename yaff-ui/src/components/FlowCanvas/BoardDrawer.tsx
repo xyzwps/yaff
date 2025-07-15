@@ -3,8 +3,8 @@ import useStore from "./store.flow";
 import { useState } from "react";
 import type { NodeProps } from "@xyflow/react";
 import type { YaffNodeData } from "./types";
-import { SHORT_PT } from "./dict";
 import NodeIcon from "./NodeIcon";
+import type { NodeMetaData } from "../../types";
 
 export default function BoardDrawer() {
   const { selectedNode, editorMode } = useStore((s) => s);
@@ -129,7 +129,7 @@ function NodeBody({ id, data }: NodeProps<YaffNodeData>) {
               {/* TODO: 支持 js 和常量 */}
               <legend className="fieldset-legend gap-0">
                 输入 - let {it.name} :&nbsp;
-                <span className="text-indigo-500">{SHORT_PT[it.type]}</span>
+                <span className="text-indigo-500">{it.schema.type}</span>
                 &nbsp;=
               </legend>
               <input

@@ -1,7 +1,7 @@
 package com.xyzwps.yaff.server.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.xyzwps.yaff.server.commons.JSON;
+import com.xyzwps.yaff.core.commons.JSON;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

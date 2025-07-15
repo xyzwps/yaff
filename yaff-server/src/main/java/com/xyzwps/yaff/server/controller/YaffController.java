@@ -1,7 +1,7 @@
 package com.xyzwps.yaff.server.controller;
 
-import com.xyzwps.yaff.core.NodeMetaData;
 import com.xyzwps.yaff.server.dto.flow.FlowSavePayload;
+import com.xyzwps.yaff.server.dto.flow.NodeMetaDataView;
 import com.xyzwps.yaff.server.model.entity.FlowRow;
 import com.xyzwps.yaff.server.service.FlowService;
 import com.xyzwps.yaff.server.yaff.Yaff;
@@ -19,8 +19,8 @@ public class YaffController {
     private final FlowService flowService;
 
     @GetMapping("/metadata")
-    public List<NodeMetaData> getMetaDatq() {
-        return Yaff.getMetaData();
+    public List<NodeMetaDataView> getMetaData() {
+        return Yaff.getMetaData().stream().map(NodeMetaDataView::from).toList();
     }
 
     @GetMapping("/flows")
