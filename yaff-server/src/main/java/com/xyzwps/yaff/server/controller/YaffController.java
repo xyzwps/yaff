@@ -29,7 +29,7 @@ public class YaffController {
     }
 
     @GetMapping("/flows/{id}")
-    public FlowRow getFlow(@PathVariable int id) {
+    public FlowRow getFlow(@PathVariable("id") long id) {
         return flowService.findById(id).orElseThrow(() -> new RuntimeException("TODO: 404"));
     }
 
@@ -39,12 +39,12 @@ public class YaffController {
     }
 
     @PutMapping("/flows/{id}")
-    public FlowRow updateFlow(@PathVariable int id, @RequestBody @Valid FlowSavePayload it) {
+    public FlowRow updateFlow(@PathVariable("id") long id, @RequestBody @Valid FlowSavePayload it) {
         return flowService.updateFlow(id, it);
     }
 
     @DeleteMapping("/flows/{id}")
-    public void deleteFlow(@PathVariable int id) {
+    public void deleteFlow(@PathVariable("id") long id) {
         flowService.deleteFlow(id);
     }
 

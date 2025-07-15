@@ -120,12 +120,11 @@ export default function Board() {
     for (const e of edges) {
       const nid = e.source;
       const node = idToNode[nid];
-      node.next?.push(e.target);
+      node?.next?.push(e.target);
     }
 
     mode === "create"
       ? createFlow({
-          dedupKey,
           description: flowDescription,
           data: { flowNodes: results },
         })

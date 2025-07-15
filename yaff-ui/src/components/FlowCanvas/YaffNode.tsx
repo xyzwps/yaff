@@ -3,6 +3,7 @@ import useStore from "./store.flow";
 import { type YaffNodeData } from "./types";
 import NodeIcon from "./NodeIcon";
 import type { NodeInput, NodeOutput } from "../../types";
+import { jsonSchemaType } from "./utils";
 
 const TITLE_BG: Record<string, string> = {
   "control.start": "from-sky-200",
@@ -36,6 +37,7 @@ export default function YaffNode(props: NodeProps<YaffNodeData>) {
       }}
     >
       <Handle type="target" position={Position.Left} />
+      <Handle type="target" position={Position.Top} />
       <h2
         className={`card-title rounded-t-md p-2 text-sm bg-linear-to-b ${titleBg} to-indigo-50`}
       >
@@ -72,7 +74,6 @@ export default function YaffNode(props: NodeProps<YaffNodeData>) {
           )}
         </div>
       </div>
-      <Handle type="source" position={Position.Right} />
     </div>
   );
 }
@@ -80,7 +81,7 @@ export default function YaffNode(props: NodeProps<YaffNodeData>) {
 function InputInfo({ schema, name }: NodeInput) {
   return (
     <div className="badge badge-sm text-md">
-      <small className="text-indigo-500">{schema.type}</small>
+      <small className="text-indigo-500">{jsonSchemaType(schema)}</small>
       {name}
     </div>
   );
@@ -92,7 +93,7 @@ function OutputInfo({
 }: NodeOutput & { ref?: string | null | undefined }) {
   return (
     <div className="badge badge-sm text-md">
-      <small className="text-indigo-500">{schema.type}</small>
+      <small className="text-indigo-500">{jsonSchemaType(schema)}</small>
       {ref}
     </div>
   );

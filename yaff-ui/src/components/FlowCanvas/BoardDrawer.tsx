@@ -5,6 +5,7 @@ import type { NodeProps } from "@xyflow/react";
 import type { YaffNodeData } from "./types";
 import NodeIcon from "./NodeIcon";
 import type { NodeMetaData } from "../../types";
+import { jsonSchemaType } from "./utils";
 
 export default function BoardDrawer() {
   const { selectedNode, editorMode } = useStore((s) => s);
@@ -126,10 +127,9 @@ function NodeBody({ id, data }: NodeProps<YaffNodeData>) {
         <div>
           {inputs.map((it) => (
             <fieldset key={it.name} className="fieldset">
-              {/* TODO: 支持 js 和常量 */}
               <legend className="fieldset-legend gap-0">
                 输入 - let {it.name} :&nbsp;
-                <span className="text-indigo-500">{it.schema.type}</span>
+                <span className="text-indigo-500">{jsonSchemaType(it.schema)}</span>
                 &nbsp;=
               </legend>
               <input

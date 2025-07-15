@@ -7,35 +7,26 @@ export const getMetaData = async (): Promise<NodeMetaData[]> => {
   return response.json();
 };
 
-type CreateFlowPayload = {
-  dedupKey: string;
+type FlowSavePayload = {
   description: string;
   data: {
     flowNodes: FlowNode[];
   };
 };
 
-export const createFlow = (payload: CreateFlowPayload) =>
+export const createFlow = (payload: FlowSavePayload) =>
   ky.post("/apis/yaff/flows", {
     json: {
-      dedupKey: payload.dedupKey,
       description: payload.description,
       data: JSON.stringify(payload.data),
     },
   });
 
-type UpdateFlowPayload = {
-  id: number;
-  description: string;
-  data: {
-    flowNodes: FlowNode[];
-  };
-};
+type UpdateFlowPayload = { id: number } & FlowSavePayload;
 
 export const updateFlow = (payload: UpdateFlowPayload) =>
   ky.put(`/apis/yaff/flows/${payload.id}`, {
     json: {
-      id: payload.id,
       description: payload.description,
       data: JSON.stringify(payload.data),
     },
