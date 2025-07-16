@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import type { NodeMetaData } from "../../types";
+import type { NodeMetaData } from "@/types";
 
 const DnDContext = createContext<
   [NodeMetaData | null, (m: NodeMetaData) => void]

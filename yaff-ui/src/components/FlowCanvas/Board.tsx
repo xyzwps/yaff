@@ -11,7 +11,7 @@ import { useCallback } from "react";
 import { useDnD } from "./DnDContext";
 import BoardDrawer from "./BoardDrawer";
 import { tsId } from "./utils";
-import { createFlow, updateFlow } from "../../apis";
+import { createFlow, updateFlow } from "@/apis";
 import { useNavigate } from "raviger";
 
 const selector = (state: AppState) => ({

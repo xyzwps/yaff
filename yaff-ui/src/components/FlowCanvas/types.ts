@@ -6,7 +6,7 @@ import {
   type OnConnect,
   type NodeProps,
 } from "@xyflow/react";
-import type { NodeMetaData } from "../../types";
+import type { NodeMetaData } from "@/types";
 
 export type AppNode = Node;
 

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import FlowCanvas from "../../components/FlowCanvas";
+import FlowCanvas from "@/components/FlowCanvas";
 
 export default function FlowCreatePage() {
   useEffect(() => {

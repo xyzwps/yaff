@@ -2,7 +2,7 @@ import { Handle, Position, type NodeProps } from "@xyflow/react";
 import useStore from "./store.flow";
 import { type YaffNodeData } from "./types";
 import NodeIcon from "./NodeIcon";
-import type { NodeInput, NodeOutput } from "../../types";
+import type { NodeInput, NodeOutput } from "@/types";
 import { jsonSchemaType } from "./utils";
 
 const TITLE_BG: Record<string, string> = {

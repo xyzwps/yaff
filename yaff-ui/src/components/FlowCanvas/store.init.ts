@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { getMetaData } from "../../apis";
-import type { NodeMetaData } from "../../types";
+import { getMetaData } from "@/apis";
+import type { NodeMetaData } from "@/types";
 
 type InitState = {
   metaOfNodes: NodeMetaData[];

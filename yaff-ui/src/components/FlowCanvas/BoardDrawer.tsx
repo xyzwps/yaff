@@ -4,7 +4,7 @@ import { useState } from "react";
 import type { NodeProps } from "@xyflow/react";
 import type { YaffNodeData } from "./types";
 import NodeIcon from "./NodeIcon";
-import type { NodeMetaData } from "../../types";
+import type { NodeMetaData } from "@/types";
 import { jsonSchemaType } from "./utils";
 
 export default function BoardDrawer() {

@@ -1,8 +1,9 @@
 import { Link, useNavigate } from "raviger";
 import { useEffect, useState } from "react";
-import { getAllFlows, deleteFlow } from "../../apis";
+import { getAllFlows, deleteFlow } from "@/apis";
 import _ from "lodash";
-import type { FlowRow, Paged } from "../../types";
+import type { FlowRow, Paged } from "@/types";
+import Table from "@/components/ui/Table";
 
 export default function FlowListPage() {
   const [paged, setPaged] = useState<Paged<FlowRow>>({
@@ -39,24 +40,18 @@ export default function FlowListPage() {
           </Link>
         </div>
         <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 shadow">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>描述</th>
-                <th>创建时间</th>
-                <th>修改时间</th>
-                <th>操作</th>
-              </tr>
-            </thead>
-            <tbody>
-              {paged.data.map((row) => (
-                <tr key={row.id} className="hover:bg-indigo-200">
-                  <th>{row.id}</th>
-                  <td>{row.description}</td>
-                  <td>{row.createdAt}</td>
-                  <td>{row.updatedAt}</td>
-                  <td className="inline-flex gap-2">
+          <Table
+            data={paged.data}
+            columns={[
+              { title: "ID", path: "id" },
+              { title: "描述", path: "description" },
+              { title: "创建时间", path: "createdAt" },
+              { title: "更新时间", path: "updatedAt" },
+              {
+                title: "操作",
+                path: "id",
+                render: (row) => (
+                  <span className="inline-flex gap-2">
                     <button
                       className="btn btn-xs btn-primary"
                       onClick={() => navigate(`/update/flows/${row.id}`)}
@@ -69,11 +64,11 @@ export default function FlowListPage() {
                     >
                       删除
                     </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  </span>
+                ),
+              },
+            ]}
+          />
         </div>
       </div>
     </div>
