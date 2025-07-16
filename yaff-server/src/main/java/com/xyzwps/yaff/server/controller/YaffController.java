@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @RestController
@@ -46,6 +47,11 @@ public class YaffController {
     @DeleteMapping("/flows/{id}")
     public void deleteFlow(@PathVariable("id") long id) {
         flowService.deleteFlow(id);
+    }
+
+    @PostMapping("/flows/{id}/run")
+    public Map<String, Object> insertFlow(@PathVariable("id") long id) {
+        return flowService.run(id);
     }
 
 }

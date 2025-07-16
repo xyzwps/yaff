@@ -1,6 +1,5 @@
 package com.xyzwps.yaff.server.yaff;
 
-
 import com.xyzwps.yaff.core.*;
 
 import java.util.List;
@@ -24,6 +23,17 @@ public class Yaff {
             .build();
 
     public static final FlowFactory FACTORY = new FlowFactory();
+
+    public static Flow fromJSON(String json) {
+        return FACTORY.fromJSON(json);
+    }
+
+    public static FlowContext execute(Flow flow) {
+        var executor = FACTORY.getExecutor();
+        var context = FlowContext.create();
+        executor.execute(flow, context);
+        return context;
+    }
 
     static {
         FACTORY.register(SEND_MSG_NODE);

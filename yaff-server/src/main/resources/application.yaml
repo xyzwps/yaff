@@ -1,5 +1,6 @@
+server.port: 8080
 spring.application.name: server
-  
+
 spring.datasource:
   url: "jdbc:h2:file:./yaff-h2"
   username:

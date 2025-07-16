@@ -7,10 +7,12 @@ import com.xyzwps.yaff.server.model.repository.FlowRowRepository;
 import com.xyzwps.yaff.server.yaff.Yaff;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -35,7 +37,7 @@ public class FlowService {
     // TODO: 更细致的检查
     @Transactional
     public FlowRow updateFlow(long id, FlowSavePayload it) {
-        Yaff.FACTORY.fromJSON(it.getData());
+        Yaff.fromJSON(it.getData());
         var flow = flowRowRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Flow not found")); // TODO: ex
         flow.setDescription(it.getDescription());
@@ -45,7 +47,7 @@ public class FlowService {
     }
 
     public FlowRow createFlow(FlowSavePayload it) {
-        Yaff.FACTORY.fromJSON(it.getData());
+        Yaff.fromJSON(it.getData());
         var row = FlowRow.builder()
                 .description(it.getDescription())
                 .data(it.getData())
@@ -55,5 +57,14 @@ public class FlowService {
         return flowRowRepository.save(row);
     }
 
+    public Map<String, Object> run(long id) {
+        return flowRowRepository.findById(id)
+                .map(this::run)
+                .orElseThrow(() -> new RuntimeException("Flow not found")); // TODO: ex
+    }
 
+    public Map<String, Object> run(@NonNull FlowRow flowRow) {
+        var flow = Yaff.fromJSON(flowRow.getData());
+        return Yaff.execute(flow).toMap();
+    }
 }

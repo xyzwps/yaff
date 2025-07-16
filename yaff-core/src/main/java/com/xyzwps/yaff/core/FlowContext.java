@@ -1,6 +1,6 @@
 package com.xyzwps.yaff.core;
 
-
+import java.util.Map;
 import java.util.Set;
 
 public interface FlowContext {
@@ -25,7 +25,10 @@ public interface FlowContext {
 
     FlowContext clone();
 
+    Map<String, Object> toMap();
+
     static FlowContext create() {
         return new SimpleFlowContext();
     }
+
 }
