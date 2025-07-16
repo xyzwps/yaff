@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { getMetaData } from "@/apis";
+import { getMetaData } from "@/apis/yaff";
 import type { NodeMetaData } from "@/types";
 
 type InitState = {

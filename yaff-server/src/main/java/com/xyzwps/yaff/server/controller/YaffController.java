@@ -67,7 +67,7 @@ public class YaffController {
 
     @Operation(summary = "Run flow")
     @PostMapping("/flows/{id}/run")
-    public Map<String, Object> insertFlow(@Schema(description = "Flow id") @PathVariable("id") long id) {
+    public Map<String, Object> runFlow(@Schema(description = "Flow id") @PathVariable("id") long id) {
         return flowService.run(id);
     }
 

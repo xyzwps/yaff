@@ -1,9 +1,51 @@
 import { Link, useNavigate } from "raviger";
 import { useEffect, useState } from "react";
-import { getAllFlows, deleteFlow } from "@/apis";
+import { getAllFlows, deleteFlow, runFlow } from "@/apis/yaff";
 import _ from "lodash";
 import type { FlowRow, Paged } from "@/types";
 import Table from "@/components/ui/Table";
+import Modal from "@/components/ui/Modal";
+
+function RunFlowButton({ id }: { id: number }) {
+  const [loading, setLoading] = useState(false);
+  const [visible, setVisible] = useState(false);
+
+  const run = async () => {
+    setLoading(true);
+    const result = await runFlow(id);
+    console.log(result);
+    setLoading(false);
+  };
+
+  return (
+    <>
+      <button
+        className="btn btn-xs"
+        onClick={() => setVisible(true)}
+        disabled={loading}
+      >
+        执行
+      </button>
+      <Modal
+        visible={visible}
+        title="执行"
+        onVisibleChange={setVisible}
+        actions={
+          <>
+            <button className="btn" onClick={() => setVisible(false)}>
+              关闭
+            </button>
+            <button className="btn" onClick={() => run()}>
+              执行
+            </button>
+          </>
+        }
+      >
+        {loading ? "执行中..." : "待执行"}
+      </Modal>
+    </>
+  );
+}
 
 export default function FlowListPage() {
   const [paged, setPaged] = useState<Paged<FlowRow>>({
@@ -52,6 +94,7 @@ export default function FlowListPage() {
                 path: "id",
                 render: (row) => (
                   <span className="inline-flex gap-2">
+                    <RunFlowButton id={row.id} />
                     <button
                       className="btn btn-xs btn-primary"
                       onClick={() => navigate(`/update/flows/${row.id}`)}

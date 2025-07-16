@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getFlow } from "@/apis";
+import { getFlow } from "@/apis/yaff";
 import FlowCanvas from "@/components/FlowCanvas";
 import type { FlowRow } from "@/types";
 
