@@ -118,9 +118,14 @@ export default function Board() {
     }
 
     for (const e of edges) {
-      const nid = e.source;
-      const node = idToNode[nid];
-      node?.next?.push(e.target);
+      const {source, target } =e
+      const sourceNode = idToNode[source];
+      const targetNode = idToNode[target];
+      if (sourceNode && targetNode) {
+        const next = sourceNode.next || []
+        next.push(e.target)
+        sourceNode.next = next
+      }
     }
 
     mode === "create"

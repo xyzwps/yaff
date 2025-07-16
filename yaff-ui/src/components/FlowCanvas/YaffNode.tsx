@@ -36,8 +36,8 @@ export default function YaffNode(props: NodeProps<YaffNodeData>) {
         setEditorMode("node");
       }}
     >
+      <Handle type="source" position={Position.Right} />
       <Handle type="target" position={Position.Left} />
-      <Handle type="target" position={Position.Top} />
       <h2
         className={`card-title rounded-t-md p-2 text-sm bg-linear-to-b ${titleBg} to-indigo-50`}
       >
