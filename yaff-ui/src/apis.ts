@@ -1,6 +1,6 @@
 import ky from "ky";
 import type { FlowNode } from "./components/FlowCanvas/types";
-import type { FlowRow, NodeMetaData } from "./types";
+import type { FlowRow, NodeMetaData, Paged } from "./types";
 
 export const getMetaData = async (): Promise<NodeMetaData[]> => {
   const response = await ky.get("/apis/yaff/metadata");
@@ -39,7 +39,12 @@ export const getFlow = async (id: number): Promise<FlowRow> => {
   return response.json();
 };
 
-export const getAllFlows = async (): Promise<FlowRow[]> => {
-  const response = await ky.get(`/apis/yaff/flows`);
+export type FlowGetDTO = {
+  page: number;
+  size: number;
+};
+
+export const getAllFlows = async (dto: FlowGetDTO): Promise<Paged<FlowRow>> => {
+  const response = await ky.get(`/apis/yaff/flows`, { searchParams: dto });
   return response.json();
 };

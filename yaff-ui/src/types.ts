@@ -23,3 +23,11 @@ export type FlowRow = {
   createdAt: string;
   updatedAt: string;
 };
+
+
+export type Paged<T> = {
+  page: number;
+  size: number;
+  total: number;
+  data: T[];
+}

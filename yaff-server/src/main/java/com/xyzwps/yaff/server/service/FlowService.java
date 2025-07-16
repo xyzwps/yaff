@@ -8,6 +8,8 @@ import com.xyzwps.yaff.server.yaff.Yaff;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -22,8 +24,8 @@ public class FlowService {
     private final FlowRowRepository flowRowRepository;
 
 
-    public List<FlowRow> findAll() {
-        return flowRowRepository.findAll();
+    public Page<FlowRow> findAll(Pageable page) {
+        return flowRowRepository.findAll(page);
     }
 
     public Optional<FlowRow> findById(long id) {

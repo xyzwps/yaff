@@ -64,6 +64,12 @@
             <artifactId>jackson-module-jsonSchema</artifactId>
             <version>${jackson.version}</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>validation-api</artifactId>
+                    <groupId>javax.validation</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>

@@ -2,25 +2,31 @@ import { Link, useNavigate } from "raviger";
 import { useEffect, useState } from "react";
 import { getAllFlows, deleteFlow } from "../../apis";
 import _ from "lodash";
-import type { FlowRow } from "../../types";
+import type { FlowRow, Paged } from "../../types";
 
 export default function FlowListPage() {
-  const [rows, setRows] = useState<FlowRow[]>([]);
+  const [paged, setPaged] = useState<Paged<FlowRow>>({
+    page: 1,
+    size: 10,
+    total: 0,
+    data: [],
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
-    getAllFlows().then((rows) => {
-      setRows(_.orderBy(rows, ["id"], ["desc"]));
+    getAllFlows({ page: 1, size: 10 }).then((paged) => {
+      setPaged(paged);
     });
   }, []);
 
   const handleDelete = async (id: number) => {
     await deleteFlow(id);
-    setRows((oldRows) => {
-      const newRows = oldRows.filter((row) => row.id !== id);
-      console.log(oldRows, newRows);
-      return newRows;
-    });
+    setPaged((old) => ({
+      page: old.page,
+      size: old.size,
+      total: old.total - 1,
+      data: old.data.filter((flow) => flow.id !== id),
+    }));
   };
 
   return (
@@ -44,7 +50,7 @@ export default function FlowListPage() {
               </tr>
             </thead>
             <tbody>
-              {rows.map((row) => (
+              {paged.data.map((row) => (
                 <tr key={row.id} className="hover:bg-indigo-200">
                   <th>{row.id}</th>
                   <td>{row.description}</td>

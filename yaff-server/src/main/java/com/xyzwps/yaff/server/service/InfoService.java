@@ -15,6 +15,8 @@ public class InfoService {
     private int serverPort;
 
     public void log() {
-        log.info("Swagger UI: http://localhost:{}{}", serverPort, swaggerUiPath);
+        var baseUrl = "http://localhost:" + serverPort;
+        log.info("Swagger UI: {}{}", baseUrl, swaggerUiPath);
+        log.info("Actuator  : {}/actuator", baseUrl);
     }
 }
