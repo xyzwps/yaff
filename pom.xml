@@ -12,6 +12,8 @@
     <properties>
         <yaff.version>0.0.1-SNAPSHOT</yaff.version>
         <lombok.version>1.18.38</lombok.version>
+        <jackson.version>2.19.1</jackson.version>
+        <graalvm.polyglot.version>24.2.1</graalvm.polyglot.version>
         <java.version>24</java.version>
         <maven.compiler.source>24</maven.compiler.source>
         <maven.compiler.target>24</maven.compiler.target>

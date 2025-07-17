@@ -1,6 +1,6 @@
 
 @test:
-    mvn clean test
+    ./mvnw clean test
 
 @git-remote:
     git remote add origin git@gitee.com:xyzwps/yaff.git

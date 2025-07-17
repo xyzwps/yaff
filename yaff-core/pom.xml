@@ -14,7 +14,7 @@
     <version>${yaff.version}</version>
 
     <properties>
-        <jackson.version>2.19.1</jackson.version>
+
     </properties>
 
     <dependencies>
@@ -27,12 +27,12 @@
         <dependency>
             <groupId>org.graalvm.polyglot</groupId>
             <artifactId>polyglot</artifactId>
-            <version>24.2.1</version>
+            <version>${graalvm.polyglot.version}</version>
         </dependency>
         <dependency>
             <groupId>org.graalvm.polyglot</groupId>
-            <artifactId>js</artifactId>
-            <version>24.2.1</version>
+            <artifactId>js-community</artifactId>
+            <version>${graalvm.polyglot.version}</version>
             <type>pom</type>
         </dependency>
         <dependency>
