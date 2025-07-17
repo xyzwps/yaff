@@ -41,7 +41,6 @@ public class FlowFactory {
         private List<FlowNode> flowNodes;
     }
 
-
     /// 这里 check {@link Flow} check 不了的东西。
     private void check(List<FlowNode> nodes) {
         if (nodes == null || nodes.isEmpty()) {

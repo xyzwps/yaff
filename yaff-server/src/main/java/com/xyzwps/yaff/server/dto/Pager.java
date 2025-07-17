@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Size;
 
 public class Pager {
     @Parameter(description = "1-based page number", in = ParameterIn.QUERY, example = "1",
