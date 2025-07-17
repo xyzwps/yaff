@@ -2,8 +2,8 @@ package com.xyzwps.yaff.server.service;
 
 
 import com.xyzwps.yaff.server.dto.flow.FlowSavePayload;
-import com.xyzwps.yaff.server.model.entity.FlowRow;
-import com.xyzwps.yaff.server.model.repository.FlowRowRepository;
+import com.xyzwps.yaff.server.model.entity.FlowDef;
+import com.xyzwps.yaff.server.model.repository.FlowDefRepository;
 import com.xyzwps.yaff.server.yaff.Yaff;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -20,51 +20,51 @@ import java.util.Optional;
 @AllArgsConstructor
 public class FlowService {
 
-    private final FlowRowRepository flowRowRepository;
+    private final FlowDefRepository flowDefRepository;
 
-    public Page<FlowRow> findAll(Pageable page) {
-        return flowRowRepository.findAll(page);
+    public Page<FlowDef> findAll(Pageable page) {
+        return flowDefRepository.findAll(page);
     }
 
-    public Optional<FlowRow> findById(long id) {
-        return flowRowRepository.findById(id);
+    public Optional<FlowDef> findById(long id) {
+        return flowDefRepository.findById(id);
     }
 
     public void deleteFlow(long id) {
-        flowRowRepository.deleteById(id);
+        flowDefRepository.deleteById(id);
     }
 
     // TODO: 更细致的检查
     @Transactional
-    public FlowRow updateFlow(long id, FlowSavePayload it) {
+    public FlowDef updateFlow(long id, FlowSavePayload it) {
         Yaff.fromJSON(it.getData());
-        var flow = flowRowRepository.findById(id)
+        var flow = flowDefRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Flow not found")); // TODO: ex
         flow.setDescription(it.getDescription());
         flow.setData(it.getData());
         flow.setUpdatedAt(LocalDateTime.now());
-        return flowRowRepository.save(flow);
+        return flowDefRepository.save(flow);
     }
 
-    public FlowRow createFlow(FlowSavePayload it) {
+    public FlowDef createFlow(FlowSavePayload it) {
         Yaff.fromJSON(it.getData());
-        var row = FlowRow.builder()
+        var row = FlowDef.builder()
                 .description(it.getDescription())
                 .data(it.getData())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
-        return flowRowRepository.save(row);
+        return flowDefRepository.save(row);
     }
 
     public Map<String, Object> run(long id) {
-        return flowRowRepository.findById(id)
+        return flowDefRepository.findById(id)
                 .map(this::run)
                 .orElseThrow(() -> new RuntimeException("Flow not found")); // TODO: ex
     }
 
-    public Map<String, Object> run(@NonNull FlowRow flowRow) {
-        var flow = Yaff.fromJSON(flowRow.getData());
+    public Map<String, Object> run(@NonNull FlowDef flowDef) {
+        var flow = Yaff.fromJSON(flowDef.getData());
         return Yaff.execute(flow).toMap();
     }
 }

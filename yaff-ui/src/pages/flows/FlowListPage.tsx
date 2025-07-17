@@ -2,7 +2,7 @@ import { Link, useNavigate } from "raviger";
 import { useEffect, useState } from "react";
 import { getAllFlows, deleteFlow, runFlow } from "@/apis/yaff";
 import _ from "lodash";
-import type { FlowRow, Paged } from "@/types";
+import type { FlowDef, Paged } from "@/types";
 import Table from "@/components/ui/Table";
 import Modal from "@/components/ui/Modal";
 
@@ -48,7 +48,7 @@ function RunFlowButton({ id }: { id: number }) {
 }
 
 export default function FlowListPage() {
-  const [paged, setPaged] = useState<Paged<FlowRow>>({
+  const [paged, setPaged] = useState<Paged<FlowDef>>({
     page: 1,
     size: 10,
     total: 0,

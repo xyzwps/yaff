@@ -13,10 +13,10 @@ import useStore from "./store.flow";
 import { ulid } from "ulid";
 import type { FlowNode } from "./types";
 import _ from "lodash";
-import type { FlowRow } from "@/types";
+import type { FlowDef } from "@/types";
 
 type FlowCanvasProps = {
-  row?: FlowRow | null | undefined;
+  row?: FlowDef | null | undefined;
 };
 
 export default function FlowCanvas({ row }: FlowCanvasProps) {

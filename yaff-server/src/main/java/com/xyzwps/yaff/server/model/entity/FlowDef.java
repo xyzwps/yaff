@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "flow_row")
-public class FlowRow {
+public class FlowDef {
 
     public static final int MAX_DESCRIPTION_LENGTH = 200;
 

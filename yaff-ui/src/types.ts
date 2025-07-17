@@ -16,7 +16,7 @@ export type NodeOutput = {
   schema: JSONSchema;
 };
 
-export type FlowRow = {
+export type FlowDef = {
   id: number;
   description: string;
   data: string;

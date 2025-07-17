@@ -4,7 +4,7 @@ import com.xyzwps.yaff.server.dto.Paged;
 import com.xyzwps.yaff.server.dto.flow.FlowGetDTO;
 import com.xyzwps.yaff.server.dto.flow.FlowSavePayload;
 import com.xyzwps.yaff.server.dto.flow.NodeMetaDataView;
-import com.xyzwps.yaff.server.model.entity.FlowRow;
+import com.xyzwps.yaff.server.model.entity.FlowDef;
 import com.xyzwps.yaff.server.service.FlowService;
 import com.xyzwps.yaff.server.yaff.Yaff;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,7 +34,7 @@ public class YaffController {
 
     @Operation(summary = "Get flows")
     @GetMapping("/flows")
-    public Paged<FlowRow> getFlows(@Valid FlowGetDTO flowGetDTO) {
+    public Paged<FlowDef> getFlows(@Valid FlowGetDTO flowGetDTO) {
         var page = PageRequest.of(flowGetDTO.page - 1, flowGetDTO.size);
         var paged = flowService.findAll(page);
         return Paged.of(paged);
@@ -42,19 +42,19 @@ public class YaffController {
 
     @Operation(summary = "Get flow by id")
     @GetMapping("/flows/{id}")
-    public FlowRow getFlow(@Schema(description = "Flow id") @PathVariable("id") long id) {
+    public FlowDef getFlow(@Schema(description = "Flow id") @PathVariable("id") long id) {
         return flowService.findById(id).orElseThrow(() -> new RuntimeException("TODO: 404"));
     }
 
     @Operation(summary = "Create flow")
     @PostMapping("/flows")
-    public FlowRow insertFlow(@RequestBody @Valid FlowSavePayload it) {
+    public FlowDef insertFlow(@RequestBody @Valid FlowSavePayload it) {
         return flowService.createFlow(it);
     }
 
     @Operation(summary = "Update flow")
     @PutMapping("/flows/{id}")
-    public FlowRow updateFlow(@Schema(description = "Flow id") @PathVariable("id") long id,
+    public FlowDef updateFlow(@Schema(description = "Flow id") @PathVariable("id") long id,
                               @RequestBody @Valid FlowSavePayload it) {
         return flowService.updateFlow(id, it);
     }

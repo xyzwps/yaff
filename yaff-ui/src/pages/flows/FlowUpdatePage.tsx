@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { getFlow } from "@/apis/yaff";
 import FlowCanvas from "@/components/FlowCanvas";
-import type { FlowRow } from "@/types";
+import type { FlowDef } from "@/types";
 
 export default function FlowUpdatePage({ id }: { id: number }) {
-  const [row, setRow] = useState<FlowRow | null>(null);
+  const [row, setRow] = useState<FlowDef | null>(null);
 
   useEffect(() => {
     getFlow(id)

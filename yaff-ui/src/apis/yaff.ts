@@ -1,5 +1,5 @@
 import type { FlowNode } from "@/components/FlowCanvas/types";
-import type { FlowRow, NodeMetaData, Paged } from "@/types";
+import type { FlowDef, NodeMetaData, Paged } from "@/types";
 import { del, get, post, put } from "./http";
 
 export const getMetaData = async (): Promise<NodeMetaData[]> =>
@@ -35,7 +35,7 @@ export const updateFlow = (payload: UpdateFlowPayload) =>
 export const deleteFlow = (id: number) =>
   del({ url: `/apis/yaff/flows/${id}` });
 
-export const getFlow = async (id: number): Promise<FlowRow> =>
+export const getFlow = async (id: number): Promise<FlowDef> =>
   get({ url: `/apis/yaff/flows/${id}` });
 
 export type FlowGetDTO = {
@@ -43,7 +43,7 @@ export type FlowGetDTO = {
   size: number;
 };
 
-export const getAllFlows = async (dto: FlowGetDTO): Promise<Paged<FlowRow>> =>
+export const getAllFlows = async (dto: FlowGetDTO): Promise<Paged<FlowDef>> =>
   get({ url: `/apis/yaff/flows`, qs: dto });
 
 export const runFlow = async (
