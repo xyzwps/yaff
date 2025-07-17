@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "flow_row")
+@Table(name = "flow_def")
 public class FlowDef {
 
     public static final int MAX_DESCRIPTION_LENGTH = 200;
