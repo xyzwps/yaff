@@ -1,5 +1,7 @@
-package com.xyzwps.yaff.core;
+package com.xyzwps.yaff.core.expression;
 
+import com.xyzwps.yaff.core.FlowContext;
+import com.xyzwps.yaff.core.SimpleFlowContext;
 import com.xyzwps.yaff.core.commons.JSON;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,14 +10,13 @@ import org.graalvm.polyglot.Value;
 
 @Data
 @NoArgsConstructor
-public final class JavaScriptExpression implements AssignExpression {
-    private String expression; // TODO: 想个办法验证表达式
-    private String inputName;
+public final class JavaScriptExpression implements Expression {
 
     public static final String TYPE = "javascript";
 
-    public JavaScriptExpression(String name, String expression) {
-        this.inputName = AssignExpression.validInputName(name);
+    private String expression;
+
+    public JavaScriptExpression(String expression) {
         this.expression = expression;
     }
 
@@ -24,12 +25,12 @@ public final class JavaScriptExpression implements AssignExpression {
         return TYPE;
     }
 
-    public void setInputName(String inputName) {
-        this.inputName = AssignExpression.validInputName(inputName);
+    @Override
+    public <T> T calculate(FlowContext flowContext, Class<T> resultType) {
+        return calculate(expression, flowContext, resultType);
     }
 
-    @Override
-    public Object calculate(FlowContext flowContext, Class<?> resultType) {
+    public static <T> T calculate(String expression, FlowContext flowContext, Class<T> resultType) {
         try (var context = Context.create()) {
             var script = makeScript(flowContext, expression);
             var value = context.eval("js", script);
@@ -37,7 +38,7 @@ public final class JavaScriptExpression implements AssignExpression {
         }
     }
 
-    private static Object convert(Value value, Class<?> resultType) {
+    private static <T> T convert(Value value, Class<T> resultType) {
         if (value == null) {
             return null;
         }
@@ -46,7 +47,6 @@ public final class JavaScriptExpression implements AssignExpression {
         }
         return JSON.parse(value.asString(), resultType);
     }
-
 
     /**
      * 把 flowContext 转换成 JavaScript 脚本。

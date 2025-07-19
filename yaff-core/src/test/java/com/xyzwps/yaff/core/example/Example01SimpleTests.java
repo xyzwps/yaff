@@ -2,6 +2,7 @@ package com.xyzwps.yaff.core.example;
 
 import com.xyzwps.yaff.core.*;
 import com.xyzwps.yaff.core.commons.JSON;
+import com.xyzwps.yaff.core.expression.JavaScriptAssignExpression;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -22,14 +23,14 @@ class Example01SimpleTests {
                         .id(NodeIds.START)
                         .name(TEXT_TO_UPPER_NODE_NAME)
                         .ref("upper")
-                        .assignExpressions(new JavaScriptExpression("text", "'Hello World'"))
-                        .next("print"),
+                        .assignExpressions(new JavaScriptAssignExpression("text", "'Hello World'"))
+                        .edges(FlowEdgeTo.fallback("print")),
                 new FlowNode()
                         .id("print")
                         .name(PRINT_TEXT_NODE_NAME)
                         .ref("cmd")
-                        .assignExpressions(new JavaScriptExpression("text", "upper"))
-                        .next(NodeIds.END)
+                        .assignExpressions(new JavaScriptAssignExpression("text", "upper"))
+                        .edges(FlowEdgeTo.fallback(NodeIds.END))
         );
 
         var flow = factory.createFlow(nodes);
@@ -50,16 +51,20 @@ class Example01SimpleTests {
     @Test
     void testFlowFromJSON() {
         var flowJSON = """
-                {"flowNodes":[
-                    {
-                        "id":"start","ref":"upper","name":"example.textToUpper","next":["print"],
-                        "assignExpressions":[{"expression":"'Hello World'","inputName":"text","type":"javascript"}]
-                    },
-                    {
-                        "id":"print","ref":"cmd","name":"example.printText","next":["end"],
-                        "assignExpressions":[{"expression":"upper","inputName":"text","type":"javascript"}]
-                    }
-                ]}
+                {
+                    "flowNodes":[
+                        {
+                            "id":"start","ref":"upper","name":"example.textToUpper",
+                            "edges": [{"to":"print","type":"FALLBACK","expression":null}],
+                            "assignExpressions": [{"expression":"'Hello World'","inputName":"text","type":"javascript"}]
+                        },{
+                            "id":"print","ref":"cmd","name":"example.printText",
+                            "edges": [{"to":"end","type":"FALLBACK","expression":null}],
+                            "assignExpressions": [{"expression":"upper","inputName":"text","type":"javascript"}]
+                        }
+                    ],
+                    "flowInputs":[]
+                }
                 """;
         var flow = factory.fromJSON(flowJSON);
         var executor = factory.getExecutor();

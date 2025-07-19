@@ -2,8 +2,10 @@ package com.xyzwps.yaff.core;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import com.xyzwps.yaff.core.expression.AssignExpression;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -46,14 +48,10 @@ public class FlowNode {
     /// - required: true
     private String name;
 
-    /// 节点的下一跳节点列表。
-    ///
-    /// 一个节点后可以没有后续节点。
-    /// 一般而言，一个节点后续节点最多只有一个。
-    /// 只有内置的特定的节点才可以有多个后续节点。
+    /// 从当前节点出发可以到达的边列表。
     ///
     /// - required: false
-    private List<String> next;
+    private List<FlowEdgeTo> edges;
 
     /// 为节点输入参数赋值的表达式列表。
     ///
@@ -117,17 +115,28 @@ public class FlowNode {
         return this;
     }
 
-    public FlowNode next(String... next) {
-        for (var n : next) {
-            if (n == null) {
-                throw new IllegalArgumentException("next cannot be null");
+    public FlowNode edges(String id) {
+        if (this.edges == null) {
+            this.edges = new ArrayList<>();
+        }
+        this.edges.add(FlowEdgeTo.fallback(id));
+        return this;
+    }
+
+    public FlowNode edges(FlowEdgeTo... edges) {
+        for (var e : edges) {
+            if (e == null) {
+                throw new IllegalArgumentException("edge cannot be null");
             }
-            if (!isIdentifier(n)) {
-                throw new IllegalArgumentException("Invalid next: " + n);
+            if (!e.validated()) {
+                throw new IllegalArgumentException("Invalid edge: " + e);
             }
         }
 
-        this.next = Arrays.asList(next);
+        if (this.edges == null) {
+            this.edges = new ArrayList<>();
+        }
+        this.edges.addAll(Arrays.asList(edges));
         return this;
     }
 }

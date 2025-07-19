@@ -20,7 +20,7 @@ class Example04RNGTests {
                       "name": "control.start",
                       "px": 160,
                       "py": 300,
-                      "next": ["n1750350189893"]
+                      "edges": [{ "to": "n1750350189893", "type": "FALLBACK", "expression": null }]
                     },
                     {
                       "id": "n1750350189893",
@@ -29,59 +29,23 @@ class Example04RNGTests {
                       "description": "",
                       "px": 432.185899433957,
                       "py": 256.78064183120574,
-                      "next": ["n1750350208846"],
+                      "edges": [
+                        {
+                          "to": "n1750350273531",
+                          "type": "CHECK",
+                          "expression": { "type": "javascript", "expression": "r < 34" }
+                        },
+                        {
+                          "to": "n1750350293432",
+                          "type": "CHECK",
+                          "expression": { "type": "javascript", "expression": "r < 67 && r >= 34" }
+                        },
+                        { "to": "n1750350311521", "type": "FALLBACK", "expression": null }
+                      ],
                       "assignExpressions": [
                         { "expression": "0", "inputName": "min", "type": "javascript" },
                         { "expression": "100", "inputName": "max", "type": "javascript" }
                       ]
-                    },
-                    {
-                      "id": "n1750350208846",
-                      "name": "control.case",
-                      "description": "",
-                      "px": 890.9318874101455,
-                      "py": 360.5653805558567,
-                      "next": ["n1750350213622", "n1750350231754", "n1750350260274"],
-                      "assignExpressions": []
-                    },
-                    {
-                      "id": "n1750350213622",
-                      "name": "control.when",
-                      "description": "",
-                      "px": 1145.5969605832388,
-                      "py": 193.11437353793238,
-                      "next": ["n1750350273531"],
-                      "assignExpressions": [
-                        {
-                          "expression": "r < 34",
-                          "inputName": "condition",
-                          "type": "javascript"
-                        }
-                      ]
-                    },
-                    {
-                      "id": "n1750350231754",
-                      "name": "control.when",
-                      "description": "",
-                      "px": 1150.8298045525487,
-                      "py": 413.7659609105097,
-                      "next": ["n1750350293432"],
-                      "assignExpressions": [
-                        {
-                          "expression": "r < 67 && r >= 34",
-                          "inputName": "condition",
-                          "type": "javascript"
-                        }
-                      ]
-                    },
-                    {
-                      "id": "n1750350260274",
-                      "name": "control.default",
-                      "description": "",
-                      "px": 1150.1197162712422,
-                      "py": 638.0951720395797,
-                      "next": ["n1750350311521"],
-                      "assignExpressions": []
                     },
                     {
                       "id": "n1750350273531",
@@ -89,18 +53,9 @@ class Example04RNGTests {
                       "description": "",
                       "px": 1581.7114242356513,
                       "py": 129.17661639821392,
-                      "next": [],
                       "assignExpressions": [
-                        {
-                          "expression": "\\"小随机数\\"",
-                          "inputName": "title",
-                          "type": "javascript"
-                        },
-                        {
-                          "expression": "\\"小随机数已生成\\"",
-                          "inputName": "message",
-                          "type": "javascript"
-                        }
+                        { "expression": "\\"小随机数\\"", "inputName": "title", "type": "javascript" },
+                        { "expression": "\\"小随机数已生成\\"", "inputName": "message", "type": "javascript" }
                       ]
                     },
                     {
@@ -109,18 +64,9 @@ class Example04RNGTests {
                       "description": "",
                       "px": 1582.6105736272436,
                       "py": 366.552055778639,
-                      "next": [],
                       "assignExpressions": [
-                        {
-                          "expression": "\\"中随机数\\"",
-                          "inputName": "title",
-                          "type": "javascript"
-                        },
-                        {
-                          "expression": "\\"中随机数已生成\\"",
-                          "inputName": "message",
-                          "type": "javascript"
-                        }
+                        { "expression": "\\"中随机数\\"", "inputName": "title", "type": "javascript" },
+                        { "expression": "\\"中随机数已生成\\"", "inputName": "message", "type": "javascript" }
                       ]
                     },
                     {
@@ -129,18 +75,9 @@ class Example04RNGTests {
                       "description": "",
                       "px": 1583.5097230188364,
                       "py": 613.8181384665817,
-                      "next": [],
                       "assignExpressions": [
-                        {
-                          "expression": "\\"大随机数\\"",
-                          "inputName": "title",
-                          "type": "javascript"
-                        },
-                        {
-                          "expression": "\\"大随机数已生成\\"",
-                          "inputName": "message",
-                          "type": "javascript"
-                        }
+                        { "expression": "\\"大随机数\\"", "inputName": "title", "type": "javascript" },
+                        { "expression": "\\"大随机数已生成\\"", "inputName": "message", "type": "javascript" }
                       ]
                     }
                   ]

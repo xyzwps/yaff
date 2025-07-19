@@ -2,6 +2,7 @@ package com.xyzwps.yaff.core;
 
 import com.xyzwps.yaff.core.commons.Arguments;
 import com.xyzwps.yaff.core.commons.JSON;
+import com.xyzwps.yaff.core.expression.AssignExpression;
 import lombok.Data;
 import lombok.Getter;
 

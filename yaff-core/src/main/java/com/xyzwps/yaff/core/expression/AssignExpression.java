@@ -1,8 +1,10 @@
-package com.xyzwps.yaff.core;
+package com.xyzwps.yaff.core.expression;
 
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.xyzwps.yaff.core.FlowContext;
+import com.xyzwps.yaff.core.YaffException;
 import com.xyzwps.yaff.core.commons.Utils;
 
 import static com.fasterxml.jackson.annotation.JsonSubTypes.Type;
@@ -11,9 +13,9 @@ import static com.fasterxml.jackson.annotation.JsonSubTypes.Type;
         include = JsonTypeInfo.As.EXISTING_PROPERTY,
         property = "type")
 @JsonSubTypes({
-        @Type(value = JavaScriptExpression.class, name = JavaScriptExpression.TYPE)
+        @Type(value = JavaScriptAssignExpression.class, name = JavaScriptAssignExpression.TYPE)
 })
-public sealed interface AssignExpression permits JavaScriptExpression {
+public sealed interface AssignExpression permits JavaScriptAssignExpression {
 
     String getInputName();
 

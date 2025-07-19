@@ -1,6 +1,8 @@
 package com.xyzwps.yaff.core.example;
 
 import com.xyzwps.yaff.core.*;
+import com.xyzwps.yaff.core.expression.JavaScriptAssignExpression;
+import com.xyzwps.yaff.core.expression.JavaScriptExpression;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -19,46 +21,29 @@ class Example03CaseWhenTests {
                 new FlowNode()
                         .id(NodeIds.START)
                         .name(YaffNode.NOOP_NODE_NAME)
-                        .next("case"),
-                new FlowNode()
-                        .id("case")
-                        .name(ControlNode.CASE_NODE_NAME)
-                        .next("when1", "when2", "default"),
-
-                new FlowNode()
-                        .id("when1")
-                        .name(ControlNode.WHEN_NODE_NAME)
-                        .assignExpressions(new JavaScriptExpression("condition", "a1 > a2"))
-                        .next("print1"),
+                        .edges(
+                                FlowEdgeTo.check("print1", new JavaScriptExpression("a1 > a2")),
+                                FlowEdgeTo.check("print2", new JavaScriptExpression("a1 < a2")),
+                                FlowEdgeTo.fallback("print3")
+                        ),
                 new FlowNode()
                         .id("print1")
                         .name(Example02IfTests.PRINT_NODE_NAME)
                         .ref("p1")
-                        .assignExpressions(new JavaScriptExpression("text", "'a1 is great'"))
-                        .next(NodeIds.END),
-
-                new FlowNode()
-                        .id("when2")
-                        .name(ControlNode.WHEN_NODE_NAME)
-                        .assignExpressions(new JavaScriptExpression("condition", "a1 < a2"))
-                        .next("print2"),
+                        .assignExpressions(new JavaScriptAssignExpression("text", "'a1 is great'"))
+                        .edges(NodeIds.END),
                 new FlowNode()
                         .id("print2")
                         .ref("p2")
                         .name(Example02IfTests.PRINT_NODE_NAME)
-                        .assignExpressions(new JavaScriptExpression("text", "'a2 is great'"))
-                        .next(NodeIds.END),
-
-                new FlowNode()
-                        .id("default")
-                        .name(ControlNode.DEFAULT_NODE_NAME)
-                        .next("print3"),
+                        .assignExpressions(new JavaScriptAssignExpression("text", "'a2 is great'"))
+                        .edges(NodeIds.END),
                 new FlowNode()
                         .id("print3")
                         .ref("p3")
                         .name(Example02IfTests.PRINT_NODE_NAME)
-                        .assignExpressions(new JavaScriptExpression("text", "'a1 is equal to a2'"))
-                        .next(NodeIds.END)
+                        .assignExpressions(new JavaScriptAssignExpression("text", "'a1 is equal to a2'"))
+                        .edges(NodeIds.END)
         );
 
         var flow = factory.createFlow(nodes);

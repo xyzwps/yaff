@@ -3,12 +3,10 @@ package com.xyzwps.yaff.core;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.xyzwps.yaff.core.commons.DAGChecker;
+import com.xyzwps.yaff.core.expression.AssignExpression;
 import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /// 表示一个由节点组成的流程。
 ///
@@ -19,7 +17,12 @@ import java.util.Map;
 /// - R1: id 规则
 ///   - 各个节点的 id 必须唯一，不能重复，也不能为 null。
 ///   - 必须有一个 id 为 start 的节点
-/// - R2: next 规则
+/// - R2: edge 规则
+///   - R2.1: 没有从 end 节点出发的边。
+///   - R2.2: 从一个节点出发可以存在多个边。也可以没有边（比如 end 节点）
+///   - R2.3: 从一个节点出发，如果右边，那么必须有且仅有一个 fallback 边。
+///   - R2.4: 从一个节点出发，每个边的到达节点必须不同。
+/// - R2: next 规则 TODO: 老的规则要干掉，但是不能全干掉。
 ///   - case 节点至少应当由两个 next，并且
 ///     - next 节点必须存在
 ///     - 最多有一个 default 节点
@@ -74,6 +77,57 @@ public class Flow {
     }
 
     private void r2() {
+        for (var node : flowNodes) {
+            var edges = node.getEdges();
+
+            // R2.1
+            if (NodeIds.END.equals(node.getId())) {
+                if (edges != null && !edges.isEmpty()) {
+                    throw new YaffException("No edges cannot start from end node.");
+                }
+            }
+
+            // R2.2
+            if (edges == null || edges.isEmpty()) {
+                continue;
+            }
+
+            for (var edge : edges) {
+                if (edge == null) {
+                    throw new YaffException("FlowNode edge cannot be null.");
+                }
+                if (!edge.validated()) {
+                    throw new YaffException("FlowNode edge is invalid.");
+                }
+            }
+
+            // R2.3
+            var fallbackEdgeCount = 0;
+            for (var edge : edges) {
+                if (edge.type() == FlowEdgeTo.EdgeType.FALLBACK) {
+                    fallbackEdgeCount++;
+                }
+            }
+            if (fallbackEdgeCount <= 0) {
+                throw new YaffException("FlowNode must have at least one fallback edge.");
+            }
+            if (fallbackEdgeCount > 1) {
+                throw new YaffException("FlowNode can only have one fallback edge.");
+            }
+
+            // R2.4
+            var toSet = new HashSet<String>();
+            for (var edge : node.getEdges()) {
+                toSet.add(edge.to());
+            }
+            if (toSet.size() != node.getEdges().size()) {
+                throw new YaffException("FlowNode has duplicate next edge.");
+            }
+        }
+    }
+
+    /*
+    private void r2old() {
         for (var node : flowNodes) {
             var next = node.getNext();
             switch (node.getName()) {
@@ -147,12 +201,14 @@ public class Flow {
             }
         }
     }
+    */
 
     private void r3() {
     }
 
+
     private void r4() {
-        var isDag = DAGChecker.isDAG(flowNodes, FlowNode::getId, FlowNode::getNext);
+        var isDag = DAGChecker.isDAG(flowNodes, FlowNode::getId, n -> n.getEdges() == null ? List.of() : n.getEdges().stream().map(FlowEdgeTo::to).toList());
         if (!isDag) {
             throw new YaffException("Flow is not a DAG.");
         }
@@ -160,9 +216,10 @@ public class Flow {
         {
             var idToParents = new HashMap<String, List<String>>();
             for (var node : flowNodes) {
-                var next = node.getNext();
-                if (next != null) {
-                    for (var nextId : next) {
+                var edges = node.getEdges();
+                if (edges != null) {
+                    for (var edge : edges) {
+                        var nextId = edge.to();
                         if (!idToParents.containsKey(nextId)) {
                             idToParents.put(nextId, new ArrayList<>());
                         }

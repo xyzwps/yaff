@@ -2,7 +2,7 @@ package com.xyzwps.yaff.core.example;
 
 import com.xyzwps.yaff.core.FlowContext;
 import com.xyzwps.yaff.core.FlowNode;
-import com.xyzwps.yaff.core.JavaScriptExpression;
+import com.xyzwps.yaff.core.expression.JavaScriptAssignExpression;
 import com.xyzwps.yaff.core.NodeIds;
 import com.xyzwps.yaff.core.commons.JSON;
 import org.junit.jupiter.api.Test;
@@ -23,18 +23,18 @@ class Example06InitContextTests {
                         .id(NodeIds.START)
                         .name(TEXT_TO_UPPER_NODE_NAME)
                         .ref("upper")
-                        .assignExpressions(new JavaScriptExpression("text", "'Hello World'"))
-                        .next("print"),
+                        .assignExpressions(new JavaScriptAssignExpression("text", "'Hello World'"))
+                        .edges("print"),
                 new FlowNode()
                         .id("print")
                         .name(PRINT_TEXT_NODE_NAME)
                         .ref("cmd")
-                        .assignExpressions(new JavaScriptExpression("text", "upper + ' -> ' + preset"))
-                        .next(NodeIds.END)
+                        .assignExpressions(new JavaScriptAssignExpression("text", "upper + ' -> ' + preset"))
+                        .edges(NodeIds.END)
         );
 
         var flow = factory.createFlow(nodes, List.of(
-                new JavaScriptExpression("preset", "123")
+                new JavaScriptAssignExpression("preset", "123")
         ));
         var executor = factory.getExecutor(LISTENER);
 
@@ -56,16 +56,13 @@ class Example06InitContextTests {
                 {
                     "flowNodes":[
                         {
-                            "id":"start","ref":"upper","name":"example.textToUpper","next":["print"],
-                            "assignExpressions":[
-                                {"expression":"'Hello World'","inputName":"text","type":"javascript"}
-                            ]
-                        },
-                        {
-                            "id":"print","ref":"cmd","name":"example.printText","next":["end"],
-                            "assignExpressions":[
-                                {"expression":"upper + ' -> ' + preset","inputName":"text","type":"javascript"}
-                            ]
+                            "id":"start","ref":"upper","name":"example.textToUpper",
+                            "edges":[{"to":"print","type":"FALLBACK","expression":null}],
+                            "assignExpressions":[{"expression":"'Hello World'","inputName":"text","type":"javascript"}]
+                        },{
+                            "id":"print","ref":"cmd","name":"example.printText",
+                            "edges":[{"to":"end","type":"FALLBACK","expression":null}],
+                            "assignExpressions":[{"expression":"upper + ' -> ' + preset","inputName":"text","type":"javascript"}]
                         }
                     ],
                     "flowInputs":[{"expression":"123","inputName":"preset","type":"javascript"}]

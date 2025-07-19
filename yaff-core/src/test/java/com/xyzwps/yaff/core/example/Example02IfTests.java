@@ -1,6 +1,8 @@
 package com.xyzwps.yaff.core.example;
 
 import com.xyzwps.yaff.core.*;
+import com.xyzwps.yaff.core.expression.JavaScriptAssignExpression;
+import com.xyzwps.yaff.core.expression.JavaScriptExpression;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -21,18 +23,15 @@ class Example02IfTests {
                 new FlowNode()
                         .id(NodeIds.START)
                         .name(YaffNode.NOOP_NODE_NAME)
-                        .next("when"),
-                new FlowNode()
-                        .id("when")
-                        .name(ControlNode.WHEN_NODE_NAME)
-                        .assignExpressions(new JavaScriptExpression("condition", "a1 > a2"))
-                        .next("printA1"),
+                        .edges(
+                                FlowEdgeTo.fallback(NodeIds.END),
+                                FlowEdgeTo.check("printA1", new JavaScriptExpression("a1 > a2"))
+                        ),
                 new FlowNode()
                         .id("printA1")
                         .name(PRINT_NODE_NAME)
                         .ref("p1")
-                        .assignExpressions(new JavaScriptExpression("text", "'a1 is great'"))
-                        .next(NodeIds.END)
+                        .assignExpressions(new JavaScriptAssignExpression("text", "'a1 is great'"))
         );
 
         var flow = factory.createFlow(nodes);
