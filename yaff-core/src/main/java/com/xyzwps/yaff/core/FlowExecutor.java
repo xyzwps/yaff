@@ -26,6 +26,13 @@ public class FlowExecutor {
     }
 
     private void execute(Flow flow, FlowContext context, String start, EndType endType) {
+        // init context
+        flow.getFlowInputs().forEach(exp -> {
+            var name = exp.getInputName();
+            var value = exp.calculate(context, Object.class);
+            context.set(name, value);
+        });
+
         var currentId = start;
         while (!NodeIds.END.equals(currentId)) {
             var flowNode = getFlowNode(currentId, flow);

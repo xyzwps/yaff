@@ -7,11 +7,11 @@
     <parent>
         <groupId>com.xyzwps.yaff</groupId>
         <artifactId>yaff-parent</artifactId>
-        <version>${yaff.version}</version>
+        <version>0.0.1-snapshot</version>
     </parent>
 
     <artifactId>core</artifactId>
-    <version>${yaff.version}</version>
+    <version>0.0.1-snapshot</version>
 
     <properties>
 

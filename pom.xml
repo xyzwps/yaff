@@ -7,10 +7,9 @@
 
     <groupId>com.xyzwps.yaff</groupId>
     <artifactId>yaff-parent</artifactId>
-    <version>${yaff.version}</version>
+    <version>0.0.1-snapshot</version>
 
     <properties>
-        <yaff.version>0.0.1-SNAPSHOT</yaff.version>
         <lombok.version>1.18.38</lombok.version>
         <jackson.version>2.19.1</jackson.version>
         <graalvm.polyglot.version>24.2.1</graalvm.polyglot.version>

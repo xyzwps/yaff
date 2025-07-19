@@ -26,19 +26,24 @@ public class FlowFactory {
     }
 
     public Flow createFlow(List<FlowNode> nodes) {
+        return createFlow(nodes, null);
+    }
+
+    public Flow createFlow(List<FlowNode> nodes, List<AssignExpression> init) {
         check(nodes);
-        return new Flow(nodes);
+        return new Flow(nodes, init);
     }
 
     public Flow fromJSON(String json) {
         var flow = JSON.parse(json, FlowData.class);
         check(flow.getFlowNodes());
-        return new Flow(flow.getFlowNodes());
+        return new Flow(flow.getFlowNodes(), flow.getFlowInputs());
     }
 
     @Data
     static class FlowData {
         private List<FlowNode> flowNodes;
+        private List<AssignExpression> flowInputs;
     }
 
     /// 这里 check {@link Flow} check 不了的东西。

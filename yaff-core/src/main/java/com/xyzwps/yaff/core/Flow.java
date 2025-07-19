@@ -38,12 +38,16 @@ public class Flow {
     @Getter
     private final List<FlowNode> flowNodes;
 
+    @Getter
+    private final List<AssignExpression> flowInputs;
+
     @JsonIgnore
     private final Map<String, FlowNode> idToNode;
 
-    Flow(List<FlowNode> flowNodes) {
-        this.flowNodes = flowNodes;
-        this.idToNode = r1(flowNodes);
+    Flow(List<FlowNode> flowNodes, List<AssignExpression> flowInputs) {
+        this.flowNodes = flowNodes == null ? List.of() : List.copyOf(flowNodes);
+        this.flowInputs = flowInputs == null ? List.of() : List.copyOf(flowInputs);
+        this.idToNode = r1(this.flowNodes);
         this.r2();
         this.r3();
         this.r4();

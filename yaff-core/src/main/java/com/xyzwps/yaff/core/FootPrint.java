@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.util.Map;
 
+///  TODO: 这东西有点复杂了，得简化
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = FootPrint.BeforeNode.class, name = "before-node"),

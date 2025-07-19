@@ -2,9 +2,7 @@ package com.xyzwps.yaff.core;
 
 import com.xyzwps.yaff.core.commons.Utils;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class SimpleFlowContext implements FlowContext {
 

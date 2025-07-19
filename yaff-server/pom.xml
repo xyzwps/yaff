@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.xyzwps.yaff</groupId>
         <artifactId>yaff-parent</artifactId>
-        <version>${yaff.version}</version>
+        <version>0.0.1-snapshot</version>
     </parent>
 
     <properties>
@@ -26,7 +26,7 @@
     </dependencyManagement>
 
     <artifactId>server</artifactId>
-    <version>${yaff.version}</version>
+    <version>0.0.1-snapshot</version>
     <name>server</name>
     <description>Yaff server</description>
 
@@ -101,7 +101,7 @@
         <dependency>
             <groupId>com.xyzwps.yaff</groupId>
             <artifactId>core</artifactId>
-            <version>${yaff.version}</version>
+            <version>0.0.1-snapshot</version>
         </dependency>
 
         <dependency>
