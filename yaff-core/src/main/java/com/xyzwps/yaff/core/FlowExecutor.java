@@ -15,6 +15,7 @@ public class FlowExecutor {
         this.listener = listener == null ? FlowExecutorListener.NOOP : listener;
     }
 
+    /// TODO: 把这个干了
     enum EndType {
         END,
         BRANCH_END
@@ -63,7 +64,7 @@ public class FlowExecutor {
             return null;
         }
 
-        // TODO: 这个语义还不明确，先放着
+        // FIXME: context 必须是并发安全的
         for (var edge : edges) {
             execute(flow, context, edge.to(), EndType.BRANCH_END);
         }

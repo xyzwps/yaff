@@ -22,4 +22,6 @@ public interface YaffNode {
                 var max = ((Number) inputs.get("max")).doubleValue();
                 return (Math.random() * (max - min) + min);
             }).build();
+
+    // TODO: 实现 countdown 节点
 }
