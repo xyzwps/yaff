@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 // TODO: 测试
-// TODO: 中断后继续执行
+// TODO: 中断后继续执行（并行场景下如何追踪进度？）
+// TODO: 支持并行执行（这种情况下如何判断并行执行的任务完成了？）
+// TODO: 支持循环执行，图是否包含环由用户决定（如何实现 countdown？）
 public class FlowExecutor {
 
     private final NodeRegister nodeRegister;
